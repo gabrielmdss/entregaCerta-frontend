@@ -1,0 +1,18 @@
+.container {
+    padding: 20px;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 20px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  h1, h2 {
+    color: #1a1c27;
+  }
+  

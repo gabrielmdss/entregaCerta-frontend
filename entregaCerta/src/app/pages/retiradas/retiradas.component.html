@@ -1,0 +1,14 @@
+<h1>Controle de Retiradas</h1>
+
+<div>
+  <input [(ngModel)]="novaRetirada.assistido" placeholder="Assistido" />
+  <input [(ngModel)]="novaRetirada.data" placeholder="Data" type="date" />
+  <button (click)="registrarRetirada()">Registrar Retirada</button>
+</div>
+
+<h2>Retiradas Registradas</h2>
+<ul>
+  <li *ngFor="let retirada of retiradas">
+    {{ retirada.assistido }} - {{ retirada.data }}
+  </li>
+</ul>

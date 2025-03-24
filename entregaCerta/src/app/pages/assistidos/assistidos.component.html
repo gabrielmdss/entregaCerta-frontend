@@ -1,0 +1,15 @@
+<h1>Gestão de Assistidos</h1>
+
+<div>
+  <input [(ngModel)]="novoAssistido.nome" placeholder="Nome" />
+  <input [(ngModel)]="novoAssistido.documento" placeholder="Documento" />
+  <button (click)="cadastrarAssistido()">Cadastrar</button>
+</div>
+
+<h2>Lista de Assistidos</h2>
+<ul>
+  <li *ngFor="let assistido of assistidos">
+    {{ assistido.nome }} - {{ assistido.documento }}
+    <button (click)="excluirAssistido(assistido.id)">Excluir</button>
+  </li>
+</ul>

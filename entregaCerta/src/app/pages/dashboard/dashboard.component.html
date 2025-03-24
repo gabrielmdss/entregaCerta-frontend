@@ -1,0 +1,21 @@
+<div class="container">
+    <h1>Dashboard - Entrega Certa</h1>
+  
+    <div class="stats">
+      <p>Total de Assistidos: {{ totalAssistidos }}</p>
+      <p>Total de Retiradas no Mês: {{ totalRetiradasMes }}</p>
+    </div>
+  
+    <h2>📊 Retiradas por Mês</h2>
+    <ul>
+      <li *ngFor="let item of retiradasPorMes">{{ item.mes }}: {{ item.total }} retiradas</li>
+    </ul>
+  
+    <h2>🧾 Últimas Retiradas</h2>
+    <ul>
+      <li *ngFor="let retirada of ultimasRetiradas">
+        {{ retirada.nome }} - {{ retirada.data }}
+      </li>
+    </ul>
+  </div>
+  
