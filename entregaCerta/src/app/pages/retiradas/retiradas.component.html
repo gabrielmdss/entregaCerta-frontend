@@ -3,13 +3,12 @@
 <div>
   <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar Assistido" (input)="filterAssistidos()" />
 
-<!-- Dropdown com assistidos filtrados -->
-<select [(ngModel)]="novaRetirada.assistido_id">
-  <option value="" disabled selected>Escolha o Assistido</option>
-  <option *ngFor="let assistido of filteredAssistidos" [value]="assistido.id">
-    {{ assistido.nome }}
-  </option>
-</select>
+  <select [(ngModel)]="novaRetirada.assistido_id">
+    <option value="" disabled selected>Escolha o Assistido</option>
+    <option *ngFor="let assistido of filteredAssistidos" [value]="assistido.id">
+      {{ assistido.nome }}
+    </option>
+  </select>
   <input [(ngModel)]="novaRetirada.data_retirada" placeholder="Data" type="date" />
   <button (click)="registrarRetirada()">Registrar Retirada</button>
 </div>
@@ -18,5 +17,29 @@
 <ul>
   <li *ngFor="let retirada of retiradas">
     {{ retirada.nome }} - {{ retirada.data_retirada | date }}
+    <button (click)="editarRetirada(retirada)">Alterar</button>
   </li>
 </ul>
+
+<h3>Filtros</h3>
+<div>
+  <h4>Filtrar por Assistido</h4>
+  <select [(ngModel)]="assistidoIdFilter">
+    <option value="" disabled>Escolha o Assistido</option>
+    <option *ngFor="let assistido of assistidos" [value]="assistido.id">{{ assistido.nome }}</option>
+  </select>
+  <button (click)="filtrarRetiradasPorAssistido()">Filtrar</button>
+
+  <h4>Filtrar por Data</h4>
+  <input type="date" [(ngModel)]="dataFilter" />
+  <button (click)="filtrarRetiradasPorData()">Filtrar</button>
+
+  <h4>Filtrar por Intervalo de Data</h4>
+  <input type="date" [(ngModel)]="dataInicialFilter" />
+  <input type="date" [(ngModel)]="dataFinalFilter" />
+  <button (click)="filtrarRetiradasPorIntervalo()">Filtrar Intervalo</button>
+</div>
+
+<div>
+  <button (click)="limparFiltros()">Limpar Filtros</button>
+</div>

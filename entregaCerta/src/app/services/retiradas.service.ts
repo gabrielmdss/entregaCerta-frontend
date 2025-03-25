@@ -22,5 +22,21 @@ export class RetiradasService {
     }
     return this.http.post<any>(`${baseUrl}/retirada`, body)
    }
+
+   selectByAssistidoId(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/retirada/assistido/${id}`);
+  }
+
+  countanysByAssistido(id: number): Observable<number> {
+    return this.http.get<number>(`${baseUrl}/retirada/total/${id}`);
+  }
+
+  selectByData(data: string): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/retirada/data/${data}`);
+  }
+
+  selectByDataIntervalo(dataInicial: string, dataFinal: string): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/retirada/periodo/${dataInicial}/${dataFinal}`);
+  }
    
 }

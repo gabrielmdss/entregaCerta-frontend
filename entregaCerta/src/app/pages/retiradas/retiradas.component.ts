@@ -16,7 +16,10 @@ export class RetiradasComponent {
   assistidos: Assistido[] = [];
   filteredAssistidos: Assistido[] = [];
   searchTerm: string = '';
-
+  assistidoIdFilter: number | null = null;
+  dataFilter: string | null = null;
+  dataInicialFilter: string | null = null;
+  dataFinalFilter: string | null = null;
   constructor(
     private retiradasService: RetiradasService,
     private assistidosService: AssistidosService
@@ -75,5 +78,56 @@ export class RetiradasComponent {
     this.filteredAssistidos = this.assistidos.filter((assistido) =>
       assistido.nome.toLowerCase().includes(searchTermLower)
     );
+  }
+
+  carregarRetiradas(): void {
+    this.retiradasService.listarRetiradas().subscribe((retiradas) => {
+      this.retiradas = retiradas;
+    });
+  }
+
+  filtrarRetiradasPorAssistido(): void {
+    if (this.assistidoIdFilter !== null) {
+      this.retiradasService.selectByAssistidoId(this.assistidoIdFilter).subscribe((retiradas) => {
+        this.retiradas = retiradas;
+      });
+    }
+  }
+
+  filtrarRetiradasPorData(): void {
+    if (this.dataFilter) {
+      this.retiradasService.selectByData(this.dataFilter).subscribe((retiradas) => {
+        this.retiradas = retiradas;
+      });
+    }
+  }
+
+  filtrarRetiradasPorIntervalo(): void {
+    if (this.dataInicialFilter && this.dataFinalFilter) {
+      this.retiradasService.selectByDataIntervalo(this.dataInicialFilter, this.dataFinalFilter).subscribe((retiradas) => {
+        this.retiradas = retiradas;
+      });
+    }
+  }
+
+  contarRetiradasPorAssistido(): void {
+    if (this.assistidoIdFilter !== null) {
+      this.retiradasService.countanysByAssistido(this.assistidoIdFilter).subscribe((count) => {
+        console.log(`Total de retiradas para o assistido: ${count}`);
+      });
+    }
+  }
+  editarRetirada(retirada: Retirada): void {
+    this.novaRetirada.assistido_id = retirada.assistido_id;
+    this.novaRetirada.data_retirada = retirada.data_retirada;
+  }
+
+  limparFiltros(): void {
+    this.assistidoIdFilter = null;
+    this.dataFilter = null;
+    this.dataInicialFilter = null;
+    this.dataFinalFilter = null;
+    this.searchTerm = '';
+    this.carregarRetiradas();
   }
 }
