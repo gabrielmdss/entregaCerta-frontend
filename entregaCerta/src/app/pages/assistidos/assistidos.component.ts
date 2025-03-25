@@ -1,34 +1,67 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Assistido } from '../../models/assistido.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AssistidosService } from '../../services/assistidos.service';
 
 @Component({
   selector: 'app-assistidos',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './assistidos.component.html',
-  styleUrl: './assistidos.component.css'
+  styleUrl: './assistidos.component.css',
 })
-export class AssistidosComponent {
-  assistidos: Assistido[] = [
-    { id: 1, nome: 'João Silva', documento: '123.456.789-00' },
-    { id: 2, nome: 'Maria Souza', documento: '987.654.321-00' },
-    { id: 3, nome: 'Ana Lima', documento: '111.222.333-44' },
-  ];
+export class AssistidosComponent implements OnInit {
+  constructor(private assistidosService: AssistidosService) {}
 
+  assistidos: Assistido[] = [];
   novoAssistido: Assistido = { id: 0, nome: '', documento: '' };
 
-  constructor() {}
+  ngOnInit(): void {
+    this.listarAssistidos();
+  }
 
-  ngOnInit(): void {}
+  listarAssistidos(): void {
+    this.assistidosService.listarAssistidos().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.assistidos = response;
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+    });
+  }
 
   cadastrarAssistido(): void {
-    this.novoAssistido.id = this.assistidos.length + 1;
-    this.assistidos.push({ ...this.novoAssistido });
-    this.novoAssistido = { id: 0, nome: '', documento: '' };
+    this.assistidosService
+      .cadastrarAssistido(this.novoAssistido.nome, this.novoAssistido.documento)
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          alert("Assistido cadastrado com sucesso")
+        },
+        error: (err: any) => {
+          console.log(err);
+          alert(err.error.message);
+        },
+        complete: () => {
+          this.listarAssistidos();
+        },
+      });
   }
 
   excluirAssistido(id: number): void {
-    this.assistidos = this.assistidos.filter(a => a.id !== id);
+    this.assistidosService.excluirAssistido(id).subscribe({
+      next: (response: any) => {
+       alert("Assistido excluido com sucesso")
+      },
+      error: (err: any) => {
+        console.log(err);
+        alert("Erro ao excluir assistido")
+      },
+      complete: () => {
+        this.listarAssistidos();
+      }
+    });
   }
 }
