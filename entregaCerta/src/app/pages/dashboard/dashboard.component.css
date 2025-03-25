@@ -23,6 +23,7 @@ h1 {
   color: #007bff;
   font-size: 2rem;
   margin-bottom: 20px;
+  word-wrap: break-word;
 }
 
 /* Estilo das estatísticas */
@@ -49,6 +50,7 @@ h2 {
 .monthly-statistics {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .stat-item {
@@ -101,11 +103,13 @@ h2 {
 
 /* Responsividade */
 @media (max-width: 768px) {
+  /* Alinha estatísticas na coluna quando a tela é pequena */
   .stats {
     flex-direction: column;
     align-items: flex-start;
   }
 
+  /* Ajusta o tamanho das fontes em telas menores */
   .stat-item, .recent-item {
     font-size: 1rem;
   }
@@ -116,5 +120,26 @@ h2 {
 
   h2 {
     font-size: 1.4rem;
+  }
+
+  /* Alinha as listas na vertical e adiciona margem para os itens */
+  .monthly-statistics, .recent-retiradas {
+    padding-left: 0;
+  }
+
+  .stat-item, .recent-item {
+    font-size: 1rem;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+    margin-top: 5px;
+  }
+
+  /* Ajustes de largura para o container */
+  .container {
+    padding: 15px;
   }
 }
