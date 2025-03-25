@@ -1,0 +1,81 @@
+/* Estilo para o Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .logo a {
+    font-size: 24px;
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  nav {
+    display: flex;
+  }
+  
+  nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    margin-left: 20px;
+  }
+  
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  nav a.active {
+    border-bottom: 2px solid #fff;
+  }
+  
+  .menu-icon {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .menu-icon .bar {
+    width: 25px;
+    height: 4px;
+    background-color: #fff;
+    margin: 5px 0;
+  }
+  
+  /* Estilo para tornar o menu responsivo */
+  @media (max-width: 768px) {
+    nav {
+      display: none;
+    }
+  
+    /* Mostrar o menu quando a classe 'active' for aplicada */
+    nav.active {
+      display: block;
+    }
+  
+    .menu-icon {
+      display: flex;
+    }
+  
+    nav ul {
+      flex-direction: column;
+      text-align: center;
+      margin-top: 20px;
+    }
+  
+    nav li {
+      margin: 10px 0;
+    }
+  }
+  

@@ -1,0 +1,18 @@
+<header>
+    <div class="logo">
+      <a routerLink="/dashboard">Logo</a>
+    </div>
+    <nav [class.active]="menuActive">
+      <ul>
+        <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+        <li><a routerLink="/assistidos" routerLinkActive="active">Assistidos</a></li>
+        <li><a routerLink="/retiradas" routerLinkActive="active">Retiradas</a></li>
+      </ul>
+    </nav>
+    <div class="menu-icon" (click)="toggleMenu()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </header>
+  

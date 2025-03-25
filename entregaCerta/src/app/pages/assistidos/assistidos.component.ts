@@ -25,7 +25,6 @@ export class AssistidosComponent implements OnInit {
   listarAssistidos(): void {
     this.assistidosService.listarAssistidos().subscribe({
       next: (response: any) => {
-        console.log(response);
         this.assistidos = response;
         this.assistidosFiltrados = response;
       },
@@ -40,7 +39,6 @@ export class AssistidosComponent implements OnInit {
       .cadastrarAssistido(this.novoAssistido.nome, this.novoAssistido.documento)
       .subscribe({
         next: (response: any) => {
-          console.log(response);
           alert('Assistido cadastrado com sucesso');
         },
         error: (err: any) => {
