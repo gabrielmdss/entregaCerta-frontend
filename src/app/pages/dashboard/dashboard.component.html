@@ -16,7 +16,7 @@
   <h2>🧾 Últimas Retiradas</h2>
   <ul class="recent-retiradas">
     <li *ngFor="let retirada of ultimasRetiradas" class="recent-item">
-      {{ retirada.nome }} - {{ retirada.data }}
+      {{ retirada.nome }} - {{ retirada.data_retirada | date }}
     </li>
   </ul>
 </div>

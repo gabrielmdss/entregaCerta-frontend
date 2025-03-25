@@ -18,5 +18,8 @@ export class DashboardService {
   totalRetiradasMesAtual(dataInicio: string, dataFim: string): Observable<any>{
     return this.http.get<any>(`${baseUrl}/retirada/periodo/${dataInicio}/${dataFim}`)
   }
+  ultimasCincoRetiradas(): Observable<any>{
+    return this.http.get<any>(`${baseUrl}/retirada/ultimas`)
+  }
 
 }
