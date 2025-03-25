@@ -1,0 +1,145 @@
+/* Estilo global para a página */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+  }
+  
+  /* Container principal */
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título principal */
+  h1 {
+    text-align: center;
+    color: #007bff;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Título da lista de assistidos */
+  h2 {
+    font-size: 1.6rem;
+    color: #007bff;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+  
+  /* Formulário para cadastrar assistido */
+  .form-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .input-field {
+    width: 45%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  
+  .input-field:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Lista de Assistidos */
+  .assistidos-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .assistido-item {
+    background-color: #f9f9f9;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .assistido-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Botão de exclusão */
+  .btn-delete {
+    background-color: #e74c3c;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-delete:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .form-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .input-field {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .btn {
+      width: 100%;
+    }
+  }
+  /* Campo de Pesquisa */
+.search-container {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .input-field {
+    width: 80%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  
+  .input-field:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  

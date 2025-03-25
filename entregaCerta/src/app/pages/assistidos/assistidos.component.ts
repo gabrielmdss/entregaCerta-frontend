@@ -15,6 +15,8 @@ export class AssistidosComponent implements OnInit {
 
   assistidos: Assistido[] = [];
   novoAssistido: Assistido = { id: 0, nome: '', documento: '' };
+  assistidosFiltrados: Assistido[] = [];
+  searchTerm: string = '';
 
   ngOnInit(): void {
     this.listarAssistidos();
@@ -25,6 +27,7 @@ export class AssistidosComponent implements OnInit {
       next: (response: any) => {
         console.log(response);
         this.assistidos = response;
+        this.assistidosFiltrados = response;
       },
       error: (error: any) => {
         console.error(error);
@@ -38,7 +41,7 @@ export class AssistidosComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           console.log(response);
-          alert("Assistido cadastrado com sucesso")
+          alert('Assistido cadastrado com sucesso');
         },
         error: (err: any) => {
           console.log(err);
@@ -53,15 +56,26 @@ export class AssistidosComponent implements OnInit {
   excluirAssistido(id: number): void {
     this.assistidosService.excluirAssistido(id).subscribe({
       next: (response: any) => {
-       alert("Assistido excluido com sucesso")
+        alert('Assistido excluido com sucesso');
       },
       error: (err: any) => {
         console.log(err);
-        alert("Erro ao excluir assistido")
+        alert('Erro ao excluir assistido');
       },
       complete: () => {
         this.listarAssistidos();
-      }
+      },
     });
+  }
+
+  filtrarAssistidos(): void {
+    if (this.searchTerm.trim() === '') {
+      this.assistidosFiltrados = [...this.assistidos];
+    } else {
+      this.assistidosFiltrados = this.assistidos.filter(assistido =>
+        assistido.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        assistido.documento.includes(this.searchTerm)
+      );
+    }
   }
 }

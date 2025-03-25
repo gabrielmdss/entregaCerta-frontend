@@ -1,21 +1,22 @@
 <div class="container">
-    <h1>Dashboard - Entrega Certa</h1>
-  
-    <div class="stats">
-      <p>Total de Assistidos: {{ totalAssistidos }}</p>
-      <p>Total de Retiradas no Mês: {{ totalRetiradasMes }}</p>
-    </div>
-  
-    <h2>📊 Retiradas por Mês</h2>
-    <ul>
-      <li *ngFor="let item of retiradasPorMes">{{ item.mes | monthTranslate }}: {{ item.total }} retiradas</li>
-    </ul>
-  
-    <h2>🧾 Últimas Retiradas</h2>
-    <ul>
-      <li *ngFor="let retirada of ultimasRetiradas">
-        {{ retirada.nome }} - {{ retirada.data }}
-      </li>
-    </ul>
+  <h1>Dashboard - Entrega Certa</h1>
+
+  <div class="stats">
+    <p><strong>Total de Assistidos:</strong> {{ totalAssistidos }}</p>
+    <p><strong>Total de Retiradas no Mês:</strong> {{ totalRetiradasMes }}</p>
   </div>
-  
+
+  <h2>📊 Retiradas por Mês</h2>
+  <ul class="monthly-statistics">
+    <li *ngFor="let item of retiradasPorMes" class="stat-item">
+      {{ item.mes | monthTranslate }}: <span class="stat-value">{{ item.total }}</span> retiradas
+    </li>
+  </ul>
+
+  <h2>🧾 Últimas Retiradas</h2>
+  <ul class="recent-retiradas">
+    <li *ngFor="let retirada of ultimasRetiradas" class="recent-item">
+      {{ retirada.nome }} - {{ retirada.data }}
+    </li>
+  </ul>
+</div>

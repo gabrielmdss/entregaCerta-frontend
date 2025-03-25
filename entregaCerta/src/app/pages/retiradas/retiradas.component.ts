@@ -37,7 +37,6 @@ export class RetiradasComponent {
   obterAssistidos():void {
     this.assistidosService.listarAssistidos().subscribe({
       next: (response: any) => {
-        console.log(response);
         this.assistidos = response;
         this.filteredAssistidos = response;
       },
@@ -51,7 +50,6 @@ export class RetiradasComponent {
     this.retiradasService.listarRetiradas().subscribe({
       next: (response: any) => {
         this.retiradas = response
-        console.log(response)
       },
       error: (err: any) => {
         console.log(err)
@@ -62,10 +60,11 @@ export class RetiradasComponent {
   registrarRetirada(): void {
     this.retiradasService.registrarRetirada(this.novaRetirada.assistido_id, this.novaRetirada.data_retirada).subscribe({
       next: (response: any) => {
-        console.log(response)
+        alert("Retirada registrada com sucesso")
       },
       error: (err: any) => {
         console.log(err)
+        alert("Erro ao registrar retirada")
       },
       complete: () => {
         this.obterRetiradas();

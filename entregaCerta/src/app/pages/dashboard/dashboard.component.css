@@ -1,18 +1,120 @@
+/* Estilo global para a página */
+body {
+  font-family: 'Arial', sans-serif;
+  color: #444;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container principal */
 .container {
-    padding: 20px;
-  }
-  
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+h1 {
+  text-align: center;
+  color: #007bff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Estilo das estatísticas */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.stats p {
+  margin: 10px 0;
+}
+
+/* Estilo para as seções de "Retiradas por Mês" e "Últimas Retiradas" */
+h2 {
+  font-size: 1.6rem;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+/* Lista de retiradas por mês */
+.monthly-statistics {
+  list-style-type: none;
+  padding: 0;
+}
+
+.stat-item {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #555;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.stat-item:hover {
+  background-color: #f1f1f1;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Últimas retiradas */
+.recent-retiradas {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recent-item {
+  background-color: #f1f1f1;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 5px;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recent-item:hover {
+  background-color: #e2e2e2;
+}
+
+.recent-item span {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
   .stats {
-    display: flex;
-    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  ul {
-    list-style: none;
-    padding: 0;
+
+  .stat-item, .recent-item {
+    font-size: 1rem;
   }
-  
-  h1, h2 {
-    color: #1a1c27;
+
+  h1 {
+    font-size: 1.5rem;
   }
-  
+
+  h2 {
+    font-size: 1.4rem;
+  }
+}

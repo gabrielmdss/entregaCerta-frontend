@@ -1,0 +1,125 @@
+/* Container para o formulário e filtros */
+.form-container, .filters-container {
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Espaçamento entre os campos do formulário */
+  .input-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  /* Estilo dos campos de entrada */
+  .input-field {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+  }
+  
+  .input-field:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Botões */
+  .button, .button-clear {
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .button-clear {
+    background-color: #dc3545;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  
+  .button-clear:hover {
+    background-color: #c82333;
+  }
+  
+  /* Contêiner dos filtros */
+  .filters-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+  }
+  
+  /* Item de filtro */
+  .filter-item {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilo da lista de retiradas */
+  .retiradas-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .retirada-item {
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .retirada-item button {
+    background-color: #28a745;
+  }
+  
+  .retirada-item button:hover {
+    background-color: #218838;
+  }
+  
+  /* Estilo para os títulos */
+  h1, h2, h3, h4 {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+  }
+  
+  /* Ajustes gerais */
+  body {
+    font-family: 'Arial', sans-serif;
+    color: #444;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+  }
+  
+  h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #007bff;
+    margin-bottom: 15px;
+  }
+  
