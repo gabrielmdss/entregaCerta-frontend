@@ -1,14 +1,22 @@
 <h1>Controle de Retiradas</h1>
 
 <div>
-  <input [(ngModel)]="novaRetirada.assistido" placeholder="Assistido" />
-  <input [(ngModel)]="novaRetirada.data" placeholder="Data" type="date" />
+  <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar Assistido" (input)="filterAssistidos()" />
+
+<!-- Dropdown com assistidos filtrados -->
+<select [(ngModel)]="novaRetirada.assistido_id">
+  <option value="" disabled selected>Escolha o Assistido</option>
+  <option *ngFor="let assistido of filteredAssistidos" [value]="assistido.id">
+    {{ assistido.nome }}
+  </option>
+</select>
+  <input [(ngModel)]="novaRetirada.data_retirada" placeholder="Data" type="date" />
   <button (click)="registrarRetirada()">Registrar Retirada</button>
 </div>
 
 <h2>Retiradas Registradas</h2>
 <ul>
   <li *ngFor="let retirada of retiradas">
-    {{ retirada.assistido }} - {{ retirada.data }}
+    {{ retirada.nome }} - {{ retirada.data_retirada | date }}
   </li>
 </ul>

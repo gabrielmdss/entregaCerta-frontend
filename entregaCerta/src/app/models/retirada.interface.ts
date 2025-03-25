@@ -1,5 +1,7 @@
 export interface Retirada {
   id: number;
-  assistido: string;
-  data: string;
+  assistido_id: number;
+  data_retirada: string;
+  documento: string;
+  nome: string
 }
