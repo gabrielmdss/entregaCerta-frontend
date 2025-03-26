@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Retirada } from '../../models/retirada.interface';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AssistidosService } from '../../services/assistidos.service';
 import { Assistido } from '../../models/assistido.interface';
 import { RetiradasService } from '../../services/retiradas.service';
+import { SelectComponent } from '../../shared/components/select/select.component';
 
 @Component({
   selector: 'app-retiradas',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SelectComponent],
   templateUrl: './retiradas.component.html',
   styleUrl: './retiradas.component.css',
 })
@@ -20,21 +21,31 @@ export class RetiradasComponent {
   dataFilter: string | null = null;
   dataInicialFilter: string | null = null;
   dataFinalFilter: string | null = null;
+
+  mostrarModal: boolean = false;
+  retiradaEditada: any = { nome: '', data_retirada: '' };
+
+  retiradas: Retirada[] = [];
+
+  novaRetirada: Retirada = {
+    id: 0,
+    assistido_id: 0,
+    data_retirada: '',
+    documento: '',
+    nome: '',
+  };
+
+  ngOnInit(): void {
+    this.obterAssistidos();
+    this.obterRetiradas();
+  }
+
   constructor(
     private retiradasService: RetiradasService,
     private assistidosService: AssistidosService
   ) {}
 
-  retiradas: Retirada[] = [
-  ];
-
-  novaRetirada: Retirada = { id: 0, assistido_id: 0, data_retirada: '', documento: '', nome: ''};
-
-  ngOnInit(): void {
-    this.obterAssistidos()
-    this.obterRetiradas();
-  }
-  obterAssistidos():void {
+  obterAssistidos(): void {
     this.assistidosService.listarAssistidos().subscribe({
       next: (response: any) => {
         this.assistidos = response;
@@ -49,76 +60,77 @@ export class RetiradasComponent {
   obterRetiradas(): void {
     this.retiradasService.listarRetiradas().subscribe({
       next: (response: any) => {
-        this.retiradas = response
+        this.retiradas = response;
       },
       error: (err: any) => {
-        console.log(err)
-      }
+        console.log(err);
+      },
     });
   }
-
   registrarRetirada(): void {
-    this.retiradasService.registrarRetirada(this.novaRetirada.assistido_id, this.novaRetirada.data_retirada).subscribe({
-      next: (response: any) => {
-        alert("Retirada registrada com sucesso")
-      },
-      error: (err: any) => {
-        console.log(err)
-        alert("Erro ao registrar retirada")
-      },
-      complete: () => {
-        this.obterRetiradas();
-      }
-    })
+    this.retiradasService
+      .registrarRetirada(
+        this.novaRetirada.assistido_id,
+        this.novaRetirada.data_retirada
+      )
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          alert('Retirada registrada com sucesso');
+        },
+        error: (err: any) => {
+          console.log(err);
+          alert('Erro ao registrar retirada');
+        },
+        complete: () => {
+          this.obterRetiradas();
+        },
+      });
   }
-
-  filterAssistidos(): void {
-    const searchTermLower = this.searchTerm.toLowerCase();
-    this.filteredAssistidos = this.assistidos.filter((assistido) =>
-      assistido.nome.toLowerCase().includes(searchTermLower)
-    );
+  confirmarAlteracao() {
+    this.retiradasService
+      .atualizarRetirada(this.retiradaEditada.id, this.retiradaEditada)
+      .subscribe({
+        next: (response: any) => {
+          alert('Alteração concluida com sucesso!');
+          console.log(response);
+        },
+        error: (err: any) => {
+          alert('Erro ao realizar alteração!');
+          console.log(err);
+        },
+        complete: () => {
+          this.obterRetiradas();
+        },
+      });
+    this.mostrarModal = false;
   }
-
-  carregarRetiradas(): void {
-    this.retiradasService.listarRetiradas().subscribe((retiradas) => {
-      this.retiradas = retiradas;
-    });
-  }
-
   filtrarRetiradasPorAssistido(): void {
     if (this.assistidoIdFilter !== null) {
-      this.retiradasService.selectByAssistidoId(this.assistidoIdFilter).subscribe((retiradas) => {
-        this.retiradas = retiradas;
-      });
+      this.retiradasService
+        .selectByAssistidoId(this.assistidoIdFilter)
+        .subscribe((retiradas) => {
+          this.retiradas = retiradas;
+        });
     }
   }
-
   filtrarRetiradasPorData(): void {
     if (this.dataFilter) {
-      this.retiradasService.selectByData(this.dataFilter).subscribe((retiradas) => {
-        this.retiradas = retiradas;
-      });
+      this.retiradasService
+        .selectByData(this.dataFilter)
+        .subscribe((retiradas) => {
+          this.retiradas = retiradas;
+        });
     }
   }
-
   filtrarRetiradasPorIntervalo(): void {
     if (this.dataInicialFilter && this.dataFinalFilter) {
-      this.retiradasService.selectByDataIntervalo(this.dataInicialFilter, this.dataFinalFilter).subscribe((retiradas) => {
-        this.retiradas = retiradas;
-      });
+      this.retiradasService
+        .selectByDataIntervalo(this.dataInicialFilter, this.dataFinalFilter)
+        .subscribe((retiradas) => {
+          this.retiradas = retiradas;
+        });
     }
-  }
-
-  contarRetiradasPorAssistido(): void {
-    if (this.assistidoIdFilter !== null) {
-      this.retiradasService.countanysByAssistido(this.assistidoIdFilter).subscribe((count) => {
-        console.log(`Total de retiradas para o assistido: ${count}`);
-      });
-    }
-  }
-  editarRetirada(retirada: Retirada): void {
-    this.novaRetirada.assistido_id = retirada.assistido_id;
-    this.novaRetirada.data_retirada = retirada.data_retirada;
   }
 
   limparFiltros(): void {
@@ -127,6 +139,19 @@ export class RetiradasComponent {
     this.dataInicialFilter = null;
     this.dataFinalFilter = null;
     this.searchTerm = '';
-    this.carregarRetiradas();
+    this.obterRetiradas();
+  }
+  onAssistidoSelecionado(assistido: any) {
+    this.assistidoIdFilter = assistido;
+  }
+  onAssistidoSelecionadoRegistrarRetirada(assistido_id: number) {
+    this.novaRetirada.assistido_id = assistido_id;
+  }
+  openModal(retirada: any) {
+    this.retiradaEditada = { ...retirada };
+    this.mostrarModal = true;
+  }
+  closeModal() {
+    this.mostrarModal = false;
   }
 }

@@ -1,0 +1,10 @@
+<ng-select
+  [items]="items"
+  [bindLabel]="bindLabel"
+  [bindValue]="bindValue"
+  [(ngModel)]="selectedValue"
+  dropdownPosition="bottom"
+  searchable="true"
+  (change)="onSelectChange(selectedValue)"
+>
+</ng-select>

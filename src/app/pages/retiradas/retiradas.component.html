@@ -3,13 +3,21 @@
 <!-- Formulário para registrar retirada -->
 <div class="form-container">
   <div class="input-group">
-    <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar Assistido" (input)="filterAssistidos()" class="input-field" />
-    <select [(ngModel)]="novaRetirada.assistido_id" class="input-field">
-      <option value="" disabled selected>Escolha o Assistido</option>
-      <option *ngFor="let assistido of filteredAssistidos" [value]="assistido.id">{{ assistido.nome }}</option>
-    </select>
-    <input [(ngModel)]="novaRetirada.data_retirada" placeholder="Data" type="date" class="input-field" />
-    <button (click)="registrarRetirada()" class="button">Registrar Retirada</button>
+    <app-select
+      [items]="filteredAssistidos"
+      bindLabel="nome"
+      bindValue="id"
+      (selectChange)="onAssistidoSelecionadoRegistrarRetirada($event)"
+    ></app-select>
+       <input
+      [(ngModel)]="novaRetirada.data_retirada"
+      placeholder="Data"
+      type="date"
+      class="input-field"
+    />
+    <button (click)="registrarRetirada()" class="button">
+      Registrar Retirada
+    </button>
   </div>
 </div>
 
@@ -18,11 +26,15 @@
   <!-- Filtro por Assistido -->
   <div class="filter-item">
     <h4>Filtrar por Assistido</h4>
-    <select [(ngModel)]="assistidoIdFilter" class="input-field">
-      <option value="" disabled>Escolha o Assistido</option>
-      <option *ngFor="let assistido of assistidos" [value]="assistido.id">{{ assistido.nome }}</option>
-    </select>
-    <button (click)="filtrarRetiradasPorAssistido()" class="button">Filtrar</button>
+    <app-select
+      [items]="assistidos"
+      bindLabel="nome"
+      bindValue="id"
+      (selectChange)="onAssistidoSelecionado($event)"
+    ></app-select>
+    <button (click)="filtrarRetiradasPorAssistido()" class="button">
+      Filtrar
+    </button>
   </div>
 
   <!-- Filtro por Data -->
@@ -37,12 +49,16 @@
     <h4>Filtrar por Intervalo de Data</h4>
     <input type="date" [(ngModel)]="dataInicialFilter" class="input-field" />
     <input type="date" [(ngModel)]="dataFinalFilter" class="input-field" />
-    <button (click)="filtrarRetiradasPorIntervalo()" class="button">Filtrar Intervalo</button>
+    <button (click)="filtrarRetiradasPorIntervalo()" class="button">
+      Filtrar Intervalo
+    </button>
   </div>
 
   <!-- Limpar Filtros -->
   <div class="filter-item">
-    <button (click)="limparFiltros()" class="button-clear">Limpar Filtros</button>
+    <button (click)="limparFiltros()" class="button-clear">
+      Limpar Filtros
+    </button>
   </div>
 </div>
 
@@ -50,6 +66,27 @@
 <ul class="retiradas-list">
   <li *ngFor="let retirada of retiradas" class="retirada-item">
     {{ retirada.nome }} - {{ retirada.data_retirada | date }}
-    <button (click)="editarRetirada(retirada)" class="button">Alterar</button>
+    <button (click)="openModal(retirada)" class="button">Alterar</button>
   </li>
 </ul>
+
+<!-- Modal de Edição -->
+<div *ngIf="mostrarModal" class="modal-overlay"></div>
+
+<dialog *ngIf="mostrarModal" class="modal">
+  <h5>Editar Retirada</h5>
+  
+  <!-- Formulário de edição -->
+  <div>
+    <label for="nome">Nome</label>
+    <input id="nome" [(ngModel)]="retiradaEditada.nome" placeholder="Nome do assistido" />
+  </div>
+  
+  <div>
+    <label for="data_retirada">Data de Retirada</label>
+    <input type="date" id="data_retirada" [(ngModel)]="retiradaEditada.data_retirada" />
+  </div>
+  
+  <button (click)="confirmarAlteracao()" class="button">Confirmar</button>
+  <button (click)="closeModal()" class="button">Fechar</button>
+</dialog>
