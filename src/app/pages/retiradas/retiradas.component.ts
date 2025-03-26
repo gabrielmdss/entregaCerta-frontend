@@ -75,7 +75,6 @@ export class RetiradasComponent {
       )
       .subscribe({
         next: (response: any) => {
-          console.log(response);
           alert('Retirada registrada com sucesso');
         },
         error: (err: any) => {
@@ -93,7 +92,6 @@ export class RetiradasComponent {
       .subscribe({
         next: (response: any) => {
           alert('Alteração concluida com sucesso!');
-          console.log(response);
         },
         error: (err: any) => {
           alert('Erro ao realizar alteração!');

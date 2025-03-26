@@ -58,7 +58,6 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.ultimasCincoRetiradas().subscribe({
       next: (response: any) => {
         this.ultimasRetiradas = response;
-        console.log(response)
       },
       error: (error: any) => {
         console.log(error);
