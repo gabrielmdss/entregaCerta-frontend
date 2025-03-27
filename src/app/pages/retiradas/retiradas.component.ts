@@ -49,7 +49,12 @@ export class RetiradasComponent {
     this.assistidosService.listarAssistidos().subscribe({
       next: (response: any) => {
         this.assistidos = response;
+        
         this.filteredAssistidos = response;
+        this.filteredAssistidos = response.map((assistido:any) => ({
+          ...assistido,
+          nome_completo: `${assistido.nome} - ${assistido.documento}`
+        }));
       },
       error: (err: any) => {
         console.log(err);

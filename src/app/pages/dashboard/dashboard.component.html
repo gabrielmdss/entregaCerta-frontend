@@ -9,7 +9,26 @@
   <h2>📊 Retiradas por Mês</h2>
   <ul class="monthly-statistics">
     <li *ngFor="let item of retiradasPorMes" class="stat-item">
-      {{ item.mes | monthTranslate }}: <span class="stat-value">{{ item.total }}</span> retiradas
+      {{ item.mes | monthTranslate }}:
+      <span class="stat-value">{{ item.total }}</span> retiradas
+    </li>
+  </ul>
+
+  <h2>📊 Estoque Atual</h2>
+  <ul class="stock-statistics">
+    <li *ngIf="!estoqueAtual.length" class="stat-item loading">
+      Carregando estoque...
+    </li>
+    <li *ngFor="let item of estoqueAtual" class="stat-item">
+      <div class="stat-details">
+        <div class="stat-title">
+          <span class="stat-icon">📦</span>
+          <span class="stat-description">{{ item.descricao }}</span>
+        </div>
+        <div class="stat-value">
+          <strong>Quantidade:</strong> {{ item.quantidade }}
+        </div>
+      </div>
     </li>
   </ul>
 

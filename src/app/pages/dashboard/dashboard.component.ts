@@ -12,17 +12,25 @@ import { MonthTranslatePipe } from '../../utils/pipes/month-translate.pipe';
 export class DashboardComponent implements OnInit {
   anoAtual = new Date().getFullYear();
   totalAssistidos: number = 120;
-  retiradasPorMes = [
-    { mes: 'mês de teste', total: 30 },
+  retiradasPorMes = [{ mes: '', total: null }];
+  ultimasRetiradas = [
+    {
+      id: null,
+      assistido_id: null,
+      nome: '',
+      documento: '',
+      data_retirada: '',
+    },
   ];
-  ultimasRetiradas = [{
-    id: 6,
-    assistido_id: 2,
-    nome: "Regina Luna Tânia Novaes",
-    documento: "91131141822",
-    data_retirada: "2002-02-12T02:00:00.000Z"
-}];
   totalRetiradasMes: number = 0;
+  estoqueAtual: any = [
+    {
+      id: null,
+      quantidade: null,
+      descricao: '',
+      data_atualizacao: '',
+    },
+  ];
 
   constructor(private dashboardService: DashboardService) {}
 
@@ -61,6 +69,15 @@ export class DashboardComponent implements OnInit {
       },
       error: (error: any) => {
         console.log(error);
+      },
+    });
+    this.dashboardService.estoqueAtual().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.estoqueAtual = response
+      },
+      error: (err: any) => {
+        console.log(err);
       },
     });
   }

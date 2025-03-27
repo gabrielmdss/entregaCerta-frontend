@@ -21,5 +21,8 @@ export class DashboardService {
   ultimasCincoRetiradas(): Observable<any>{
     return this.http.get<any>(`${baseUrl}/retirada/ultimas`)
   }
+  estoqueAtual(): Observable<any>{
+    return this.http.get<any>(`${baseUrl}/estoque`)
+  }
 
 }

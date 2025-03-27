@@ -146,3 +146,73 @@ h2 {
     padding: 15px;
   }
 }
+
+/* Lista de estatísticas de estoque */
+.stock-statistics {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Estilo para cada item de estoque */
+.stat-item {
+  background-color: #ffffff;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Efeito de hover para o item de estoque */
+.stat-item:hover {
+  background-color: #f9f9f9;
+  transform: scale(1.02);
+}
+
+/* Estilo para a parte do título */
+.stat-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.stat-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.stat-icon {
+  font-size: 1.6rem;
+  margin-right: 10px;
+  color: #007bff;
+}
+
+.stat-description {
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #007bff;
+}
+
+.stat-value strong {
+  color: #333;
+}
+
+.loading {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  padding: 20px;
+}
