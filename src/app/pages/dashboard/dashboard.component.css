@@ -5,16 +5,20 @@ body {
   background-color: #f4f4f9;
   margin: 0;
   padding: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 /* Container principal */
 .container {
   max-width: 1200px;
   margin: 30px auto;
+  min-height: 100vh;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
 }
 
 /* Título principal */
