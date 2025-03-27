@@ -10,8 +10,8 @@ import { Retirada } from '../models/retirada.interface';
 export class RetiradasService {
   constructor(private http: HttpClient) {}
 
-  listarRetiradas(): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/retirada`);
+  listarRetiradas(page: number, pageSize: number): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/retirada/${page}/${pageSize}`);
   }
   atualizarRetirada(id: number, input: Partial<Retirada>): Observable<any> {
     
@@ -45,5 +45,8 @@ export class RetiradasService {
     return this.http.get<any[]>(
       `${baseUrl}/retirada/periodo/${dataInicial}/${dataFinal}`
     );
+  }
+  obterQuantidadeRetiradas(): Observable<number>{
+    return this.http.get<number>(`${baseUrl}/retirada/total`);
   }
 }

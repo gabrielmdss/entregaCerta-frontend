@@ -1,7 +1,6 @@
 <h1>Controle de Retiradas</h1>
 
 <div class="container">
-  <!-- Formulário para registrar retirada -->
   <div class="form-container">
     <div class="input-group">
       <app-select
@@ -64,6 +63,14 @@
   </div>
   
   <h2>Retiradas Registradas</h2>
+
+  <div class="page-size-selector">
+    <label for="pageSize">Exibir:</label>
+    <select id="pageSize" [(ngModel)]="selectedPageSize" (change)="changePageSize(selectedPageSize)">
+      <option *ngFor="let size of itemsPerPageOptions" [value]="size">{{ size }} itens por página</option>
+    </select>
+  </div>
+  
   <ul class="retiradas-list">
     <li *ngFor="let retirada of retiradas" class="retirada-item">
       {{ retirada.nome }} - {{ retirada.data_retirada | date }}
@@ -71,13 +78,18 @@
     </li>
   </ul>
   
-  <!-- Modal de Edição -->
+  <div class="pagination">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Próxima</button>
+  </div>
+  
+  
   <div *ngIf="mostrarModal" class="modal-overlay"></div>
   
   <dialog *ngIf="mostrarModal" class="modal">
     <h5>Editar Retirada</h5>
     
-    <!-- Formulário de edição -->
     <div>
       <label for="nome">Nome</label>
       <input id="nome" [(ngModel)]="retiradaEditada.nome" placeholder="Nome do assistido" />

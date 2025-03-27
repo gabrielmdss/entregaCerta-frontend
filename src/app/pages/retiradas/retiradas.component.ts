@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Retirada } from '../../models/retirada.interface';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -27,6 +27,13 @@ export class RetiradasComponent {
 
   retiradas: Retirada[] = [];
 
+  totalRetiradas: number = 0;
+  pageSize: number = 10;
+  currentPage: number = 1;
+  totalPages: number = 0;
+  itemsPerPageOptions: number[] = [5, 10, 20, 50];
+  selectedPageSize: number = 10;
+
   novaRetirada: Retirada = {
     id: 0,
     assistido_id: 0,
@@ -37,7 +44,8 @@ export class RetiradasComponent {
 
   ngOnInit(): void {
     this.obterAssistidos();
-    this.obterRetiradas();
+    this.obterQuantidadeRetiradas();
+    this.obterRetiradas(this.currentPage, this.selectedPageSize);
   }
 
   constructor(
@@ -49,11 +57,11 @@ export class RetiradasComponent {
     this.assistidosService.listarAssistidos().subscribe({
       next: (response: any) => {
         this.assistidos = response;
-        
+
         this.filteredAssistidos = response;
-        this.filteredAssistidos = response.map((assistido:any) => ({
+        this.filteredAssistidos = response.map((assistido: any) => ({
           ...assistido,
-          nome_completo: `${assistido.nome} - ${assistido.documento}`
+          nome_completo: `${assistido.nome} - ${assistido.documento}`,
         }));
       },
       error: (err: any) => {
@@ -62,10 +70,11 @@ export class RetiradasComponent {
       complete: () => {},
     });
   }
-  obterRetiradas(): void {
-    this.retiradasService.listarRetiradas().subscribe({
+  obterRetiradas(page: number, pageSize: number): void {
+    this.retiradasService.listarRetiradas(page, pageSize).subscribe({
       next: (response: any) => {
         this.retiradas = response;
+        this.totalPages = Math.ceil(this.totalRetiradas / pageSize);
       },
       error: (err: any) => {
         console.log(err);
@@ -87,7 +96,7 @@ export class RetiradasComponent {
           alert('Erro ao registrar retirada');
         },
         complete: () => {
-          this.obterRetiradas();
+          this.obterRetiradas(this.currentPage, this.selectedPageSize);
         },
       });
   }
@@ -103,7 +112,7 @@ export class RetiradasComponent {
           console.log(err);
         },
         complete: () => {
-          this.obterRetiradas();
+          this.obterRetiradas(this.currentPage, this.selectedPageSize);
         },
       });
     this.mostrarModal = false;
@@ -142,7 +151,7 @@ export class RetiradasComponent {
     this.dataInicialFilter = null;
     this.dataFinalFilter = null;
     this.searchTerm = '';
-    this.obterRetiradas();
+    this.obterRetiradas(this.currentPage, this.selectedPageSize);
   }
   onAssistidoSelecionado(assistido: any) {
     this.assistidoIdFilter = assistido;
@@ -154,7 +163,30 @@ export class RetiradasComponent {
     this.retiradaEditada = { ...retirada };
     this.mostrarModal = true;
   }
+  obterQuantidadeRetiradas(): void {
+    this.retiradasService.obterQuantidadeRetiradas().subscribe({
+      next: (total: number) => {
+        console.log(total)
+        this.totalRetiradas = total;
+      },
+      error: (err: any) => {
+        console.log('Erro ao obter quantidade de retiradas:', err);
+      },
+    });
+  }
+
   closeModal() {
     this.mostrarModal = false;
+  }
+  changePage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.obterRetiradas(this.currentPage, this.selectedPageSize);
+    }
+  }
+  changePageSize(size: number): void {
+    this.selectedPageSize = size;
+    this.pageSize = size;
+    this.obterRetiradas(this.currentPage, this.selectedPageSize);
   }
 }
