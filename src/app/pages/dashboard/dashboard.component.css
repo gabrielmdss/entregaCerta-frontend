@@ -70,6 +70,7 @@ h1 {
 /* Estilo para as seções de "Retiradas por Mês" e "Últimas Retiradas" */
 h2 {
   font-size: 1.6rem;
+  margin-top: 42px;
   color: #007bff;
   margin-bottom: 15px;
   font-weight: 400;
