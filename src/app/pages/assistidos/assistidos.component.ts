@@ -18,19 +18,27 @@ export class AssistidosComponent implements OnInit {
   assistidosFiltrados: Assistido[] = [];
   searchTerm: string = '';
 
+  isLoading: boolean = false;
+
   ngOnInit(): void {
     this.listarAssistidos();
   }
 
   listarAssistidos(): void {
+    this.isLoading = true;
     this.assistidosService.listarAssistidos().subscribe({
       next: (response: any) => {
         this.assistidos = response;
         this.assistidosFiltrados = response;
+        this.isLoading = false
       },
       error: (error: any) => {
         console.error(error);
+        this.isLoading = false
       },
+      complete: () => {
+        this.isLoading = false
+      }
     });
   }
 

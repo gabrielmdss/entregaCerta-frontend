@@ -21,6 +21,7 @@ export class RetiradasComponent {
   dataFilter: string | null = null;
   dataInicialFilter: string | null = null;
   dataFinalFilter: string | null = null;
+  isLoading: boolean = false;
 
   mostrarModal: boolean = false;
   retiradaEditada: any = { nome: '', data_retirada: '' };
@@ -71,13 +72,19 @@ export class RetiradasComponent {
     });
   }
   obterRetiradas(page: number, pageSize: number): void {
+    this.isLoading = true;
     this.retiradasService.listarRetiradas(page, pageSize).subscribe({
       next: (response: any) => {
         this.retiradas = response;
         this.totalPages = Math.ceil(this.totalRetiradas / pageSize);
+        this.isLoading = false;
       },
       error: (err: any) => {
+        this.isLoading = false;
         console.log(err);
+      },
+      complete: () => {
+        this.isLoading = false;
       },
     });
   }

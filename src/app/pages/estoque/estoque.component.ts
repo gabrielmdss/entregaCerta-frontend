@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Estoque } from '../../models/estoque.interface';
 import { EstoqueService } from '../../services/estoque.service';
@@ -10,8 +10,9 @@ import { EstoqueService } from '../../services/estoque.service';
   templateUrl: './estoque.component.html',
   styleUrl: './estoque.component.css',
 })
-export class EstoqueComponent {
+export class EstoqueComponent implements OnInit {
   estoque: Estoque[] = [];
+  isLoading: boolean = false;
 
   constructor(private estoqueService: EstoqueService) {}
 
@@ -20,8 +21,18 @@ export class EstoqueComponent {
   }
 
   carregarEstoque(): void {
-    this.estoqueService.selectAll().subscribe((dados) => {
-      this.estoque = dados;
+    this.isLoading = true;
+    this.estoqueService.selectAll().subscribe({
+      next: (dados) => {
+        this.estoque = dados;
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
     });
   }
 
