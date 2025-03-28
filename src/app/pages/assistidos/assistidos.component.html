@@ -1,22 +1,21 @@
 <div class="container">
   <h1>Gestão de Assistidos</h1>
 
-  <div class="form-container">
-    <input [(ngModel)]="novoAssistido.nome" placeholder="Nome" class="input-field" />
-    <input [(ngModel)]="novoAssistido.documento" placeholder="Documento" class="input-field" />
-    <button (click)="cadastrarAssistido()" class="btn">Cadastrar</button>
-  </div>
-
-  <!-- Campo de Pesquisa -->
   <div class="search-container">
-    <input
-      [(ngModel)]="searchTerm"
-      (input)="filtrarAssistidos()"
-      placeholder="Pesquisar por Nome ou Documento"
-      class="input-field"
-    />
+    <div class="input-wrapper">
+      <input
+        [(ngModel)]="searchTerm"
+        (input)="filtrarAssistidos()"
+        placeholder="Pesquisar por Nome ou Documento"
+        class="input-field"
+      />
+      <i class="fa fa-search search-icon"></i> <!-- Ícone de lupa -->
+    </div>
+    <button (click)="cadastrarAssistido()" class="btn">
+      <i class="fa fa-plus"></i> Cadastrar novo <!-- Ícone de "+" -->
+    </button>
   </div>
-
+  
   <h2>Lista de Assistidos</h2>
 
   <div *ngIf="isLoading" class="loading">Carregando relação de assistidos...</div>

@@ -127,23 +127,74 @@ body {
       width: 100%;
     }
   }
-  /* Campo de Pesquisa */
+/* Campo de Pesquisa */
 .search-container {
-    margin: 20px 0;
-    text-align: center;
-  }
-  
-  .input-field {
-    width: 80%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
-  }
-  
-  .input-field:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
+  margin: 20px 0;
+  text-align: center;
+  background-color: #C1DFF0;
+  max-width: 846px;
+  max-height: 115px;
+  padding-left: 27px;
+  padding-right: 27px;
+  padding-top: 37px;
+  padding-bottom: 36px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  gap: 20px; 
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 546px;
+  display: flex;
+  align-items: center; 
+}
+
+.input-field {
+  padding-left: 40px; 
+  padding-right: 15px;
+  height: 42px; 
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #908D8D;
+}
+
+.btn {
+  background-color: #20B258;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  min-width: 160px; 
+  height: 42px; 
+  justify-content: center;
+}
+
+.btn i {
+  margin-right: 25px; 
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+.input-field:focus {
+  border-color: #007bff;
+  outline: none;
+}
