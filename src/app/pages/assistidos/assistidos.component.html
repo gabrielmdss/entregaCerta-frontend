@@ -9,26 +9,62 @@
         placeholder="Pesquisar por Nome ou Documento"
         class="input-field"
       />
-      <i class="fa fa-search search-icon"></i> 
+      <i class="fa fa-search search-icon"></i>
     </div>
-    <button (click)="cadastrarAssistido()" class="btn">
-      <i class="fa fa-plus"></i> Cadastrar novo 
+    <button (click)="openModal()" class="btn">
+      <i class="fa fa-plus"></i> Cadastrar novo
     </button>
   </div>
-  
+
   <h2>Lista de Assistidos</h2>
 
-  <div *ngIf="isLoading" class="loading">Carregando relação de assistidos...</div>
+  <div *ngIf="isLoading" class="loading">
+    Carregando relação de assistidos...
+  </div>
 
   <ul *ngIf="!isLoading" class="assistidos-list">
     <li *ngFor="let assistido of assistidosFiltrados" class="assistido-item">
       <div class="assistido-info">
         <span class="nome">{{ assistido.nome }}</span>
-        <span class="documento">{{ assistido.documento | documentTranslate }}</span>
+        <span class="documento">{{
+          assistido.documento | documentTranslate
+        }}</span>
       </div>
       <button (click)="excluirAssistido(assistido.id)" class="btn-delete">
         <i class="fa-solid fa-trash"></i> Excluir
       </button>
-    </li>    
+    </li>
   </ul>
+
+  <div *ngIf="mostrarModal" class="modal-overlay"></div>
+
+  <dialog *ngIf="mostrarModal" class="modal">
+    <!-- Header do Modal com X para fechar -->
+    <div class="title-modal">
+      <h5>Cadastro de Novo Assistido</h5>
+      <button class="close-button" (click)="closeModal()">&#10005;</button> <!-- Botão de fechar -->
+    </div>
+  
+    <!-- Conteúdo do Modal -->
+    <div>
+      <input id="nome" placeholder="Nome do assistido" />
+    </div>
+    <div>
+      <input
+        type="text"
+        id="numero_documento"
+        placeholder="Número de documento"
+        appDocumentMask
+      />
+    </div>
+  
+    <!-- Footer com botões alinhados à direita -->
+    <div class="footer-modal">
+      <button (click)="closeModal()" class="button">Cancelar</button>
+      <button (click)="cadastrarAssistido()" class="btn">
+        <i class="fa fa-plus"></i> Cadastrar novo
+      </button>
+    </div>
+  </dialog>
+  
 </div>

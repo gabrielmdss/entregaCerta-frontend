@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AssistidosService } from '../../services/assistidos.service';
 import { DocumentPipe } from "../../utils/pipes/document.pipe";
+import { DocumentMaskDirective } from '../../utils/directives/document-mask.directive';
 
 @Component({
   selector: 'app-assistidos',
-  imports: [CommonModule, FormsModule, DocumentPipe],
+  imports: [CommonModule, FormsModule, DocumentPipe, DocumentMaskDirective],
   templateUrl: './assistidos.component.html',
   styleUrl: './assistidos.component.css',
 })
@@ -20,6 +21,8 @@ export class AssistidosComponent implements OnInit {
   searchTerm: string = '';
 
   isLoading: boolean = false;
+  mostrarModal: boolean = false;
+
 
   ngOnInit(): void {
     this.listarAssistidos();
@@ -44,6 +47,7 @@ export class AssistidosComponent implements OnInit {
   }
 
   cadastrarAssistido(): void {
+
     this.assistidosService
       .cadastrarAssistido(this.novoAssistido.nome, this.novoAssistido.documento)
       .subscribe({
@@ -84,5 +88,13 @@ export class AssistidosComponent implements OnInit {
         assistido.documento.includes(this.searchTerm)
       );
     }
+  }
+
+  openModal() {
+    this.mostrarModal = true;
+  }
+  
+  closeModal() {
+    this.mostrarModal = false;
   }
 }

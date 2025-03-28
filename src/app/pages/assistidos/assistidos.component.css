@@ -30,8 +30,9 @@ body {
   
   /* Título da lista de assistidos */
   h2 {
-    font-size: 1.6rem;
+    font-size: 32px;
     color: #007bff;
+    font-weight: 400;
     margin-top: 30px;
     margin-bottom: 15px;
   }
@@ -225,4 +226,57 @@ body {
 .documento {
   font-size: 14px;
   color: #555; /* Cor do texto do documento */
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 999; 
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  width: 400px; 
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.modal h5 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal input {
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #0056b3;
 }
