@@ -98,11 +98,12 @@ body {
   
   /* Botão de exclusão */
   .btn-delete {
-    background-color: #e74c3c;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: #C32525;
     color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
   }
@@ -189,6 +190,9 @@ body {
 .btn i {
   margin-right: 25px; 
 }
+.btn-delete i {
+  margin-right: 10px; 
+}
 
 .btn:hover {
   background-color: #45a049;
@@ -197,4 +201,28 @@ body {
 .input-field:focus {
   border-color: #007bff;
   outline: none;
+}
+
+.assistido-item {
+  display: flex;
+  flex-direction: row; /* Coloca o nome sobre o documento */
+  align-items: flex-start; /* Alinha os itens à esquerda */
+  margin-bottom: 15px; /* Adiciona espaçamento entre os itens */
+  padding: 10px;
+  border-bottom: 1px solid #ccc; /* Linha de separação */
+}
+
+.assistido-info {
+  display: flex;
+  flex-direction: column; /* Alinha o nome e o documento em coluna */
+}
+
+.nome {
+  font-weight: bold;
+  margin-bottom: 5px; /* Espaçamento entre nome e documento */
+}
+
+.documento {
+  font-size: 14px;
+  color: #555; /* Cor do texto do documento */
 }

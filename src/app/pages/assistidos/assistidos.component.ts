@@ -3,10 +3,11 @@ import { Assistido } from '../../models/assistido.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AssistidosService } from '../../services/assistidos.service';
+import { DocumentPipe } from "../../utils/pipes/document.pipe";
 
 @Component({
   selector: 'app-assistidos',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DocumentPipe],
   templateUrl: './assistidos.component.html',
   styleUrl: './assistidos.component.css',
 })

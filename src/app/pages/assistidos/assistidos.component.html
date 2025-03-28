@@ -9,10 +9,10 @@
         placeholder="Pesquisar por Nome ou Documento"
         class="input-field"
       />
-      <i class="fa fa-search search-icon"></i> <!-- Ícone de lupa -->
+      <i class="fa fa-search search-icon"></i> 
     </div>
     <button (click)="cadastrarAssistido()" class="btn">
-      <i class="fa fa-plus"></i> Cadastrar novo <!-- Ícone de "+" -->
+      <i class="fa fa-plus"></i> Cadastrar novo 
     </button>
   </div>
   
@@ -22,8 +22,13 @@
 
   <ul *ngIf="!isLoading" class="assistidos-list">
     <li *ngFor="let assistido of assistidosFiltrados" class="assistido-item">
-      {{ assistido.nome }} - {{ assistido.documento }}
-      <button (click)="excluirAssistido(assistido.id)" class="btn btn-delete">Excluir</button>
-    </li>
+      <div class="assistido-info">
+        <span class="nome">{{ assistido.nome }}</span>
+        <span class="documento">{{ assistido.documento | documentTranslate }}</span>
+      </div>
+      <button (click)="excluirAssistido(assistido.id)" class="btn-delete">
+        <i class="fa-solid fa-trash"></i> Excluir
+      </button>
+    </li>    
   </ul>
 </div>
