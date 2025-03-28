@@ -166,7 +166,6 @@ export class RetiradasComponent {
   obterQuantidadeRetiradas(): void {
     this.retiradasService.obterQuantidadeRetiradas().subscribe({
       next: (total: number) => {
-        console.log(total)
         this.totalRetiradas = total;
       },
       error: (err: any) => {
