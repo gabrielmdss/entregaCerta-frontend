@@ -11,7 +11,7 @@ export class RetiradasService {
   constructor(private http: HttpClient) {}
 
   listarRetiradas(page: number, pageSize: number): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/retirada/${page}/${pageSize}`);
+    return this.http.get<any>(`${baseUrl}/retirada/paginas/${page}/${pageSize}`);
   }
   atualizarRetirada(id: number, input: Partial<Retirada>): Observable<any> {
     
