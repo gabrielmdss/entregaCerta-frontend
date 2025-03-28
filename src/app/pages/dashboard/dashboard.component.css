@@ -18,7 +18,9 @@ body {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
 }
 
 /* Título principal */
@@ -28,19 +30,41 @@ h1 {
   font-size: 2rem;
   margin-bottom: 20px;
   word-wrap: break-word;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
 }
 
 /* Estilo das estatísticas */
 .stats {
+  width: 887px;
+  max-width: 887px;
+  height: 269px;
+  max-height: 269px;
+  background-color: #C1DFF0;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around; 
+  align-items: center; 
   margin-bottom: 30px;
   font-size: 1.2rem;
   color: #333;
-}
 
-.stats p {
-  margin: 10px 0;
+  p {
+    width: 269px;
+    height: 191px;
+    background-color: #F4F4F4;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center; 
+    padding: 10px;
+    box-sizing: border-box; 
+  }
+
+  p strong {
+    width: 100%;
+    align-self: flex-start; 
+    margin-bottom: auto; 
+  }
 }
 
 /* Estilo para as seções de "Retiradas por Mês" e "Últimas Retiradas" */
@@ -48,6 +72,7 @@ h2 {
   font-size: 1.6rem;
   color: #007bff;
   margin-bottom: 15px;
+  font-weight: 400;
 }
 
 /* Lista de retiradas por mês */
@@ -58,7 +83,7 @@ h2 {
 }
 
 .stat-item {
-  background-color: #f9f9f9;
+  background-color: #EBE9E9;
   padding: 10px;
   margin: 8px 0;
   border-radius: 5px;
@@ -71,7 +96,7 @@ h2 {
 }
 
 .stat-item:hover {
-  background-color: #f1f1f1;
+  background-color: #EBE9E9;
 }
 
 .stat-value {
@@ -98,6 +123,7 @@ h2 {
 
 .recent-item:hover {
   background-color: #e2e2e2;
+  transform: scale(1.02);
 }
 
 .recent-item span {
@@ -105,9 +131,54 @@ h2 {
   color: #888;
 }
 
+
+ul li  {
+  color: #5C5A5A;
+  font-size: 20px;
+  font-weight: 400;
+}
+ul li span {
+  color: #007bff;
+  font-size: 24px;
+  font-weight: 600;
+}
 /* Responsividade */
 @media (max-width: 768px) {
   /* Alinha estatísticas na coluna quando a tela é pequena */
+
+  .stats {
+    width: 442px;
+    max-width: 442px;
+    height: 269px;
+    max-height: 269px;
+    background-color: #C1DFF0;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center; 
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .stats p {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    width: 90%;
+    height: 120px;
+    background-color: #F4F4F4;
+    text-align: center;
+  }
+
+  .stats p strong {
+    width: 100%;
+    align-self: flex-start;
+    margin-bottom: 10px; 
+  }
+  
+  
   .stats {
     flex-direction: column;
     align-items: flex-start;
@@ -156,7 +227,7 @@ h2 {
 
 /* Estilo para cada item de estoque */
 .stat-item {
-  background-color: #ffffff;
+  background-color: #EBE9E9;
   padding: 15px;
   margin: 10px 0;
   border-radius: 8px;
@@ -171,7 +242,6 @@ h2 {
 
 /* Efeito de hover para o item de estoque */
 .stat-item:hover {
-  background-color: #f9f9f9;
   transform: scale(1.02);
 }
 

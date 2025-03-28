@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "Jaro";
+  src: url("../src/assets/fonts/Jaro/static/Jaro-Regular.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../src/assets/fonts/Inter/static/Inter_24pt-Regular.ttf")
+    format("truetype");
+}
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  color: #336699;
+  background-color: #f4f4f4;
+}
+

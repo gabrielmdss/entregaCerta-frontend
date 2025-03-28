@@ -15,9 +15,12 @@ header {
 }
 
 .logo a {
-  font-size: 24px;
+  font-size: 30px;
   text-decoration: none;
+  font-weight: bold;
   color: #fff;
+  font-family: "Jaro", sans-serif;
+
 }
 
 nav {
@@ -58,6 +61,18 @@ nav a.active {
   background-color: #fff;
   margin: 5px 0;
 }
+
+ul li a {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  font-size: 20px;
+}
+
+ul li a i {
+  font-size: 25px; 
+}
+
 
 @media (max-width: 768px) {
   header {

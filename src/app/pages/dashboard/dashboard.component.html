@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Dashboard - Entrega Certa</h1>
+  <h1>Dashboard</h1>
 
   <div *ngIf="isLoading" class="loading">Carregando dados...</div>
 
@@ -9,15 +9,15 @@
       <p><strong>Total de Retiradas no Mês:</strong> {{ totalRetiradasMes }}</p>
     </div>
 
-    <h2>📊 Retiradas por Mês</h2>
+    <h2>Retiradas por Mês</h2>
     <ul class="monthly-statistics">
       <li *ngFor="let item of retiradasPorMes" class="stat-item">
         {{ item.mes | monthTranslate }}:
-        <span class="stat-value">{{ item.total }}</span> retiradas
+        <span class="stat-value">{{ item.total }}</span>
       </li>
     </ul>
 
-    <h2>📊 Estoque Atual</h2>
+    <h2>Estoque Atual</h2>
     <ul class="stock-statistics">
       <li *ngIf="!estoqueAtual.length" class="stat-item loading">
         Carregando estoque...
@@ -25,20 +25,21 @@
       <li *ngFor="let item of estoqueAtual" class="stat-item">
         <div class="stat-details">
           <div class="stat-title">
-            <span class="stat-icon">📦</span>
             <span class="stat-description">{{ item.descricao }}</span>
           </div>
           <div class="stat-value">
-            <strong>Quantidade:</strong> {{ item.quantidade }}
+            {{ item.quantidade }}
           </div>
         </div>
       </li>
     </ul>
 
-    <h2>🧾 Últimas Retiradas</h2>
+    <h2>Últimas Retiradas</h2>
     <ul class="recent-retiradas">
       <li *ngFor="let retirada of ultimasRetiradas" class="recent-item">
-        {{ retirada.nome }} - {{ retirada.data_retirada | date }}
+        <span>{{ retirada.nome }}</span>
+        {{ retirada.documento | documentTranslate }} -
+        {{ retirada.data_retirada | date }}
       </li>
     </ul>
   </div>
