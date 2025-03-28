@@ -73,7 +73,6 @@ export class DashboardComponent implements OnInit {
     });
     this.dashboardService.estoqueAtual().subscribe({
       next: (response: any) => {
-        console.log(response);
         this.estoqueAtual = response
       },
       error: (err: any) => {

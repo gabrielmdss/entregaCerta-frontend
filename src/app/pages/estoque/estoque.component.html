@@ -1,0 +1,27 @@
+<div class="container">
+    <h1>Controle de Estoque - Entrega Certa</h1>
+  
+    <button (click)="adicionarItem()">Adicionar Item</button>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descrição</th>
+          <th>Quantidade</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of estoque">
+          <td>{{ item.id }}</td>
+          <td>{{ item.descricao }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>
+            <button (click)="ajustarQuantidade(item.id)">Ajustar</button>
+            <button (click)="removerItem(item.id)">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
