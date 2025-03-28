@@ -18,7 +18,10 @@
   </div>
 
   <h2>Lista de Assistidos</h2>
-  <ul class="assistidos-list">
+
+  <div *ngIf="isLoading" class="loading">Carregando relação de assistidos...</div>
+
+  <ul *ngIf="!isLoading" class="assistidos-list">
     <li *ngFor="let assistido of assistidosFiltrados" class="assistido-item">
       {{ assistido.nome }} - {{ assistido.documento }}
       <button (click)="excluirAssistido(assistido.id)" class="btn btn-delete">Excluir</button>

@@ -32,19 +32,15 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
+  isLoading: boolean = false;
+
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
     const { dataInicio, dataFim } = this.getPeriodoMesAtual();
 
-    this.dashboardService.totalAssistidosCadastrados().subscribe({
-      next: (response: any) => {
-        this.totalAssistidos = response.total;
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
+    this.isLoading = true
+    this.obterTotalDeAssistidos()
     this.dashboardService.retiradasPorMes(this.anoAtual.toString()).subscribe({
       next: (response: any) => {
         this.retiradasPorMes = response;
@@ -73,11 +69,24 @@ export class DashboardComponent implements OnInit {
     });
     this.dashboardService.estoqueAtual().subscribe({
       next: (response: any) => {
-        this.estoqueAtual = response
+        this.estoqueAtual = response;
       },
       error: (err: any) => {
         console.log(err);
       },
+    });
+    this.isLoading = false
+  }
+
+  obterTotalDeAssistidos(): void {
+    this.dashboardService.totalAssistidosCadastrados().subscribe({
+      next: (response: any) => {
+        this.totalAssistidos = response.total;
+
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
     });
   }
 

@@ -62,23 +62,26 @@
     </div>
   </div>
   
+  
   <h2>Retiradas Registradas</h2>
 
-  <div class="page-size-selector">
+  <div *ngIf="isLoading" class="loading">Carregando retiradas...</div>
+
+  <div *ngIf="!isLoading" class="page-size-selector">
     <label for="pageSize">Exibir:</label>
     <select id="pageSize" [(ngModel)]="selectedPageSize" (change)="changePageSize(selectedPageSize)">
       <option *ngFor="let size of itemsPerPageOptions" [value]="size">{{ size }} itens por página</option>
     </select>
   </div>
   
-  <ul class="retiradas-list">
+  <ul *ngIf="!isLoading" class="retiradas-list">
     <li *ngFor="let retirada of retiradas" class="retirada-item">
       {{ retirada.nome }} - {{ retirada.data_retirada | date }}
       <button (click)="openModal(retirada)" class="button">Alterar</button>
     </li>
   </ul>
   
-  <div class="pagination">
+  <div *ngIf="!isLoading" class="pagination">
     <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
     <span>Página {{ currentPage }} de {{ totalPages }}</span>
     <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Próxima</button>
