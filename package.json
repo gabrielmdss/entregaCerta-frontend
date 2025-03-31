@@ -21,6 +21,7 @@
     "@angular/platform-server": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@angular/ssr": "^19.0.5",
+    "@fontsource/inter": "^5.2.5",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@ng-select/ng-select": "^14.2.4",
     "dotenv": "^16.4.7",

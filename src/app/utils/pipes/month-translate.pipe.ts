@@ -23,12 +23,12 @@ export class MonthTranslatePipe implements PipeTransform {
   transform(value: string): string {
     if (!value) return 'Mês inválido';
 
-    const [month, year] = value.split(' de ').map((str) => str.trim());
+    const [month] = value.split(' de ').map((str) => str.trim());
 
-    if (!month || !year) return 'Formato inválido';
+    if (!month) return 'Formato inválido';
 
     const mesTraduzido = this.meses[month] || month;
 
-    return `${mesTraduzido} de ${year}`;
+    return mesTraduzido.charAt(0).toUpperCase() + mesTraduzido.slice(1).toLowerCase();
   }
 }
