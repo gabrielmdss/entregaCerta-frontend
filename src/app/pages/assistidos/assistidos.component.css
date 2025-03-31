@@ -11,9 +11,7 @@ body {
   /* Container principal */
   .container {
     max-width: 900px;
-    margin: 30px auto;
     padding: 20px;
-    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     min-height: 100vh;
@@ -25,7 +23,6 @@ body {
     text-align: center;
     color: #007bff;
     font-size: 2rem;
-    margin-bottom: 20px;
   }
   
   /* Título da lista de assistidos */
@@ -131,7 +128,6 @@ body {
   }
 /* Campo de Pesquisa */
 .search-container {
-  margin: 20px 0;
   text-align: center;
   background-color: #C1DFF0;
   max-width: 846px;
