@@ -1,108 +1,132 @@
-<h1>Controle de Retiradas</h1>
-
 <div class="container">
+  <h1>Controle de Retiradas</h1>
   <div class="form-container">
     <div class="input-group">
-      <app-select
-        [items]="filteredAssistidos"
-        bindLabel="nome_completo"
-        bindValue="id"
-        (selectChange)="onAssistidoSelecionadoRegistrarRetirada($event)"
-      ></app-select>
-         <input
-        [(ngModel)]="novaRetirada.data_retirada"
-        placeholder="Data"
-        type="date"
-        class="input-field"
-      />
-      <button (click)="registrarRetirada()" class="button">
-        Registrar Retirada
+      <button (click)="registrarRetirada()" class="btn">
+        <i class="fa fa-plus"></i> Registrar Retirada
       </button>
     </div>
   </div>
-  
+
   <h3>Filtros</h3>
   <div class="filters-container">
-    <!-- Filtro por Assistido -->
-    <div class="filter-item">
-      <h4>Filtrar por Assistido</h4>
-      <app-select
-        [items]="assistidos"
-        bindLabel="nome"
-        bindValue="id"
-        (selectChange)="onAssistidoSelecionado($event)"
-      ></app-select>
-      <button (click)="filtrarRetiradasPorAssistido()" class="button">
-        Filtrar
-      </button>
-    </div>
-  
-    <!-- Filtro por Data -->
-    <div class="filter-item">
-      <h4>Filtrar por Data</h4>
-      <input type="date" [(ngModel)]="dataFilter" class="input-field" />
-      <button (click)="filtrarRetiradasPorData()" class="button">Filtrar</button>
-    </div>
-  
-    <!-- Filtro por Intervalo de Data -->
-    <div class="filter-item">
-      <h4>Filtrar por Intervalo de Data</h4>
-      <input type="date" [(ngModel)]="dataInicialFilter" class="input-field" />
-      <input type="date" [(ngModel)]="dataFinalFilter" class="input-field" />
-      <button (click)="filtrarRetiradasPorIntervalo()" class="button">
-        Filtrar Intervalo
-      </button>
-    </div>
-  
-    <!-- Limpar Filtros -->
-    <div class="filter-item">
+    <div>
       <button (click)="limparFiltros()" class="button-clear">
+        <i class="fa-solid fa-broom"></i>
         Limpar Filtros
       </button>
     </div>
+    <div class="filter-items-container">
+      <div class="filter-item">
+        <h4>Assistido</h4>
+        <div class="input-group">
+          <app-select
+            [items]="assistidos"
+            bindLabel="nome"
+            bindValue="id"
+            (selectChange)="onAssistidoSelecionado($event)"
+          ></app-select>
+        </div>
+        <button (click)="filtrarRetiradasPorAssistido()" class="button">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+      <div class="filter-item">
+        <h4>Data</h4>
+        <div class="input-group">
+          <input type="date" [(ngModel)]="dataFilter" class="input-field" />
+        </div>
+        <button (click)="filtrarRetiradasPorData()" class="button">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+      <div class="filter-item">
+        <h4>Intervalo de Data</h4>
+        <div class="input-group">
+          <input
+            type="date"
+            [(ngModel)]="dataInicialFilter"
+            class="input-field"
+          />
+          <input
+            type="date"
+            [(ngModel)]="dataFinalFilter"
+            class="input-field"
+          />
+        </div>
+        <button
+          (click)="filtrarRetiradasPorIntervalo()"
+          class="button button-search"
+        >
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+    </div>
   </div>
-  
-  
+
   <h2>Retiradas Registradas</h2>
 
   <div *ngIf="isLoading" class="loading">Carregando retiradas...</div>
 
   <div *ngIf="!isLoading" class="page-size-selector">
     <label for="pageSize">Exibir:</label>
-    <select id="pageSize" [(ngModel)]="selectedPageSize" (change)="changePageSize(selectedPageSize)">
-      <option *ngFor="let size of itemsPerPageOptions" [value]="size">{{ size }} itens por página</option>
+    <select
+      id="pageSize"
+      [(ngModel)]="selectedPageSize"
+      (change)="changePageSize(selectedPageSize)"
+    >
+      <option *ngFor="let size of itemsPerPageOptions" [value]="size">
+        {{ size }} itens por página
+      </option>
     </select>
   </div>
-  
+
   <ul *ngIf="!isLoading" class="retiradas-list">
     <li *ngFor="let retirada of retiradas" class="retirada-item">
       {{ retirada.nome }} - {{ retirada.data_retirada | date }}
       <button (click)="openModal(retirada)" class="button">Alterar</button>
     </li>
   </ul>
-  
+
   <div *ngIf="!isLoading" class="pagination">
-    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+    <button
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      Anterior
+    </button>
     <span>Página {{ currentPage }} de {{ totalPages }}</span>
-    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Próxima</button>
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+    >
+      Próxima
+    </button>
   </div>
-  
-  
+
   <div *ngIf="mostrarModal" class="modal-overlay"></div>
-  
+
   <dialog *ngIf="mostrarModal" class="modal">
     <h5>Editar Retirada</h5>
-    
+
     <div>
       <label for="nome">Nome</label>
-      <input id="nome" [(ngModel)]="retiradaEditada.nome" placeholder="Nome do assistido" />
+      <input
+        id="nome"
+        [(ngModel)]="retiradaEditada.nome"
+        placeholder="Nome do assistido"
+      />
     </div>
-    
+
     <div>
       <label for="data_retirada">Data de Retirada</label>
-      <input type="date" id="data_retirada" [(ngModel)]="retiradaEditada.data_retirada" />
+      <input
+        type="date"
+        id="data_retirada"
+        [(ngModel)]="retiradaEditada.data_retirada"
+      />
     </div>
-    
+
     <button (click)="confirmarAlteracao()" class="button">Confirmar</button>
     <button (click)="closeModal()" class="button">Fechar</button>
   </dialog>

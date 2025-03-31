@@ -1,136 +1,138 @@
-/* Estilo global para a página */
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    height: 100vh;
-    overflow-y: auto; 
-  }
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  padding: 10px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+h1 {
+  text-align: center;
+  color: var(--main-titulo-color);
+  font-size: 2rem;
   
-  /* Container principal */
-  .container {
-    max-width: 900px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    min-height: 100vh;
-    justify-content: space-between;
-  }
-  
-  /* Título principal */
-  h1 {
-    text-align: center;
-    color: var(--main-titulo-color);
-    font-size: 2rem;
-  }
-  
-  /* Título da lista de assistidos */
-  h2 {
-    font-size: 32px;
-    color: var(--main-titulo-color);
-    font-weight: 400;
-    margin-top: 30px;
-    margin-bottom: 15px;
-  }
-  
-  /* Formulário para cadastrar assistido */
+}
+
+/* Título da lista de assistidos */
+h2 {
+  font-size: 32px;
+  color: var(--main-titulo-color);
+  font-weight: 400;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+/* Formulário para cadastrar assistido */
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  width: 45%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.input-field:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Lista de Assistidos */
+.assistidos-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.assistido-item {
+  background-color: #f9f9f9;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.assistido-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Botão de exclusão */
+.btn-delete {
+  padding: 10px 20px;
+  background-color: #c32525;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
   .form-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
+
   .input-field {
-    width: 45%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
+    width: 100%;
+    margin-bottom: 10px;
   }
-  
-  .input-field:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
+
   .btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    width: 100%;
   }
-  
-  .btn:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Lista de Assistidos */
-  .assistidos-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .assistido-item {
-    background-color: #f9f9f9;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    color: #333;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  }
-  
-  .assistido-item:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Botão de exclusão */
-  .btn-delete {
-    padding: 10px 20px;
-    background-color: #C32525;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-delete:hover {
-    background-color: #c0392b;
-  }
-  
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .form-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .input-field {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  
-    .btn {
-      width: 100%;
-    }
-  }
+}
 /* Campo de Pesquisa */
 .search-container {
   text-align: center;
-  background-color: #C1DFF0;
-  max-width: 846px;
+  background-color: #c1dff0;
   max-height: 115px;
   padding-left: 27px;
   padding-right: 27px;
@@ -138,8 +140,8 @@ body {
   padding-bottom: 36px;
   display: flex;
   flex-direction: row;
-  justify-content: center; 
-  gap: 20px; 
+  justify-content: center;
+  gap: 20px;
 }
 
 .input-wrapper {
@@ -147,17 +149,17 @@ body {
   width: 100%;
   max-width: 546px;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .input-field {
-  padding-left: 40px; 
+  padding-left: 40px;
   padding-right: 15px;
-  height: 42px; 
+  height: 42px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 100%; 
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -167,11 +169,11 @@ body {
   top: 50%;
   transform: translateY(-50%);
   font-size: 20px;
-  color: #908D8D;
+  color: #908d8d;
 }
 
 .btn {
-  background-color: #20B258;
+  background-color: #20b258;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -179,16 +181,16 @@ body {
   border-radius: 5px;
   display: flex;
   align-items: center;
-  min-width: 160px; 
-  height: 42px; 
+  min-width: 160px;
+  height: 42px;
   justify-content: center;
 }
 
 .btn i {
-  margin-right: 25px; 
+  margin-right: 25px;
 }
 .btn-delete i {
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
 .btn:hover {

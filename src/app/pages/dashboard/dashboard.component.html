@@ -5,8 +5,18 @@
 
   <div *ngIf="!isLoading">
     <div class="stats">
-      <p><strong>Total de Assistidos</strong> {{ totalAssistidos }}</p>
-      <p><strong>Total de Retiradas no Mês</strong> {{ totalRetiradasMes }}</p>
+      <p>
+        <strong class="stats-detail">Total de Assistidos</strong>
+        <strong class="stats-detail-value">
+          {{ totalAssistidos }}
+        </strong>
+      </p>
+      <p>
+        <strong class="stats-detail">Total de Retiradas no Mês</strong> 
+        <strong class="stats-detail-value">
+          {{ totalRetiradasMes }}
+        </strong>
+      </p>
     </div>
 
     <h2>Retiradas por Mês</h2>

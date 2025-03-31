@@ -1,199 +1,253 @@
-.form-container, .filters-container {
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
+/* Ajuste geral para garantir responsividade */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.input-group {
+  background-color: #c1dff0;
+  padding: 36px;
+  border-radius: 10px;
+}
+
+h3 {
+  text-align: left;
+}
+
+/* Ajustando a exibição dos botões e inputs */
+.input-group,
+.filters-container,
+.retiradas-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  background: #EBE9E9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Header do container */
+.filters-container > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Estilização do botão de limpar */
+.button-clear {
+  background: #52CBE6;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-clear:hover {
   
+  background: #52CBE6;
+}
+
+/* Container para os filtros */
+.filter-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+/* Cada filtro */
+.filter-item {
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  flex: 1 1 calc(33.333% - 15px); /* 3 colunas por linha */
+  min-width: 250px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre input e botão */
+}
+
+/* Inputs */
+.input-field {
+  flex: 1; /* Ocupa o espaço disponível */
+  padding: 10px;
+  font-size: 1rem;
+}
+
+/* Botão da lupa */
+.button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: #52CBE6;
+  color: white;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #52CBE6;
+}
+
+.button-search {
+  max-width: 48px;
+  max-height: 40px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
   .input-group {
-    flex: 1;
-    min-width: 250px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: stretch;
   }
-  
-  .input-field {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 200px;
+
+  .button {
+    width: 100%;
+    height: 40px;
   }
-  
-  .input-field:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .button, .button-clear {
-    padding: 8px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  
-  .button-clear {
-    background-color: #dc3545;
-  }
-  
-  .button:hover {
-    background-color: #0056b3;
-  }
-  
-  .button-clear:hover {
-    background-color: #c82333;
-  }
-  
-  .filters-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
+}
+
+/* Ajustando inputs e botões */
+.input-field,
+.button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .filter-items-container {
+    flex-direction: column;
   }
   
   .filter-item {
-    flex: 1;
-    min-width: 250px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1 1 100%;
   }
-  
+}
+
+
+.btn {
+  background-color: #20b258;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  min-width: 160px;
+  height: 42px;
+  justify-content: center;
+}
+
+.btn i {
+  margin-right: 25px;
+}
+.button-clear i {
+  margin-right: 10px;
+}
+
+/* Inputs e botões responsivos */
+.input-field,
+.button,
+.btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.button {
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* Ajuste do modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* Responsividade do modal */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1001;
+  width: 90%;
+  max-width: 400px;
+}
+
+/* Lista de retiradas */
+.retiradas-list {
+  list-style: none;
+  padding: 0;
+}
+
+.retirada-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Paginação responsiva */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+/* Adaptação para telas menores */
+@media (max-width: 768px) {
+  .input-group,
+  .filters-container,
   .retiradas-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .retirada-item {
-    background-color: #f1f1f1;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .retirada-item button {
-    background-color: #28a745;
-  }
-  
-  .retirada-item button:hover {
-    background-color: #218838;
-  }
-  
-  h1, h2, h3, h4 {
-    font-family: 'Arial', sans-serif;
-    color: #333;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    color: #444;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow-y: auto;
+    flex-direction: column;
   }
 
-  .container {
-    max-width: 1200px;
-    margin: 30px auto;
-    min-height: 100vh;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    justify-content: space-between;
-  }
-  
-  h1 {
-    text-align: center;
-    margin-top: 20px;
-    color: #007bff;
-  }
-  
-  h3 {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #007bff;
-    margin-bottom: 15px;
-  }
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); 
-    z-index: 999; 
-  }
-  
-  .modal {
-    display: block;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    width: 400px; 
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-  }
-  
-  .modal h5 {
-    margin-bottom: 20px;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .modal input {
-    margin-bottom: 10px;
-    padding: 10px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .modal button {
-    margin-top: 10px;
-    padding: 10px 15px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .modal button:hover {
-    background-color: #0056b3;
-  }
-  
-  .page-size-selector {
-    display: flex;
+  .pagination {
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
   }
-  
-  .page-size-selector label {
-    margin-right: 10px;
-  }
-  
-  .page-size-selector select {
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
+}
