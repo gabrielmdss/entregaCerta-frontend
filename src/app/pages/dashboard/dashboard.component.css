@@ -1,289 +1,168 @@
-/* Estilo global para a página */
-body {
-  font-family: 'Arial', sans-serif;
-  color: #444;
-  background-color: #f4f4f9;
+/* Reset básico */
+* {
   margin: 0;
   padding: 0;
-  height: 100vh;
-  overflow-y: auto;
+  box-sizing: border-box;
 }
 
-/* Container principal */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  padding: 10px;
+}
+
 .container {
   max-width: 1200px;
-  margin: 30px auto;
-  min-height: 100vh;
+  margin: 0 auto;
+  background: white;
   padding: 20px;
-  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column; 
-  align-items: center; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Título principal */
-h1 {
-  text-align: center;
-  color: #007bff;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  word-wrap: break-word;
-  font-weight: 600;
-  font-family: "Inter", sans-serif;
-}
-
-/* Estilo das estatísticas */
-.stats {
-  width: 887px;
-  max-width: 887px;
-  height: 269px;
-  max-height: 269px;
-  background-color: #C1DFF0;
-  display: flex;
-  justify-content: space-around; 
-  align-items: center; 
-  margin-bottom: 30px;
-  font-size: 1.2rem;
-  color: #333;
-
-  p {
-    width: 269px;
-    height: 191px;
-    background-color: #F4F4F4;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center; 
-    padding: 10px;
-    box-sizing: border-box; 
-  }
-
-  p strong {
-    width: 100%;
-    align-self: flex-start; 
-    margin-bottom: auto; 
-  }
-}
-
-/* Estilo para as seções de "Retiradas por Mês" e "Últimas Retiradas" */
+h1,
 h2 {
-  font-size: 1.6rem;
-  margin-top: 42px;
-  color: #007bff;
+  text-align: center;
+  margin-top: 15px;
   margin-bottom: 15px;
-  font-weight: 400;
+  font-size: 1.8rem;
+  color: var(--main-titulo-color);
 }
 
-/* Lista de retiradas por mês */
-.monthly-statistics {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.stat-item {
-  background-color: #EBE9E9;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.1rem;
-  color: #555;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.stat-item:hover {
-  background-color: #EBE9E9;
-}
-
-.stat-value {
-  font-weight: bold;
-  color: #007bff;
-}
-
-/* Últimas retiradas */
-.recent-retiradas {
-  list-style-type: none;
-  padding: 0;
-}
-
-.recent-item {
-  background-color: #f1f1f1;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 5px;
-  font-size: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.recent-item:hover {
-  background-color: #e2e2e2;
-  transform: scale(1.02);
-}
-
-.recent-item span {
-  font-size: 0.9rem;
-  color: #888;
-}
-
-
-ul li  {
-  color: #5C5A5A;
-  font-size: 20px;
-  font-weight: 400;
-}
-ul li span {
-  color: #007bff;
-  font-size: 20px;
+h1 {
   font-weight: 600;
-}
-/* Responsividade */
-@media (max-width: 768px) {
-  /* Alinha estatísticas na coluna quando a tela é pequena */
-
-  .stats {
-    width: 442px;
-    max-width: 442px;
-    height: 269px;
-    max-height: 269px;
-    background-color: #C1DFF0;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center; 
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-    color: #333;
-  }
-
-  .stats p {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
-    width: 90%;
-    height: 120px;
-    background-color: #F4F4F4;
-    text-align: center;
-  }
-
-  .stats p strong {
-    width: 100%;
-    align-self: flex-start;
-    margin-bottom: 10px; 
-  }
-  
-  
-  .stats {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  /* Ajusta o tamanho das fontes em telas menores */
-  .stat-item, .recent-item {
-    font-size: 1rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  h2 {
-    font-size: 1.4rem;
-  }
-
-  /* Alinha as listas na vertical e adiciona margem para os itens */
-  .monthly-statistics, .recent-retiradas {
-    padding-left: 0;
-  }
-
-  .stat-item, .recent-item {
-    font-size: 1rem;
-    flex-direction: column;
-    text-align: left;
-  }
-
-  .stat-value {
-    font-size: 1.2rem;
-    margin-top: 5px;
-  }
-
-  .container {
-    padding: 15px;
-  }
+  font-size: 40px;
 }
 
-/* Lista de estatísticas de estoque */
-.stock-statistics {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* Estilo para cada item de estoque */
-.stat-item {
-  background-color: #EBE9E9;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
+.stats {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+  background-color: var(--second-color-background);
+  border-radius: 5px;
+  gap: 5px;
+  flex-direction: row;
+}
+.stats p strong {
+  font-weight: 800;
+  color: var(--main-titulo-color);
+}
+
+.stats p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: var(--main-background-color);
+  border-radius: 8px;
+  padding: 5px;
+  flex-direction: column;
+  display: flex;
   align-items: center;
+}
+
+/* Listas responsivas */
+ul {
+  list-style: none;
+  padding: 0;
+}
+ul li {
+  background-color: var(--third-color-background);
+}
+
+.stat-item,
+.recent-item {
+  background: #e9ecef;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  text-align: center;
   font-size: 1.1rem;
-  color: #333;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
 }
 
-/* Efeito de hover para o item de estoque */
-.stat-item:hover {
-  transform: scale(1.02);
+.stock-statistics,
+.monthly-statistics,
+.recent-retiradas {
+  max-width: 600px;
+  margin: 0 auto;
 }
-
-/* Estilo para a parte do título */
+.recent-details,
 .stat-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  flex-wrap: wrap;
 }
-
-.stat-title {
-  display: flex;
-  align-items: center;
-  font-size: 1.2rem;
-}
-
-.stat-icon {
-  font-size: 1.6rem;
-  margin-right: 10px;
-  color: #007bff;
-}
-
 .stat-description {
+  font-weight: 800;
+  color: var(--main-titulo-color);
+}
+
+.recent-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.recent-details-title {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  .recent-details-description {
+    font-weight: 800;
+    color: var(--main-titulo-color);
+  }
+}
+
+.recent-details-value {
+  margin-top: 5px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.recent-details-value span {
+  margin: 5px;
+}
+.stat-title {
   font-weight: bold;
-  color: #333;
 }
 
 .stat-value {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.2rem;
   color: #007bff;
 }
 
-.stat-value strong {
-  color: #333;
+/* Responsividade */
+@media (max-width: 768px) {
+  .stats {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .stat-item,
+  .recent-item {
+    font-size: 1rem;
+    padding: 8px;
+  }
 }
 
-.loading {
-  text-align: center;
-  font-style: italic;
-  color: #888;
-  padding: 20px;
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .stat-value {
+    font-size: 1rem;
+  }
 }

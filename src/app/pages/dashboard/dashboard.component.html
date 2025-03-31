@@ -5,15 +5,23 @@
 
   <div *ngIf="!isLoading">
     <div class="stats">
-      <p><strong>Total de Assistidos:</strong> {{ totalAssistidos }}</p>
-      <p><strong>Total de Retiradas no Mês:</strong> {{ totalRetiradasMes }}</p>
+      <p><strong>Total de Assistidos</strong> {{ totalAssistidos }}</p>
+      <p><strong>Total de Retiradas no Mês</strong> {{ totalRetiradasMes }}</p>
     </div>
 
     <h2>Retiradas por Mês</h2>
     <ul class="monthly-statistics">
       <li *ngFor="let item of retiradasPorMes" class="stat-item">
-        {{ item.mes | monthTranslate }}:
-        <span class="stat-value">{{ item.total }}</span>
+        <div class="stat-details">
+          <div class="stat-title">
+            <span class="stat-description">{{
+              item.mes | monthTranslate
+            }}</span>
+          </div>
+          <div class="stat-value">
+            {{ item.total }}
+          </div>
+        </div>
       </li>
     </ul>
 
@@ -37,9 +45,19 @@
     <h2>Últimas Retiradas</h2>
     <ul class="recent-retiradas">
       <li *ngFor="let retirada of ultimasRetiradas" class="recent-item">
-        <span>{{ retirada.nome }}</span>
-        {{ retirada.documento | documentTranslate }} -
-        {{ retirada.data_retirada | date }}
+        <div class="recent-details">
+          <div class="recent-details-title">
+            <span class="recent-details-description">{{ retirada.nome }} </span>
+            <div class="recent-details-value">
+              <span>
+                {{ retirada.documento | documentTranslate }}
+              </span>
+              <span>
+                {{ retirada.data_retirada | date }}
+              </span>
+            </div>
+          </div>
+        </div>
       </li>
     </ul>
   </div>

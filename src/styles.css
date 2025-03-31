@@ -1,23 +1,65 @@
-/* You can add global styles to this file, and also import other style files */
+/* Importação das fontes do @fontsource */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+:root {
+  --main-titulo-color: #336699;
+  --main-background-color: #F4F4F4;
+  --second-color-background: #C1DFF0;
+  --third-color-background: #EBE9E9;
+}
+
+/* Definindo fontes personalizadas */
 @font-face {
   font-family: "Jaro";
   src: url("../src/assets/fonts/Jaro/static/Jaro-Regular.ttf")
     format("truetype");
 }
+
 @font-face {
   font-family: "Inter";
   src: url("../src/assets/fonts/Inter/static/Inter_24pt-Regular.ttf")
     format("truetype");
 }
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
 
+/* Estilos Globais */
 body {
   padding: 0;
   margin: 0;
   font-family: "Inter", sans-serif;
-  color: #336699;
+  color: #333;
   background-color: #f4f4f4;
+  line-height: 1.6;
 }
 
+/* Estilo para elementos gerais */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Jaro", sans-serif;
+  color: #2c3e50;
+}
+
+a {
+  color: #336699;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Tornando o layout mais responsivo */
+* {
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
