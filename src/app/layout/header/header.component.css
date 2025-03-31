@@ -1,111 +1,93 @@
+/* Estilos gerais do header */
 header {
   display: flex;
-  justify-content: space-between; /* Distribui os itens entre o lado esquerdo e o lado direito */
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  background:var(--main-header-background-color);
   padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
-  background-image: url("../../../assets/mask_group.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 220px;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box; 
+  color: white;
 }
 
 .logo a {
-  font-size: 30px;
   text-decoration: none;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #fff;
-  font-family: "Jaro", sans-serif;
+  color: var(--main-header-title-color);
 }
 
+/* Estilos do menu de navegação */
 nav {
   display: flex;
-  justify-content: flex-end; 
-  align-items: center;
-  margin-top: 20px;
-  width: 100%;
+  z-index: 1000;
 }
 
 nav ul {
   display: flex;
-  list-style-type: none;
-  margin: 0;
+  list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-nav li {
+nav ul li {
   margin-left: 20px;
 }
 
-nav a {
-  color: #fff;
+nav ul li a {
   text-decoration: none;
-  font-size: 16px;
+  color: white;
+  font-size: 1rem;
+  transition: color 0.3s;
 }
 
-nav a.active {
-  border-bottom: 2px solid #fff;
+nav ul li a:hover,
+nav ul li a.active {
+  color:var(--main-titulo-color);
 }
 
+/* Ícone do menu (mobile) */
 .menu-icon {
   display: none;
   flex-direction: column;
   cursor: pointer;
-  padding: 10px;
 }
 
 .menu-icon .bar {
   width: 25px;
-  height: 4px;
-  background-color: #fff;
-  margin: 5px 0;
+  height: 3px;
+  background-color: white;
+  margin: 4px 0;
+  transition: 0.3s;
 }
 
-ul li a {
-  display: flex;
-  align-items: center;
-  gap: 8px; 
-  font-size: 20px;
-}
-
-ul li a i {
-  font-size: 25px; 
-}
-
+/* Responsividade para telas menores */
 @media (max-width: 768px) {
-  header {
-    max-height: 90px;
-    height: 90px;
-    padding: 5px 15px;
-  }
-
   nav {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: var(--second-color-background);
+    width: 100%;
     display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
   }
 
   nav.active {
-    display: block;
-  }
-
-  .menu-icon {
     display: flex;
   }
 
   nav ul {
     flex-direction: column;
-    text-align: center;
-    margin-top: 20px;
     width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
+    text-align: center;
   }
 
-  nav li {
+  nav ul li {
     margin: 10px 0;
+  }
+
+  .menu-icon {
+    display: flex;
   }
 }
