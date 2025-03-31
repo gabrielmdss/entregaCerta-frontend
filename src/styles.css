@@ -4,10 +4,11 @@
 @import "@fontsource/inter/700.css";
 
 :root {
-  --main-titulo-color: #007bff;
+  --main-titulo-color: #336699;
   --main-background-color: #F4F4F4;
   --main-header-background-color: #88CCF1;
   --main-header-title-color: #F4F4F4;
+  --main-modal-title-color: #333333;
   --second-color-background: #C1DFF0;
   --third-color-background: #EBE9E9;
 }

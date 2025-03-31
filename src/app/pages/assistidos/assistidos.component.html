@@ -47,12 +47,13 @@
   
     <!-- Conteúdo do Modal -->
     <div>
-      <input id="nome" placeholder="Nome do assistido" />
+      <input id="nome" placeholder="Nome do assistido" [(ngModel)]="novoAssistido.nome"/>
     </div>
     <div>
       <input
         type="text"
         id="numero_documento"
+        [(ngModel)]="novoAssistido.documento"
         placeholder="Número de documento"
         appDocumentMask
       />
@@ -62,7 +63,7 @@
     <div class="footer-modal">
       <button (click)="closeModal()" class="button">Cancelar</button>
       <button (click)="cadastrarAssistido()" class="btn">
-        <i class="fa fa-plus"></i> Cadastrar novo
+        <i class="fa fa-plus"></i> Cadastrar
       </button>
     </div>
   </dialog>

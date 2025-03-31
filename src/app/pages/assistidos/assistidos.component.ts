@@ -60,6 +60,7 @@ export class AssistidosComponent implements OnInit {
         },
         complete: () => {
           this.listarAssistidos();
+          this.closeModal()
         },
       });
   }
