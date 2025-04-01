@@ -102,10 +102,10 @@ h4 {
 }
 
 .button {
-  width: 40px;
-  max-width: 40px;
+  min-width: 40px;
+  max-width: 298px;
   height: 40px;
-  max-height: 40px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -116,6 +116,7 @@ h4 {
   font-size: 1rem;
   cursor: pointer;
 }
+
 
 .button:hover {
   background: #52cbe6;
@@ -217,16 +218,81 @@ h4 {
   padding: 5px;
 }
 
+.retiradas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 100%;
+  width: 100%;
+}
+
+.retirada-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--main-background-color);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* Estilização da paginação */
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .pagination button {
-  padding: 8px 15px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .retirada-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 5px;
+  }
 }
 
 @media (max-width: 768px) {
