@@ -24,6 +24,7 @@ export class RetiradasComponent {
   isLoading: boolean = false;
 
   mostrarModal: boolean = false;
+  mostrarModalRegistrar: boolean = false;
   retiradaEditada: any = { nome: '', data_retirada: '' };
 
   retiradas: Retirada[] = [];
@@ -104,6 +105,7 @@ export class RetiradasComponent {
         },
         complete: () => {
           this.obterRetiradas(this.currentPage, this.selectedPageSize);
+          this.mostrarModalRegistrar = false;
         },
       });
   }
@@ -170,6 +172,10 @@ export class RetiradasComponent {
     this.retiradaEditada = { ...retirada };
     this.mostrarModal = true;
   }
+  openModalRegistrar(retirada: any) {
+    this.retiradaEditada = { ...retirada };
+    this.mostrarModalRegistrar = true;
+  }
   obterQuantidadeRetiradas(): void {
     this.retiradasService.obterQuantidadeRetiradas().subscribe({
       next: (total: number) => {
@@ -183,6 +189,9 @@ export class RetiradasComponent {
 
   closeModal() {
     this.mostrarModal = false;
+  }
+  closeModalRegistrar() {
+    this.mostrarModalRegistrar = false;
   }
   changePage(page: number): void {
     if (page > 0 && page <= this.totalPages) {

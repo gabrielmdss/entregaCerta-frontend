@@ -1,9 +1,9 @@
 <div class="container">
   <h1>Controle de Retiradas</h1>
   <div class="form-container">
-      <button (click)="registrarRetirada()" class="btn">
-        <i class="fa fa-plus"></i> Registrar Retirada
-      </button>
+    <button (click)="openModalRegistrar(novaRetirada)" class="btn">
+      <i class="fa fa-plus"></i> Registrar Retirada
+    </button>
   </div>
 
   <h3>Filtros</h3>
@@ -24,6 +24,7 @@
               bindLabel="nome"
               bindValue="id"
               (selectChange)="onAssistidoSelecionado($event)"
+              class="select"
             ></app-select>
           </div>
           <button (click)="filtrarRetiradasPorAssistido()" class="button">
@@ -80,7 +81,7 @@
       (change)="changePageSize(selectedPageSize)"
     >
       <option *ngFor="let size of itemsPerPageOptions" [value]="size">
-        {{ size }} itens 
+        {{ size }} itens
       </option>
     </select>
   </div>
@@ -88,7 +89,9 @@
   <ul *ngIf="!isLoading" class="retiradas-list">
     <li *ngFor="let retirada of retiradas" class="retirada-item">
       {{ retirada.nome }} - {{ retirada.data_retirada | date }}
-      <button (click)="openModal(retirada)" class="button">Alterar</button>
+      <button (click)="openModal(retirada)" class="button">
+        <i class="fa-solid fa-pencil"></i> Alterar
+      </button>
     </li>
   </ul>
 
@@ -108,30 +111,71 @@
     </button>
   </div>
 
-  <div *ngIf="mostrarModal" class="modal-overlay"></div>
+  <div *ngIf="mostrarModal" class="modal-overlay">
+    <dialog *ngIf="mostrarModal" class="modal">
+      <div class="title-modal">
+        <h5>Alterar Retirada</h5>
+        <button class="close-button" (click)="closeModal()">&#10005;</button>
+      </div>
+      <div class="body-modal">
+        <div>
+          <label for="nome">Nome</label>
+          <input
+            id="nome"
+            [(ngModel)]="retiradaEditada.nome"
+            placeholder="Nome do assistido"
+          />
+        </div>
+        <div>
+          <label for="data_retirada">Data de Retirada</label>
+          <input
+            type="date"
+            id="data_retirada"
+            [(ngModel)]="retiradaEditada.data_retirada"
+          />
+        </div>
+      </div>
 
-  <dialog *ngIf="mostrarModal" class="modal">
-    <h5>Editar Retirada</h5>
+      <div class="footer-modal">
+        <button (click)="closeModal()" class="button-cancelar">Cancelar</button>
+        <button (click)="confirmarAlteracao()" class="btn">
+          <i class="fa fa-plus"></i> Cadastrar
+        </button>
+      </div>
+    </dialog>
+  </div>
+  <div *ngIf="mostrarModalRegistrar" class="modal-overlay">
+    <dialog *ngIf="mostrarModalRegistrar" class="modal">
+      <div class="title-modal">
+        <h5>Registrar Retirada</h5>
+        <button class="close-button" (click)="closeModalRegistrar()">&#10005;</button>
+      </div>
+      <div class="body-modal">
+        <div class="input-group">
+          <app-select
+            [items]="assistidos"
+            bindLabel="nome"
+            bindValue="id"
+            (selectChange)="onAssistidoSelecionadoRegistrarRetirada($event)"
+            style="width: 100%;"
+          ></app-select>
+        </div>
+        <div>
+          <label for="data_retirada">Data de Retirada</label>
+          <input
+            type="date"
+            id="data_retirada"
+            [(ngModel)]="novaRetirada.data_retirada"
+          />
+        </div>
+      </div>
 
-    <div>
-      <label for="nome">Nome</label>
-      <input
-        id="nome"
-        [(ngModel)]="retiradaEditada.nome"
-        placeholder="Nome do assistido"
-      />
-    </div>
-
-    <div>
-      <label for="data_retirada">Data de Retirada</label>
-      <input
-        type="date"
-        id="data_retirada"
-        [(ngModel)]="retiradaEditada.data_retirada"
-      />
-    </div>
-
-    <button (click)="confirmarAlteracao()" class="button">Confirmar</button>
-    <button (click)="closeModal()" class="button">Fechar</button>
-  </dialog>
+      <div class="footer-modal">
+        <button (click)="closeModalRegistrar()" class="button-cancelar">Cancelar</button>
+        <button (click)="registrarRetirada()" class="btn">
+          <i class="fa fa-plus"></i> Registrar
+        </button>
+      </div>
+    </dialog>
+  </div>
 </div>
