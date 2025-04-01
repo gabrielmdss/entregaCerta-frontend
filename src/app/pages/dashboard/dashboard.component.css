@@ -36,16 +36,16 @@ h1 {
 
 .stats {
   max-width: 887px;
-  max-height: 269px;
-  height: 269px;
+  width: 100%;
+  height: auto; 
   margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
   background-color: var(--second-color-background);
   border-radius: 5px;
-  gap: 5px;
-  flex-direction: row;
+  gap: 10px;
+  padding: 15px; 
 }
 
 .stats-detail-value {
@@ -72,17 +72,19 @@ h1 {
 
 
 .stats p {
-  max-width: 286px;
-  width: 286px;
+  flex: 1 1 45%; 
+  max-width: 45%;
+  min-width: 150px; 
   max-height: 191px;
-  height: 191px;
+  height: auto;
   font-size: 1.2rem;
   font-weight: bold;
   background-color: var(--main-background-color);
   border-radius: 8px;
-  margin: 39px;
-  flex-direction: column;
+  padding: 20px;
+  text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -161,9 +163,14 @@ ul li {
 /* Responsividade */
 @media (max-width: 768px) {
   .stats {
-    display: flex;
     flex-direction: row;
-    align-items: center;
+    justify-content: center;
+  }
+
+  .stats p {
+    flex: 1 1 100%; 
+    max-width: 100%;
+    padding: 15px;
   }
 
   h1,
@@ -179,6 +186,11 @@ ul li {
 }
 
 @media (max-width: 480px) {
+  .stats p {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
   .container {
     padding: 10px;
   }
