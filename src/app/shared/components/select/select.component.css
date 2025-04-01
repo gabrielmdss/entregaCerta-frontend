@@ -1,0 +1,18 @@
+ng-select {
+    width: 100% !important; 
+    max-width: 100%; 
+    min-width: 150px; 
+    display: block;
+  }
+  
+  .ng-select .ng-select-container {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto; 
+  }
+  
+  .ng-dropdown-panel {
+    width: 100% !important;
+    max-width: 100%;
+  }
+  

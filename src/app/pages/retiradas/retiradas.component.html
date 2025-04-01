@@ -1,11 +1,9 @@
 <div class="container">
   <h1>Controle de Retiradas</h1>
   <div class="form-container">
-    <div class="input-group">
       <button (click)="registrarRetirada()" class="btn">
         <i class="fa fa-plus"></i> Registrar Retirada
       </button>
-    </div>
   </div>
 
   <h3>Filtros</h3>
@@ -19,47 +17,53 @@
     <div class="filter-items-container">
       <div class="filter-item">
         <h4>Assistido</h4>
-        <div class="input-group">
-          <app-select
-            [items]="assistidos"
-            bindLabel="nome"
-            bindValue="id"
-            (selectChange)="onAssistidoSelecionado($event)"
-          ></app-select>
+        <div class="form-group">
+          <div class="input-group">
+            <app-select
+              [items]="assistidos"
+              bindLabel="nome"
+              bindValue="id"
+              (selectChange)="onAssistidoSelecionado($event)"
+            ></app-select>
+          </div>
+          <button (click)="filtrarRetiradasPorAssistido()" class="button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
         </div>
-        <button (click)="filtrarRetiradasPorAssistido()" class="button">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
       </div>
       <div class="filter-item">
         <h4>Data</h4>
-        <div class="input-group">
-          <input type="date" [(ngModel)]="dataFilter" class="input-field" />
+        <div class="form-group">
+          <div class="input-group">
+            <input type="date" [(ngModel)]="dataFilter" class="input-field" />
+          </div>
+          <button (click)="filtrarRetiradasPorData()" class="button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
         </div>
-        <button (click)="filtrarRetiradasPorData()" class="button">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
       </div>
       <div class="filter-item">
         <h4>Intervalo de Data</h4>
-        <div class="input-group">
-          <input
-            type="date"
-            [(ngModel)]="dataInicialFilter"
-            class="input-field"
-          />
-          <input
-            type="date"
-            [(ngModel)]="dataFinalFilter"
-            class="input-field"
-          />
+        <div class="form-group">
+          <div class="input-group">
+            <input
+              type="date"
+              [(ngModel)]="dataInicialFilter"
+              class="input-field"
+            />
+            <input
+              type="date"
+              [(ngModel)]="dataFinalFilter"
+              class="input-field"
+            />
+          </div>
+          <button
+            (click)="filtrarRetiradasPorIntervalo()"
+            class="button button-search"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
         </div>
-        <button
-          (click)="filtrarRetiradasPorIntervalo()"
-          class="button button-search"
-        >
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
       </div>
     </div>
   </div>
