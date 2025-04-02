@@ -19,6 +19,13 @@ export class AssistidosService {
     };
     return this.http.post<any>(`${baseUrl}/assistido`, body);
   }
+  editarAssistido(id:number | null, nome: string, documento: string): Observable<any> {
+    const body = {
+      nome,
+      documento,
+    };
+    return this.http.put<any>(`${baseUrl}/assistido/${id}`, body);
+  }
   excluirAssistido(id: number): Observable<any> {
     return this.http.delete<any>(`${baseUrl}/assistido/${id}`, {
     });

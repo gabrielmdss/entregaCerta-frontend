@@ -30,9 +30,14 @@
           assistido.documento | documentTranslate
         }}</span>
       </div>
-      <button (click)="excluirAssistido(assistido.id)" class="btn-delete">
-        <i class="fa-solid fa-trash"></i> Excluir
-      </button>
+      <div class="actions-buttons">
+        <button (click)="openModalEditar(assistido.id)" class="btn-delete">
+          <i class="fa-solid fa-pencil"></i> Editar
+        </button>
+        <button (click)="excluirAssistido(assistido.id)" class="btn-delete">
+          <i class="fa-solid fa-trash"></i> Excluir
+        </button>
+      </div>
     </li>
   </ul>
 
@@ -65,6 +70,36 @@
       <button (click)="cadastrarAssistido()" class="btn">
         <i class="fa fa-plus"></i> Cadastrar
       </button>
+    </div>
+  </dialog>
+
+  <dialog *ngIf="mostrarModalEditar" class="modal">
+    <!-- Header do Modal com X para fechar -->
+    <div class="title-modal">
+      <h5>Editar Dados do Assistido</h5>
+      <button class="close-button" (click)="closeModalEditar()">&#10005;</button>
+    </div>
+  
+    <!-- Conteúdo do Modal -->
+    <div>
+      <input id="nome" placeholder="Nome do assistido" [(ngModel)]="atualizarAssistido.nome"/>
+    </div>
+    <div>
+      <input
+        type="text"
+        id="numero_documento"
+        [(ngModel)]="atualizarAssistido.documento"
+        placeholder="Número de documento"
+        appDocumentMask
+      />
+    </div>
+  
+    <!-- Footer com botões alinhados à direita -->
+    <div class="footer-modal">
+       <div class="footer-buttons-actions">
+         <button (click)="closeModalEditar()" class="btn">Editsar</button>
+         <button (click)="editarAssistido()" class="btn">Cadastrar</button>
+       </div>
     </div>
   </dialog>
   

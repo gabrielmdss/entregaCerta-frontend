@@ -113,6 +113,15 @@ h2 {
   background-color: #c0392b;
 }
 
+.actions-buttons {
+  
+  
+  padding: 5px;
+  background-color: yellow;
+  display: flex;
+  gap: 5px;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .form-container {
@@ -326,6 +335,11 @@ input {
 
 .btn:hover {
   background: #333;
+}
+
+
+.actions-buttons i {
+display: none;
 }
 
 /* Responsividade */

@@ -17,11 +17,14 @@ export class AssistidosComponent implements OnInit {
 
   assistidos: Assistido[] = [];
   novoAssistido: Assistido = { id: 0, nome: '', documento: '' };
+  atualizarAssistido: Assistido = { id: 0, nome: '', documento: '' };
   assistidosFiltrados: Assistido[] = [];
   searchTerm: string = '';
 
   isLoading: boolean = false;
   mostrarModal: boolean = false;
+  mostrarModalEditar: boolean = false;
+  assistidoId: number | null = null
 
 
   ngOnInit(): void {
@@ -65,6 +68,20 @@ export class AssistidosComponent implements OnInit {
       });
   }
 
+  editarAssistido(): void {
+    this.assistidosService.editarAssistido(this.assistidoId,this.atualizarAssistido.nome, this.atualizarAssistido.documento).subscribe({
+      next: (response: any) => {
+        alert('Assistido atualizado com sucesso');
+      },
+      error: (err: any) => {
+        console.log(err);
+        alert('Erro ao atualizar assistido');
+      },
+      complete: () => {
+        this.listarAssistidos();
+      },
+    });
+  }
   excluirAssistido(id: number): void {
     this.assistidosService.excluirAssistido(id).subscribe({
       next: (response: any) => {
@@ -97,5 +114,13 @@ export class AssistidosComponent implements OnInit {
   
   closeModal() {
     this.mostrarModal = false;
+  }
+  openModalEditar(id: number) {
+    this.mostrarModalEditar = true;
+    this.assistidoId = id
+  }
+  
+  closeModalEditar() {
+    this.mostrarModalEditar = false;
   }
 }
