@@ -88,7 +88,7 @@
 
   <ul *ngIf="!isLoading" class="retiradas-list">
     <li *ngFor="let retirada of retiradas" class="retirada-item">
-      {{ retirada.nome }} - {{ retirada.data_retirada | date }}
+      {{ retirada.nome }} - {{ retirada.data_retirada | date: 'MMM d, yyyy' : 'UTC' }}
       <button (click)="openModal(retirada)" class="button">
         <i class="fa-solid fa-pencil"></i> Alterar
       </button>
