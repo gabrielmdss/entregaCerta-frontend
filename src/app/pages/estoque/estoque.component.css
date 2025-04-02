@@ -1,71 +1,138 @@
-.container {
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  margin: 20px;
-  color: #1a1c27;
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-h1 {
-  color: #007bff;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th,
-td {
-  border: 1px solid #007bff;
+body {
+  font-family: Arial, sans-serif;
   padding: 10px;
-  text-align: left;
 }
 
-th {
-  background-color: #007bff;
-  color: white;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color:transparent;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.estoque-container {
+  background: #ebe9e9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 button {
-  padding: 8px 16px;
-  margin-top: 10px;
-  background-color: #007bff;
+  background-color: #20b258;
+  color: white;
   border: none;
+  padding: 10px 15px;
   cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button i {
+  margin-right: 8px;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
   border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #908d8d;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+.td-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.edit-btn {
+  background-color: #336699;
   color: white;
 }
 
-button:hover {
-  background-color: #0056b3;
+.delete-btn {
+  background-color: #c32525;
+  color: white;
 }
 
-/* Estilos para telas menores */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .input-wrapper {
+    max-width: 100%;
+  }
+}
 
 @media (max-width: 480px) {
-  .container {
-    margin: 10px;
-    padding: 5px;
-  }
-
   table {
     font-size: 12px;
-    overflow-x: auto;
-    display: block;
+  }
+  
+  .td-actions strong {
+    display: none;
   }
 
-  th,
-  td {
-    padding: 5px;
-  }
-
-  button {
-    padding: 6px 12px;
-  }
-
-  h1 {
-    font-size: 20px;
+  .td-actions button {
+    padding: 6px;
   }
 }

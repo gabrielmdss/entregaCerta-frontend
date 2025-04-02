@@ -1,28 +1,51 @@
 <div class="container">
-  <h1>Controle de Estoque - Entrega Certa</h1>
+  <h1>Controle de Estoque</h1>
+  <div class="estoque-container">
+    <div class="header">
+      <div class="input-wrapper">
+        <input
+          [(ngModel)]="searchTerm"
+          (input)="filtrarEstoque()"
+          placeholder="Pesquisar por Descrição"
+          class="input-field"
+        />
+        <i class="fa fa-search search-icon"></i>
+      </div>
+      <button (click)="adicionarItem()">
+        <i class="fa fa-plus"></i>Adicionar Item
+      </button>
+    </div>
 
-  <button (click)="adicionarItem()">Adicionar Item</button>
-  <div *ngIf="isLoading" class="loading">Carregando estoque...</div>
+    <div *ngIf="isLoading" class="loading">Carregando estoque...</div>
 
-  <table *ngIf="!isLoading">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Descrição</th>
-        <th>Quantidade</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of estoque">
-        <td>{{ item.id }}</td>
-        <td>{{ item.descricao }}</td>
-        <td>{{ item.quantidade }}</td>
-        <td>
-          <button (click)="ajustarQuantidade(item.id)">Ajustar</button>
-          <button (click)="removerItem(item.id)">Remover</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="table-wrapper" *ngIf="!isLoading">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of estoqueFiltrados">
+            <td>{{ item.id }}</td>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>
+              <div class="td-actions">
+                <button class="edit-btn" (click)="ajustarQuantidade(item.id)">
+                  <i class="fa-solid fa-pencil"></i><strong>Editar</strong>
+                </button>
+                <button class="delete-btn" (click)="removerItem(item.id)">
+                  <i class="fa-solid fa-trash"></i><strong>Excluir</strong>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

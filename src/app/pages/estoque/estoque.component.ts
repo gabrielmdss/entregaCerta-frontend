@@ -12,8 +12,9 @@ import { EstoqueService } from '../../services/estoque.service';
 })
 export class EstoqueComponent implements OnInit {
   estoque: Estoque[] = [];
+  estoqueFiltrados: Estoque[] = [];
   isLoading: boolean = false;
-
+  searchTerm: string = ''
   constructor(private estoqueService: EstoqueService) {}
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class EstoqueComponent implements OnInit {
     this.estoqueService.selectAll().subscribe({
       next: (dados) => {
         this.estoque = dados;
+        this.estoqueFiltrados = dados
         this.isLoading = false;
       },
       error: (err: any) => {
@@ -99,4 +101,21 @@ export class EstoqueComponent implements OnInit {
       });
     }
   }
+
+  filtrarEstoque(): void {
+    console.log("Filtrar Estoque iniciado");
+    console.log(this.searchTerm)
+    debugger
+    if (!this.searchTerm || this.searchTerm.trim() === '') {
+      this.estoqueFiltrados = [...this.estoque];
+    } else {
+      this.estoqueFiltrados = this.estoque.filter(item => 
+        item.descricao.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  
+    console.log("Filtrar Estoque finalizado", this.estoqueFiltrados);
+  }
+  
+
 }
