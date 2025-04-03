@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AssistidosService } from '../../services/assistidos.service';
 import { DocumentPipe } from "../../utils/pipes/document.pipe";
 import { DocumentMaskDirective } from '../../utils/directives/document-mask.directive';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-assistidos',
@@ -55,11 +56,22 @@ export class AssistidosComponent implements OnInit {
       .cadastrarAssistido(this.novoAssistido.nome, this.novoAssistido.documento)
       .subscribe({
         next: (response: any) => {
-          alert('Assistido cadastrado com sucesso');
+          Swal.fire({
+            title: 'Usuário cadastrado!',
+            text: 'O cadastro foi realizado com sucesso.',
+            icon: 'success',
+            theme: "auto",
+            position: 'center',
+          });
         },
         error: (err: any) => {
-          console.log(err);
-          alert(err.error.message);
+          Swal.fire({
+            title: 'Erro no cadastro',
+            text: err.error.message || 'Ocorreu um problema ao cadastrar o usuário. Tente novamente.',
+            icon: 'error',
+            theme: "auto",
+            position: 'center',
+          });
         },
         complete: () => {
           this.listarAssistidos();
