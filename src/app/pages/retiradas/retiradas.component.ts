@@ -129,14 +129,30 @@ export class RetiradasComponent {
       .atualizarRetirada(this.retiradaEditada.id, this.retiradaEditada)
       .subscribe({
         next: (response: any) => {
-          alert('Alteração concluida com sucesso!');
+          Swal.fire({
+            title: 'Alteração Efetuada!',
+            text: 'A alteração foi realizada com sucesso.',
+            icon: 'success',
+            theme: 'light',
+            position: 'center',
+          });
         },
         error: (err: any) => {
-          alert('Erro ao realizar alteração!');
-          console.log(err);
+          Swal.fire({
+            title: 'Erro ao alterar retirada',
+            text:
+              err.error.message ||
+              'Ocorreu um problema ao alterar a retirada do Assistido. Tente novamente.',
+            icon: 'error',
+            theme: 'light',
+            position: 'center',
+          });
+          this.closeModalRegistrar();
         },
         complete: () => {
           this.obterRetiradas(this.currentPage, this.selectedPageSize);
+          this.closeModalRegistrar();
+
         },
       });
     this.mostrarModal = false;
