@@ -31,7 +31,7 @@
         }}</span>
       </div>
       <div class="actions-buttons">
-        <button (click)="openModalEditar(assistido.id)" class="btn-delete">
+        <button (click)="openModalEditar(assistido.id)" class="btn-edit">
           <i class="fa-solid fa-pencil"></i> Editar
         </button>
         <button (click)="excluirAssistido(assistido.id)" class="btn-delete">
@@ -97,8 +97,8 @@
     <!-- Footer com botões alinhados à direita -->
     <div class="footer-modal">
        <div class="footer-buttons-actions">
-         <button (click)="closeModalEditar()" class="btn">Editsar</button>
-         <button (click)="editarAssistido()" class="btn">Cadastrar</button>
+         <button (click)="closeModalEditar()" class="button">Cancelar</button>
+         <button (click)="editarAssistido()" class="btn">Atualizar</button>
        </div>
     </div>
   </dialog>

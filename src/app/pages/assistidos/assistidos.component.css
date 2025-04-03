@@ -70,6 +70,17 @@ h2 {
   transition: background-color 0.3s;
 }
 
+.btn-cancel{
+  padding: 10px 20px;
+  background-color: #616161;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
 .btn:hover {
   background-color: #0056b3;
 }
@@ -109,15 +120,25 @@ h2 {
   transition: background-color 0.3s;
 }
 
+.btn-edit {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+
 .btn-delete:hover {
   background-color: #c0392b;
 }
 
 .actions-buttons {
-  
-  
   padding: 5px;
-  background-color: yellow;
   display: flex;
   gap: 5px;
 }
@@ -307,6 +328,12 @@ input {
   margin-top: 20px;
 }
 
+.footer-buttons-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
 /* Botões */
 .button,
 .btn {
