@@ -6,6 +6,7 @@ import { AssistidosService } from '../../services/assistidos.service';
 import { Assistido } from '../../models/assistido.interface';
 import { RetiradasService } from '../../services/retiradas.service';
 import { SelectComponent } from '../../shared/components/select/select.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-retiradas',
@@ -96,16 +97,30 @@ export class RetiradasComponent {
         this.novaRetirada.data_retirada
       )
       .subscribe({
-        next: (response: any) => {
-          alert('Retirada registrada com sucesso');
+        next: () => {
+          Swal.fire({
+            title: 'Retirada cadastrada!',
+            text: 'A Retirada foi realizada com sucesso.',
+            icon: 'success',
+            theme: 'light',
+            position: 'center',
+          });
         },
         error: (err: any) => {
-          console.log(err);
-          alert('Erro ao registrar retirada');
+          Swal.fire({
+            title: 'Erro ao retirar',
+            text:
+              err.error.message ||
+              'Ocorreu um problema ao cadastrar o Assistido. Tente novamente.',
+            icon: 'error',
+            theme: 'light',
+            position: 'center',
+          });
+          this.closeModalRegistrar();
         },
         complete: () => {
+          this.closeModalRegistrar();
           this.obterRetiradas(this.currentPage, this.selectedPageSize);
-          this.mostrarModalRegistrar = false;
         },
       });
   }
@@ -160,6 +175,7 @@ export class RetiradasComponent {
     this.dataInicialFilter = null;
     this.dataFinalFilter = null;
     this.searchTerm = '';
+    this.novaRetirada.assistido_id = 0
     this.obterRetiradas(this.currentPage, this.selectedPageSize);
   }
   onAssistidoSelecionado(assistido: any) {
@@ -191,6 +207,7 @@ export class RetiradasComponent {
     this.mostrarModal = false;
   }
   closeModalRegistrar() {
+    this.novaRetirada.assistido_id = 0
     this.mostrarModalRegistrar = false;
   }
   changePage(page: number): void {
