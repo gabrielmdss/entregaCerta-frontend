@@ -51,25 +51,24 @@ export class AssistidosComponent implements OnInit {
   }
 
   cadastrarAssistido(): void {
-
     this.assistidosService
       .cadastrarAssistido(this.novoAssistido.nome, this.novoAssistido.documento)
       .subscribe({
         next: (response: any) => {
           Swal.fire({
-            title: 'Usuário cadastrado!',
+            title: 'Assistido cadastrado!',
             text: 'O cadastro foi realizado com sucesso.',
             icon: 'success',
-            theme: "auto",
+            theme: "light",
             position: 'center',
           });
         },
         error: (err: any) => {
           Swal.fire({
             title: 'Erro no cadastro',
-            text: err.error.message || 'Ocorreu um problema ao cadastrar o usuário. Tente novamente.',
+            text: err.error.message || 'Ocorreu um problema ao cadastrar o Assistido. Tente novamente.',
             icon: 'error',
-            theme: "auto",
+            theme: "light",
             position: 'center',
           });
         },
@@ -83,25 +82,22 @@ export class AssistidosComponent implements OnInit {
   editarAssistido(): void {
     this.assistidosService.editarAssistido(this.assistidoId,this.atualizarAssistido.nome, this.atualizarAssistido.documento).subscribe({
       next: (response: any) => {
-        alert('Assistido atualizado com sucesso');
+        Swal.fire({
+          title: 'Assistido Atualizado!',
+          text: 'Os dados do assistidos foram atualizados com sucesso.',
+          icon: 'success',
+          theme: "light",
+          position: 'center',
+        });
       },
       error: (err: any) => {
-        console.log(err);
-        alert('Erro ao atualizar assistido');
-      },
-      complete: () => {
-        this.listarAssistidos();
-      },
-    });
-  }
-  excluirAssistido(id: number): void {
-    this.assistidosService.excluirAssistido(id).subscribe({
-      next: (response: any) => {
-        alert('Assistido excluido com sucesso');
-      },
-      error: (err: any) => {
-        console.log(err);
-        alert('Erro ao excluir assistido');
+        Swal.fire({
+          title: 'Erro ao atualizar',
+          text: err.error.message || 'Ocorreu um problema ao atualizar os dados o Assistido. Tente novamente.',
+          icon: 'error',
+          theme: "light",
+          position: 'center',
+        });
       },
       complete: () => {
         this.listarAssistidos();
@@ -109,6 +105,42 @@ export class AssistidosComponent implements OnInit {
     });
   }
 
+  excluirAssistido(id: number): void {
+    Swal.fire({
+      title: "Tem certeza?",
+      text: "Essa ação não pode ser desfeita!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.assistidosService.excluirAssistido(id).subscribe({
+          next: () => {
+            Swal.fire({
+              title: 'Assistido excluído com sucesso!',
+              text: 'Os dados do assistido foram removidos permanentemente.',
+              icon: 'success',
+              theme: "light",
+              position: 'center',
+            }).then(() => this.listarAssistidos());
+          },
+          error: (err: any) => {
+            Swal.fire({
+              title: 'Erro ao excluir',
+              text: err.error.message || 'Houve um problema ao excluir os dados. Tente novamente.',
+              icon: 'error',
+              theme: "light",
+              position: 'center',
+            });
+          }
+        });
+      }
+    });
+  }
+  
   filtrarAssistidos(): void {
     if (this.searchTerm.trim() === '') {
       this.assistidosFiltrados = [...this.assistidos];
