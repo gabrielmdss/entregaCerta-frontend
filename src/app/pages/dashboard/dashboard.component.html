@@ -1,74 +1,43 @@
 <div class="container">
   <h1>Dashboard</h1>
-  
+
   <div *ngIf="isLoading" class="loading">Carregando dados...</div>
 
   <div *ngIf="!isLoading">
     <div class="stats">
-      <p>
+      <div class="stat-card">
         <strong class="stats-detail">Total de Assistidos</strong>
-        <strong class="stats-detail-value">
-          {{ totalAssistidos }}
-        </strong>
-      </p>
-      <p>
-        <strong class="stats-detail">Total de Retiradas no Mês</strong> 
-        <strong class="stats-detail-value">
-          {{ totalRetiradasMes }}
-        </strong>
-      </p>
-    </div>
+        <strong class="stats-detail-value">{{ totalAssistidos }}</strong>
+      </div>
 
-    <h2>Retiradas por Mês</h2>
-    <ul class="monthly-statistics">
-      <li *ngFor="let item of retiradasPorMes" class="stat-item">
-        <div class="stat-details">
-          <div class="stat-title">
-            <span class="stat-description">{{
-              item.mes | monthTranslate
-            }}</span>
-          </div>
-          <div class="stat-value">
-            {{ item.total }}
-          </div>
-        </div>
-      </li>
-    </ul>
+      <div class="stat-card">
+        <strong class="stats-detail">Total de Retiradas no Mês</strong>
+        <strong class="stats-detail-value">{{ totalRetiradasMes }}</strong>
+      </div>
 
-    <h2>Estoque Atual</h2>
-    <ul class="stock-statistics">
-      <li *ngIf="!estoqueAtual.length" class="stat-item loading">
-        Carregando estoque...
-      </li>
-      <li *ngFor="let item of estoqueAtual" class="stat-item">
-        <div class="stat-details">
-          <div class="stat-title">
-            <span class="stat-description">{{ item.descricao }}</span>
-          </div>
-          <div class="stat-value">
-            {{ item.quantidade }}
-          </div>
-        </div>
-      </li>
-    </ul>
+      <div class="stat-card">
+        <strong class="stats-detail">Gráfico de Retiradas</strong>
+        <app-line-charts [dados]="retiradasPorMes"></app-line-charts>
+      </div>
 
-    <h2>Últimas Retiradas</h2>
-    <ul class="recent-retiradas">
-      <li *ngFor="let retirada of ultimasRetiradas" class="recent-item">
-        <div class="recent-details">
-          <div class="recent-details-title">
-            <span class="recent-details-description">{{ retirada.nome }} </span>
-            <div class="recent-details-value">
-              <span>
-                {{ retirada.documento | documentTranslate }}
-              </span>
-              <span>
-                {{ retirada.data_retirada | date }}
-              </span>
+      <div class="stat-card stat-card-wide">
+        <strong class="stats-detail">Retiradas por Mês</strong>
+        <ul class="recent-retiradas">
+          <li *ngFor="let retirada of ultimasRetiradas" class="recent-item">
+            <div class="recent-details">
+              <div class="recent-details-title">
+                <span class="recent-details-description">{{
+                  retirada.nome
+                }}</span>
+                <div class="recent-details-value">
+                  <span>{{ retirada.documento | documentTranslate }}</span>
+                  <span>{{ retirada.data_retirada | date }}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </li>
-    </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
