@@ -7,24 +7,25 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
-  padding: 10px;
+  padding: 0;
+  margin: 0;
 }
 
+/* Ajuste para que o conteúdo não fique sobre a imagem */
 .container {
+  position: relative;
+  padding-top: 270px; /* Empurra o conteúdo para baixo */
   max-width: 1200px;
   margin: 0 auto;
-  background: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1,
-h2 {
+
+/* Estilos do título */
+h1, h2 {
   text-align: center;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin: 15px 0;
   font-size: 1.8rem;
   color: var(--main-titulo-color);
 }
@@ -33,11 +34,20 @@ h1 {
   font-weight: 600;
   font-size: 40px;
 }
+h2 {
+  font-weight: 400;
+  font-size: 20px;
+  text-align: start;
+  max-width: 887px;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 
+/* Estatísticas */
 .stats {
   max-width: 887px;
   width: 100%;
-  height: auto; 
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -45,17 +55,19 @@ h1 {
   background-color: var(--second-color-background);
   border-radius: 5px;
   gap: 10px;
-  padding: 15px; 
+  padding: 15px;
 }
 
 .stats-detail-value {
   min-width: 101px;
   min-height: 80px;
   background-color: #EBE9E9;
-  align-items: center;
   text-align: center;
   border: none;
   font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stats-detail {
@@ -70,13 +82,10 @@ h1 {
   margin-bottom: 17px;
 }
 
-
 .stats p {
-  flex: 1 1 45%; 
+  flex: 1 1 45%;
   max-width: 45%;
-  min-width: 150px; 
-  max-height: 191px;
-  height: auto;
+  min-width: 150px;
   font-size: 1.2rem;
   font-weight: bold;
   background-color: var(--main-background-color);
@@ -88,17 +97,13 @@ h1 {
   align-items: center;
 }
 
-/* Listas responsivas */
+/* Listas */
 ul {
   list-style: none;
   padding: 0;
 }
-ul li {
-  background-color: var(--third-color-background);
-}
 
-.stat-item,
-.recent-item {
+.stat-item, .recent-item {
   background: #e9ecef;
   padding: 10px;
   margin: 5px 0;
@@ -107,19 +112,18 @@ ul li {
   font-size: 1.1rem;
 }
 
-.stock-statistics,
-.monthly-statistics,
-.recent-retiradas {
+.stock-statistics, .monthly-statistics, .recent-retiradas {
   max-width: 887px;
   margin: 0 auto;
 }
-.recent-details,
+
 .stat-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
+
 .stat-description {
   font-weight: 800;
   color: var(--main-titulo-color);
@@ -136,10 +140,11 @@ ul li {
   display: flex;
   flex-direction: column;
   text-align: left;
-  .recent-details-description {
-    font-weight: 800;
-    color: var(--main-titulo-color);
-  }
+}
+
+.recent-details-description {
+  font-weight: 800;
+  color: var(--main-titulo-color);
 }
 
 .recent-details-value {
@@ -151,6 +156,7 @@ ul li {
 .recent-details-value span {
   margin: 5px;
 }
+
 .stat-title {
   font-weight: bold;
 }
@@ -168,18 +174,16 @@ ul li {
   }
 
   .stats p {
-    flex: 1 1 100%; 
+    flex: 1 1 100%;
     max-width: 100%;
     padding: 15px;
   }
 
-  h1,
-  h2 {
+  h1, h2 {
     font-size: 1.5rem;
   }
 
-  .stat-item,
-  .recent-item {
+  .stat-item, .recent-item {
     font-size: 1rem;
     padding: 8px;
   }
@@ -195,8 +199,7 @@ ul li {
     padding: 10px;
   }
 
-  h1,
-  h2 {
+  h1, h2 {
     font-size: 1.3rem;
   }
 
