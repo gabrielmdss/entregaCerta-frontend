@@ -1,13 +1,20 @@
-/* Estilos gerais do header */
-header {
+/* ================= HEADER GERAL (TELAS GRANDES) ================= */
+.desktop-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background:var(--main-header-background-color);
+  background: var(--main-header-background-color);
   padding: 10px 20px;
   color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Estiliza o logo */
 .logo a {
   text-decoration: none;
   font-size: 1.5rem;
@@ -15,7 +22,7 @@ header {
   color: var(--main-header-title-color);
 }
 
-/* Estilos do menu de navegação */
+/* Estilos do menu de navegação (desktop) */
 nav {
   display: flex;
   z-index: 1000;
@@ -41,7 +48,7 @@ nav ul li a {
 
 nav ul li a:hover,
 nav ul li a.active {
-  color:var(--main-titulo-color);
+  color: var(--main-titulo-color);
 }
 
 /* Ícone do menu (mobile) */
@@ -59,35 +66,62 @@ nav ul li a.active {
   transition: 0.3s;
 }
 
-/* Responsividade para telas menores */
+/* Esconde a Tab Navigation em telas grandes */
+.mobile-tab-nav {
+  display: none;
+}
+
+/* ================= MENU MOBILE (BOTTOM NAVIGATION) ================= */
 @media (max-width: 768px) {
-  nav {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    background: var(--second-color-background);
-    width: 100%;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0;
+  .desktop-header {
+    display: none; /* Esconde o header tradicional em telas pequenas */
   }
 
-  nav.active {
+  /* Estiliza a Tab Navigation no Mobile */
+  .mobile-tab-nav {
     display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--main-header-background-color);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    padding: 2px 0;
+    z-index: 1000;
   }
 
-  nav ul {
-    flex-direction: column;
+  .mobile-tab-nav ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
     width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-tab-nav ul li {
+    flex: 1;
     text-align: center;
   }
 
-  nav ul li {
-    margin: 10px 0;
+  .mobile-tab-nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 0;
+    transition: color 0.3s;
   }
 
-  .menu-icon {
-    display: flex;
+  .mobile-tab-nav ul li a i {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+
+  .mobile-tab-nav ul li a:hover,
+  .mobile-tab-nav ul li a.active {
+    color: var(--main-titulo-color);
   }
 }

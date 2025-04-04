@@ -1,4 +1,4 @@
-<header>
+<header class="desktop-header">
   <div class="logo">
     <a routerLink="/dashboard">Entrega Certa</a>
   </div>
@@ -11,18 +11,18 @@
       </li>
       <li>
         <a routerLink="/assistidos" routerLinkActive="active">
-          <i class="fa-solid fa-handshake"></i> Assistidos</a
-        >
+          <i class="fa-solid fa-handshake"></i> Assistidos
+        </a>
       </li>
       <li>
         <a routerLink="/retiradas" routerLinkActive="active">
-          <i class="fas fa-archive" ></i> Retiradas</a
-        >
+          <i class="fas fa-archive"></i> Retiradas
+        </a>
       </li>
       <li>
         <a routerLink="/estoque" routerLinkActive="active">
-          <i class="fa-solid fa-boxes-stacked"></i> Estoque</a
-        >
+          <i class="fa-solid fa-boxes-stacked"></i> Estoque
+        </a>
       </li>
     </ul>
   </nav>
@@ -32,3 +32,33 @@
     <span class="bar"></span>
   </div>
 </header>
+
+<!-- Tab Navigation para Mobile -->
+<nav class="mobile-tab-nav">
+  <ul>
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <i class="fa-solid fa-table-columns"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/assistidos" routerLinkActive="active">
+        <i class="fa-solid fa-handshake"></i>
+        <span>Assistidos</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/retiradas" routerLinkActive="active">
+        <i class="fas fa-archive"></i>
+        <span>Retiradas</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/estoque" routerLinkActive="active">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <span>Estoque</span>
+      </a>
+    </li>
+  </ul>
+</nav>
