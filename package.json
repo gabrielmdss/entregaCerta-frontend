@@ -1,13 +1,17 @@
 {
   "name": "entrega-certa",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:entregaCerta": "node dist/entrega-certa/server/server.mjs"
+    "dev:ssr": "ng run entregaCerta:serve-ssr",
+    "build:ssr": "ng build && ng run entregaCerta:server",
+    "serve:ssr": "node dist/entrega-certa/server/server.mjs",
+    "start:ssr:pm2": "pm2 start dist/entregaCerta/server/server.mjs --name entrega-certa"
   },
   "private": true,
   "dependencies": {
@@ -24,8 +28,11 @@
     "@fontsource/inter": "^5.2.5",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@ng-select/ng-select": "^14.2.4",
+    "@nguniversal/express-engine": "^7.0.2",
+    "chart.js": "^4.4.8",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "ng2-charts": "^4.1.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.17.2",
     "tslib": "^2.3.0",

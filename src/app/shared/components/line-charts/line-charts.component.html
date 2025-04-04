@@ -1,0 +1,9 @@
+<div *ngIf="isBrowser" class="chart-container">
+    <canvas baseChart
+            [type]="'line'"
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [legend]="lineChartLegend">
+    </canvas>
+  </div>
+  
