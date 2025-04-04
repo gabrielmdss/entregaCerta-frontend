@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
-import { MonthTranslatePipe } from '../../utils/pipes/month-translate.pipe';
 import { DocumentPipe } from '../../utils/pipes/document.pipe';
 import { LineChartsComponent } from '../../shared/components/line-charts/line-charts.component';
 
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, MonthTranslatePipe,DocumentPipe,LineChartsComponent],
+  imports: [CommonModule,DocumentPipe,LineChartsComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
