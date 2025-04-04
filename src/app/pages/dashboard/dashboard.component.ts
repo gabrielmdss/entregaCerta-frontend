@@ -13,7 +13,7 @@ import { DocumentPipe } from '../../utils/pipes/document.pipe';
 })
 export class DashboardComponent implements OnInit {
   anoAtual = new Date().getFullYear();
-  totalAssistidos: number = 120;
+  totalAssistidos: number = 0;
   retiradasPorMes = [{ mes: '', total: null }];
   ultimasRetiradas = [
     {
