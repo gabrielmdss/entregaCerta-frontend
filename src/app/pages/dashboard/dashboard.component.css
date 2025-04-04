@@ -1,4 +1,4 @@
-/* Reset básico */
+/* ================= RESET E CONFIGURAÇÕES GERAIS ================= */
 * {
   margin: 0;
   padding: 0;
@@ -11,18 +11,18 @@ body {
   margin: 0;
 }
 
-/* Ajuste para que o conteúdo não fique sobre a imagem */
+/* ================= CONTAINER PRINCIPAL ================= */
 .container {
   position: relative;
-  padding-top: 270px; /* Empurra o conteúdo para baixo */
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding:45px;
   border-radius: 8px;
 }
 
+/* ================= ESTILOS DO DASHBOARD ================= */
 
-/* Estilos do título */
+/* Títulos */
 h1, h2 {
   text-align: center;
   margin: 15px 0;
@@ -33,7 +33,9 @@ h1, h2 {
 h1 {
   font-weight: 600;
   font-size: 40px;
+  padding-top: "5%";
 }
+
 h2 {
   font-weight: 400;
   font-size: 20px;
@@ -85,7 +87,7 @@ h2 {
 .stats p {
   flex: 1 1 45%;
   max-width: 45%;
-  min-width: 150px;
+  min-width: 250px;
   font-size: 1.2rem;
   font-weight: bold;
   background-color: var(--main-background-color);
@@ -166,17 +168,21 @@ ul {
   color: #007bff;
 }
 
-/* Responsividade */
+/* ================= RESPONSIVIDADE ================= */
 @media (max-width: 768px) {
   .stats {
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .stats p {
     flex: 1 1 100%;
     max-width: 100%;
     padding: 15px;
+  }
+  
+  h1 {
+    padding-top: "5%";
   }
 
   h1, h2 {
@@ -186,6 +192,11 @@ ul {
   .stat-item, .recent-item {
     font-size: 1rem;
     padding: 8px;
+  }
+
+  /* Ajuste para exibir corretamente o último item no mobile */
+  .recent-retiradas {
+    padding-bottom: 70px; /* Garante que o último item não fique escondido pela tab navigation */
   }
 }
 
@@ -197,6 +208,10 @@ ul {
 
   .container {
     padding: 10px;
+  }
+
+  h1 {
+    padding-top: "5%";
   }
 
   h1, h2 {
