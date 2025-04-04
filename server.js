@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-dotenv.config();
-const path = require('path');
-const express = require('express');
+import path from 'path';
+import express from 'express';
 const app = express();
+dotenv.config();
 
 app.use(express.static(path.join(__dirname, 'dist', 'entrega-certa', 'browser')));
 
