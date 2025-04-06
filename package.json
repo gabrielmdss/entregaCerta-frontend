@@ -22,9 +22,10 @@
     "@angular/router": "^19.0.0",
     "@angular/ssr": "^19.0.5",
     "@fontsource/inter": "^5.2.5",
+    "@iconify-icon/solid": "^2.2.0",
+
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@ng-select/ng-select": "^14.2.4",
-    "@nguniversal/express-engine": "^7.0.2",
     "chart.js": "^4.4.8",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

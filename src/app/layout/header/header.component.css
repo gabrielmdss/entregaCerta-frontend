@@ -11,15 +11,18 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  min-height: 87px;
+  border-bottom: solid #908D8D 0.5px;
 }
 
 /* Estiliza o logo */
 .logo a {
   text-decoration: none;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 56px;
+  font-weight: 400;
   color: var(--main-header-title-color);
+  font-family: 'Jaro';
+  margin-left: 80px;
 }
 
 /* Estilos do menu de navegação (desktop) */
@@ -36,19 +39,28 @@ nav ul {
 }
 
 nav ul li {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 
+
 nav ul li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* espaço entre ícone e texto */
+  font-size: 16px;
   text-decoration: none;
-  color: white;
-  font-size: 1rem;
-  transition: color 0.3s;
+  color: var(--main-header-title-color);
+  transition: all 0.3s ease-in;
+
+}
+nav ul li a i {
+  margin-right: 5px;
 }
 
 nav ul li a:hover,
 nav ul li a.active {
   color: var(--main-titulo-color);
+  transform: scale(1.05);
 }
 
 /* Ícone do menu (mobile) */

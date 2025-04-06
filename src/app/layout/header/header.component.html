@@ -5,23 +5,35 @@
   <nav [class.active]="menuActive">
     <ul>
       <li>
-        <a routerLink="/dashboard" routerLinkActive="active">
-          <i class="fa-solid fa-table-columns"></i> Dashboard
+        <a routerLink="/estoque" routerLinkActive="active">
+          <iconify-icon
+            class="m-1"
+            icon="material-symbols-light:space-dashboard-outline"
+            style="font-size: 24px; vertical-align: middle;"></iconify-icon>Dashboard
         </a>
       </li>
       <li>
         <a routerLink="/assistidos" routerLinkActive="active">
-          <i class="fa-solid fa-handshake"></i> Assistidos
-        </a>
-      </li>
-      <li>
-        <a routerLink="/retiradas" routerLinkActive="active">
-          <i class="fas fa-archive"></i> Retiradas
+          <iconify-icon
+            class="m-1"
+            icon="material-symbols-light:volunteer-activism-outline-rounded"
+            style="font-size: 24px; vertical-align: middle;"></iconify-icon> Assistidos
         </a>
       </li>
       <li>
         <a routerLink="/estoque" routerLinkActive="active">
-          <i class="fa-solid fa-boxes-stacked"></i> Estoque
+          <iconify-icon
+            class="m-1"
+            icon="material-symbols-light:unarchive-outline-rounded"
+            style="font-size: 24px; vertical-align: middle;"></iconify-icon>Retiradas
+        </a>
+      </li>
+      <li>
+        <a routerLink="/estoque" routerLinkActive="active">
+          <iconify-icon
+            class="m-1"
+            icon="material-symbols-light:package-2-outline-sharp"
+            style="font-size: 24px; vertical-align: middle;"></iconify-icon> Estoque
         </a>
       </li>
     </ul>
