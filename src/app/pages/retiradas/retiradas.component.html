@@ -186,35 +186,34 @@
       <div class="body-modal-detalhes">
         <div class="foto-info">
           <img
-            [src]="
-              assistidoDetalhes.imagem ??
-              'https://randomuser.me/api/portraits/men/45.jpg'
-            "
+            [src]="assistidoDetalhes.imagem ?? 'https://randomuser.me/api/portraits/men/45.jpg'"
             alt="Foto do assistido"
             class="foto-assistido"
           />
-
+      
           <div class="info-basica">
-            <p><strong>Nome:</strong>{{ assistidoDetalhes.nome }}</p>
+            <p><strong>Nome:</strong> {{ assistidoDetalhes.nome }}</p>
             <p>
-              <strong>Documento:</strong
-              >{{ assistidoDetalhes.documento | documentTranslate }}
+              <strong>Documento:</strong>
+              {{ assistidoDetalhes.documento | documentTranslate }}
             </p>
             <p>
-              <strong>Data de nascimento:</strong
-              >{{ assistidoDetalhes.data_nascimento | date }}
+              <strong>Data de nascimento:</strong>
+              {{ assistidoDetalhes.data_nascimento | date: 'dd/MM/yyyy' }}
             </p>
           </div>
         </div>
-
+      
         <div class="ultimas-retiradas">
           <h6>Últimas Retiradas</h6>
           <ul>
-            <li *ngFor="let retirada of retiradas.slice(0,4)">{{ retirada.data_retirada | date: 'dd/MM/yyyy' }}
+            <li *ngFor="let retirada of retiradas.slice(0, 4)">
+              {{ retirada.data_retirada | date: 'dd/MM/yyyy' }}
             </li>
           </ul>
         </div>
       </div>
+      
 
       <div class="footer-modal">
         <button class="btn btn-fechar" (click)="closeModalDetalhesAssistido()">
