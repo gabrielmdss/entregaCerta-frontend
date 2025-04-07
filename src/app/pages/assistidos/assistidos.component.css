@@ -25,7 +25,9 @@ h1 {
   text-align: center;
   color: var(--main-titulo-color);
   font-size: 2rem;
-  
+  padding-top: 5%;
+  margin: 15px 0;
+
 }
 
 /* Título da lista de assistidos */

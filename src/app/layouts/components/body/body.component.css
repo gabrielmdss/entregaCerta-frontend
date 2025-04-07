@@ -1,6 +1,7 @@
 .body-content {
-    padding: 2rem;
-    min-height: calc(100vh - 150px); 
-    background-color: #f9f9f9;
-  }
-  
+  padding: 2rem;
+  background-color: #f9f9f9;
+  min-height: calc(100vh - 150px);
+  display: flex;
+  flex-direction: column;
+}

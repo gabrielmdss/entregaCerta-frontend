@@ -8,12 +8,6 @@
 
   <h3>Filtros</h3>
   <div class="filters-container">
-    <div>
-      <button (click)="limparFiltros()" class="button-clear">
-        <i class="fa-solid fa-broom"></i>
-        Limpar Filtros
-      </button>
-    </div>
     <div class="filter-items-container">
       <div class="filter-item">
         <h4>Assistido</h4>
@@ -32,7 +26,7 @@
           </button>
         </div>
       </div>
-      <div class="filter-item">
+      <div class="filter-item-intervalo">
         <h4>Intervalo de Data</h4>
         <div class="form-group">
           <div class="input-group">
@@ -55,6 +49,12 @@
           </button>
         </div>
       </div>
+    </div>
+    <div class="filter-btn-clean-filter">
+      <button (click)="limparFiltros()" class="button-clear">
+        <i class="fa-solid fa-broom"></i>
+        Limpar Filtros
+      </button>
     </div>
   </div>
 
