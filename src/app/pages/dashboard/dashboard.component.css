@@ -13,61 +13,61 @@ body {
 
 /* ================= CONTAINER PRINCIPAL ================= */
 .container {
-  position: relative;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 45px;
+  background: white;
+  padding: 20px;
   border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 
 /* ================= ESTILOS DO DASHBOARD ================= */
 
 /* Títulos */
-h1, h2 {
-  text-align: center;
-  margin: 15px 0;
-  font-size: 1.8rem;
-  color: var(--main-titulo-color);
-}
-
 h1 {
-  font-weight: 600;
-  font-size: 40px;
+  text-align: center;
+  color: var(--main-titulo-color);
+  font-size: 2rem;
   padding-top: 5%;
+  margin: 15px 0;
+
 }
 
+/* Título da lista de assistidos */
 h2 {
+  font-size: 32px;
+  color: var(--main-titulo-color);
   font-weight: 400;
-  font-size: 20px;
-  text-align: start;
-  max-width: 887px;
-  margin: 0 auto;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 15px;
 }
 
 /* Estatísticas */
 .stats {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  max-width: 887px;
+  gap: 1.5rem;
   width: 100%;
-  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .stats {
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: minmax(250px, auto);
+  }
+
+  .stat-card:nth-child(3),
+  .stat-card-wide {
+    grid-column: span 2;
   }
 
   .stat-card:nth-child(3) {
-    grid-column: 1 / 3; /* Gráfico ocupa as duas colunas */
+    grid-column: 1 / 3; 
   }
 
   .stat-card-wide {
-    grid-column: 1 / 3; /* Lista ocupa as duas colunas */
+    grid-column: 1 / 3; 
   }
 }
 
@@ -114,7 +114,6 @@ h2 {
   margin-top: auto;
 }
 
-/* Lista de retiradas dentro do card maior */
 .stat-card-wide ul.recent-retiradas {
   text-align: left;
   max-height: 200px;
@@ -124,7 +123,6 @@ h2 {
   padding-right: 0;
 }
 
-/* Cada item ocupa toda a largura com margem interna */
 .recent-item {
   background: #e9ecef;
   padding: 15px 20px;
@@ -134,7 +132,6 @@ h2 {
   box-sizing: border-box;
 }
 
-/* Alinhar corretamente conteúdo interno */
 .recent-details {
   display: flex;
   justify-content: space-between;
@@ -143,7 +140,6 @@ h2 {
   width: 100%;
 }
 
-/* Responsividade para os textos e valores */
 .recent-details-title {
   display: flex;
   flex-direction: column;
