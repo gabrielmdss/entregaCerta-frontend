@@ -49,10 +49,14 @@
       <h5>Cadastro de Novo Assistido</h5>
       <button class="close-button" (click)="closeModal()">&#10005;</button>
     </div>
-  
+
     <!-- Conteúdo do Modal -->
     <div>
-      <input id="nome" placeholder="Nome do assistido" [(ngModel)]="novoAssistido.nome"/>
+      <input
+        id="nome"
+        placeholder="Nome do assistido"
+        [(ngModel)]="novoAssistido.nome"
+      />
     </div>
     <div>
       <input
@@ -63,8 +67,20 @@
         appDocumentMask
       />
     </div>
-  
-    <!-- Footer com botões alinhados à direita -->
+    <div>
+      <input
+        type="date"
+        id="data_nascimento"
+        [(ngModel)]="novoAssistido.data_nascimento"
+        placeholder="Data de Nascimento"
+      />
+    </div>
+    <div>
+      <input type="file" (change)="onFileChangeCadastrar($event)" />
+      <div *ngIf="isUploading" class="spinner"></div>
+      <img *ngIf="isUploading && novoAssistido.imagem" [src]="novoAssistido.imagem" width="200" height="200" />
+    </div>
+
     <div class="footer-modal">
       <button (click)="closeModal()" class="button">Cancelar</button>
       <button (click)="cadastrarAssistido()" class="btn">
@@ -77,12 +93,18 @@
     <!-- Header do Modal com X para fechar -->
     <div class="title-modal">
       <h5>Editar Dados do Assistido</h5>
-      <button class="close-button" (click)="closeModalEditar()">&#10005;</button>
+      <button class="close-button" (click)="closeModalEditar()">
+        &#10005;
+      </button>
     </div>
-  
+
     <!-- Conteúdo do Modal -->
     <div>
-      <input id="nome" placeholder="Nome do assistido" [(ngModel)]="atualizarAssistido.nome"/>
+      <input
+        id="nome"
+        placeholder="Nome do assistido"
+        [(ngModel)]="atualizarAssistido.nome"
+      />
     </div>
     <div>
       <input
@@ -93,14 +115,26 @@
         appDocumentMask
       />
     </div>
-  
+    <div>
+      <input
+        type="date"
+        id="data_nascimento"
+        [(ngModel)]="atualizarAssistido.data_nascimento"
+        placeholder="Data de Nascimento"
+      />
+    </div>
+    <div>
+      <input type="file" (change)="onFileChangeEditar($event)" />
+      <div *ngIf="isUploading" class="spinner"></div>
+      <img *ngIf="isUploading && atualizarAssistido.imagem" [src]="atualizarAssistido.imagem" width="200" height="200" />
+    </div>
+
     <!-- Footer com botões alinhados à direita -->
     <div class="footer-modal">
-       <div class="footer-buttons-actions">
-         <button (click)="closeModalEditar()" class="button">Cancelar</button>
-         <button (click)="editarAssistido()" class="btn">Atualizar</button>
-       </div>
+      <div class="footer-buttons-actions">
+        <button (click)="closeModalEditar()" class="button">Cancelar</button>
+        <button (click)="editarAssistido()" class="btn">Atualizar</button>
+      </div>
     </div>
   </dialog>
-  
 </div>

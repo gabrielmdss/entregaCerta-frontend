@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { baseUrl } from '../config/api';
+import { Assistido } from '../models/assistido.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,18 +13,15 @@ export class AssistidosService {
   listarAssistidos(): Observable<any> {
     return this.http.get<any>(`${baseUrl}/assistido`);
   }
-  cadastrarAssistido(nome: string, documento: string): Observable<any> {
-    const body = {
-      nome,
-      documento,
-    };
+  obterAssistidoById(id: number): Observable<any>{
+    return this.http.get<any>(`${baseUrl}/assistido/${id}`);
+  }
+  cadastrarAssistido(input: Assistido): Observable<any> {
+    const body = input
     return this.http.post<any>(`${baseUrl}/assistido`, body);
   }
-  editarAssistido(id:number | null, nome: string, documento: string): Observable<any> {
-    const body = {
-      nome,
-      documento,
-    };
+  editarAssistido(id:number | null, input: Partial<Assistido>): Observable<any> {
+    const body = input
     return this.http.put<any>(`${baseUrl}/assistido/${id}`, body);
   }
   excluirAssistido(id: number): Observable<any> {
