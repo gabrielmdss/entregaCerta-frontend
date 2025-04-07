@@ -185,7 +185,8 @@
 
       <div class="body-modal-detalhes">
         <div class="foto-info">
-          <img
+          <img 
+          *ngIf="!isLoading"
             [src]="assistidoDetalhes.imagem ?? 'https://randomuser.me/api/portraits/men/45.jpg'"
             alt="Foto do assistido"
             class="foto-assistido"

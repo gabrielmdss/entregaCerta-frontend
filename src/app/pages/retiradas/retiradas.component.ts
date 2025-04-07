@@ -165,6 +165,7 @@ export class RetiradasComponent {
     this.mostrarModal = false;
   }
   filtrarRetiradasPorAssistido(): void {
+    this.isLoading = true
     if (this.assistidoIdFilter !== null) {
       this.retiradasService
         .selectByAssistidoId(this.assistidoIdFilter)
@@ -177,7 +178,9 @@ export class RetiradasComponent {
             Swal.fire('Erro!', err.error.message, 'error');
           },
           complete: () => {
+            this.isLoading= false
             this.openModalDetalhesAssistido();
+
           }
         });
     }
