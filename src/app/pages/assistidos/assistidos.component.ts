@@ -52,7 +52,7 @@ export class AssistidosComponent implements OnInit {
 
   cadastrarAssistido(): void {
     this.assistidosService
-      .cadastrarAssistido(this.novoAssistido.nome, this.novoAssistido.documento)
+      .cadastrarAssistido(this.novoAssistido)
       .subscribe({
         next: (response: any) => {
           Swal.fire({
@@ -80,7 +80,7 @@ export class AssistidosComponent implements OnInit {
   }
 
   editarAssistido(): void {
-    this.assistidosService.editarAssistido(this.assistidoId,this.atualizarAssistido.nome, this.atualizarAssistido.documento).subscribe({
+    this.assistidosService.editarAssistido(this.assistidoId,this.atualizarAssistido).subscribe({
       next: (response: any) => {
         Swal.fire({
           title: 'Assistido Atualizado!',

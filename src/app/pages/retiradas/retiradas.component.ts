@@ -7,10 +7,11 @@ import { Assistido } from '../../models/assistido.interface';
 import { RetiradasService } from '../../services/retiradas.service';
 import { SelectComponent } from '../../shared/components/select/select.component';
 import Swal from 'sweetalert2';
+import { DocumentPipe } from "../../utils/pipes/document.pipe";
 
 @Component({
   selector: 'app-retiradas',
-  imports: [FormsModule, CommonModule, SelectComponent],
+  imports: [FormsModule, CommonModule, SelectComponent, DocumentPipe],
   templateUrl: './retiradas.component.html',
   styleUrl: './retiradas.component.css',
 })
@@ -170,6 +171,7 @@ export class RetiradasComponent {
         .subscribe({
           next: (retiradas) => {
             this.retiradas = retiradas;
+            console.log(retiradas)
           },
           error(err: any) {
             Swal.fire('Erro!', err.error.message, 'error');
