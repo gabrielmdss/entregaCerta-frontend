@@ -7,6 +7,7 @@ import { Assistido } from '../../models/assistido.interface';
 import { RetiradasService } from '../../services/retiradas.service';
 import { SelectComponent } from '../../shared/components/select/select.component';
 import Swal from 'sweetalert2';
+import { error } from 'console';
 
 @Component({
   selector: 'app-retiradas',
@@ -152,7 +153,6 @@ export class RetiradasComponent {
         complete: () => {
           this.obterRetiradas(this.currentPage, this.selectedPageSize);
           this.closeModalRegistrar();
-
         },
       });
     this.mostrarModal = false;
@@ -161,8 +161,13 @@ export class RetiradasComponent {
     if (this.assistidoIdFilter !== null) {
       this.retiradasService
         .selectByAssistidoId(this.assistidoIdFilter)
-        .subscribe((retiradas) => {
-          this.retiradas = retiradas;
+        .subscribe({
+          next: (retiradas) => {
+            this.retiradas = retiradas;
+          },
+          error(err: any) {
+            Swal.fire('Erro!', err.error.message, 'error');
+          },
         });
     }
   }
@@ -171,8 +176,13 @@ export class RetiradasComponent {
     if (this.dataInicialFilter && this.dataFinalFilter) {
       this.retiradasService
         .selectByDataIntervalo(this.dataInicialFilter, this.dataFinalFilter)
-        .subscribe((retiradas) => {
-          this.retiradas = retiradas;
+        .subscribe({
+          next: (retiradas) => {
+            this.retiradas = retiradas;
+          },
+          error(err: any) {
+            Swal.fire('Erro!', err.error.message, 'error');
+          },
         });
     }
   }
@@ -183,7 +193,7 @@ export class RetiradasComponent {
     this.dataInicialFilter = null;
     this.dataFinalFilter = null;
     this.searchTerm = '';
-    this.novaRetirada.assistido_id = 0
+    this.novaRetirada.assistido_id = 0;
     this.obterRetiradas(this.currentPage, this.selectedPageSize);
   }
   onAssistidoSelecionado(assistido: any) {
@@ -215,7 +225,7 @@ export class RetiradasComponent {
     this.mostrarModal = false;
   }
   closeModalRegistrar() {
-    this.novaRetirada.assistido_id = 0
+    this.novaRetirada.assistido_id = 0;
     this.mostrarModalRegistrar = false;
   }
   changePage(page: number): void {

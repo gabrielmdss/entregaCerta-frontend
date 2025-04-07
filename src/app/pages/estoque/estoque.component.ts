@@ -178,7 +178,5 @@ export class EstoqueComponent implements OnInit {
         item.descricao.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
-
-    console.log('Filtrar Estoque finalizado', this.estoqueFiltrados);
   }
 }
