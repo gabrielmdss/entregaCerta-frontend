@@ -100,39 +100,6 @@
     </button>
   </div>
 
-  <div *ngIf="mostrarModal" class="modal-overlay">
-    <dialog *ngIf="mostrarModal" class="modal">
-      <div class="title-modal">
-        <h5>Alterar Retirada</h5>
-        <button class="close-button" (click)="closeModal()">&#10005;</button>
-      </div>
-      <div class="body-modal">
-        <div>
-          <label for="nome">Nome</label>
-          <input
-            id="nome"
-            [(ngModel)]="retiradaEditada.nome"
-            placeholder="Nome do assistido"
-          />
-        </div>
-        <div>
-          <label for="data_retirada">Data de Retirada</label>
-          <input
-            type="date"
-            id="data_retirada"
-            [(ngModel)]="retiradaEditada.data_retirada"
-          />
-        </div>
-      </div>
-
-      <div class="footer-modal">
-        <button (click)="closeModal()" class="button-cancelar">Cancelar</button>
-        <button (click)="confirmarAlteracao()" class="btn">
-          <i class="fa fa-plus"></i> Cadastrar
-        </button>
-      </div>
-    </dialog>
-  </div>
   <div *ngIf="mostrarModalRegistrar" class="modal-overlay">
     <dialog *ngIf="mostrarModalRegistrar" class="modal">
       <div class="title-modal">
@@ -167,4 +134,78 @@
       </div>
     </dialog>
   </div>
+
+  <div *ngIf="mostrarModal" class="modal-overlay">
+    <dialog *ngIf="mostrarModal" class="modal">
+      <div class="title-modal">
+        <h5>Alterar Retirada</h5>
+        <button class="close-button" (click)="closeModal()">&#10005;</button>
+      </div>
+      <div class="body-modal">
+        <div>
+          <label for="nome">Nome</label>
+          <input
+            id="nome"
+            [(ngModel)]="retiradaEditada.nome"
+            placeholder="Nome do assistido"
+          />
+        </div>
+        <div>
+          <label for="data_retirada">Data de Retirada</label>
+          <input
+            type="date"
+            id="data_retirada"
+            [(ngModel)]="retiradaEditada.data_retirada"
+          />
+        </div>
+      </div>
+
+      <div class="footer-modal">
+        <button (click)="closeModal()" class="button-cancelar">Cancelar</button>
+        <button (click)="confirmarAlteracao()" class="btn">
+          <i class="fa fa-plus"></i> Cadastrar
+        </button>
+      </div>
+    </dialog>
+  </div>
+
+  <div *ngIf="mostrarModalDetalhesAssistido" class="modal-overlay">
+    <dialog class="modal">
+      <div class="title-modal">
+        <h5>Detalhes do Assistido</h5>
+        <button class="close-button" (click)="closeModalDetalhesAssistido()">&#10005;</button>
+      </div>
+  
+      <div class="body-modal-detalhes">
+        <div class="foto-info">
+          <img
+            src="https://randomuser.me/api/portraits/men/45.jpg"
+            alt="Foto do assistido"
+            class="foto-assistido"
+          />
+  
+          <div class="info-basica">
+            <p><strong>Nome:</strong>{{assistidoDetalhes.nome}}</p>
+            <p><strong>Documento:</strong>{{assistidoDetalhes.documento}}</p>
+            <p><strong>Data de nascimento:</strong> 15/04/1980</p>
+          </div>
+        </div>
+  
+        <div class="ultimas-retiradas">
+          <h6>Últimas Retiradas</h6>
+          <ul>
+            <li>05/04/2025 - Cesta Básica</li>
+            <li>08/03/2025 - Cesta Básica</li>
+            <li>10/02/2025 - Cesta Básica</li>
+            <li>15/01/2025 - Cesta Básica</li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="footer-modal">
+        <button class="btn btn-fechar" (click)="closeModalDetalhesAssistido()">Fechar</button>
+      </div>
+    </dialog>
+  </div>
+    
 </div>

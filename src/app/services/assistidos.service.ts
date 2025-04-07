@@ -12,6 +12,9 @@ export class AssistidosService {
   listarAssistidos(): Observable<any> {
     return this.http.get<any>(`${baseUrl}/assistido`);
   }
+  obterAssistidoById(id: number): Observable<any>{
+    return this.http.get<any>(`${baseUrl}/assistido/${id}`);
+  }
   cadastrarAssistido(nome: string, documento: string): Observable<any> {
     const body = {
       nome,

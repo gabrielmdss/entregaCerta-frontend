@@ -211,35 +211,49 @@ h2 {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
 }
+
 .modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
-  padding: 30px;
-  border-radius: 8px;
+  width: 90%;
   max-width: 500px;
-  width: 100%;
-  z-index: 1001;
+  background: white;
+  border-radius: 8px;
+  border: none !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
 }
+
 .title-modal {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
 }
-.body-modal input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+
+.title-modal h5 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--main-modal-title-color);
 }
-.footer-modal {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #1a1c27;
+}
+
+.close-button:hover {
+  color: red;
 }
 
 /* botão cancelar */
@@ -283,4 +297,105 @@ h2 {
   .btn {
     width: 100%;
   }
+}
+
+.body-modal-detalhes {
+  background-color: #fdfdfd;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilo da área da foto e info */
+.foto-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Foto redonda com moldura */
+.foto-assistido {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 3px solid #bbb;
+  box-shadow: 0 0 4px rgba(0,0,0,0.15);
+}
+
+/* Informações com estilo de RG */
+.info-basica {
+  flex: 1;
+}
+.info-basica p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #333;
+}
+.info-basica strong {
+  color: #555;
+}
+
+/* Últimas retiradas estilo lista RG */
+.ultimas-retiradas h6 {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+}
+.ultimas-retiradas ul {
+  padding-left: 20px;
+  margin: 0;
+}
+.ultimas-retiradas li {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  color: #444;
+}
+
+/* Botão fechar */
+.btn-fechar {
+  background-color: #6c757d;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-fechar:hover {
+  background-color: #5a6268;
+}
+
+/* Modal geral com aparência de documento */
+.modal {
+  background: #ffffff;
+  border: 2px solid #aaa;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 550px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+}
+
+.title-modal h5 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #888;
+}
+.close-button:hover {
+  color: #333;
 }

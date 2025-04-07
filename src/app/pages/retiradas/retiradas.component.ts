@@ -7,7 +7,6 @@ import { Assistido } from '../../models/assistido.interface';
 import { RetiradasService } from '../../services/retiradas.service';
 import { SelectComponent } from '../../shared/components/select/select.component';
 import Swal from 'sweetalert2';
-import { error } from 'console';
 
 @Component({
   selector: 'app-retiradas',
@@ -27,6 +26,7 @@ export class RetiradasComponent {
 
   mostrarModal: boolean = false;
   mostrarModalRegistrar: boolean = false;
+  mostrarModalDetalhesAssistido: boolean = false;
   retiradaEditada: any = { nome: '', data_retirada: '' };
 
   retiradas: Retirada[] = [];
@@ -45,6 +45,12 @@ export class RetiradasComponent {
     documento: '',
     nome: '',
   };
+
+  assistidoDetalhes: Assistido = {
+    id: 0,
+    nome: "",
+    documento: ""
+  }
 
   ngOnInit(): void {
     this.obterAssistidos();
@@ -168,10 +174,12 @@ export class RetiradasComponent {
           error(err: any) {
             Swal.fire('Erro!', err.error.message, 'error');
           },
+          complete: () => {
+            this.openModalDetalhesAssistido();
+          }
         });
     }
   }
-
   filtrarRetiradasPorIntervalo(): void {
     if (this.dataInicialFilter && this.dataFinalFilter) {
       this.retiradasService
@@ -186,7 +194,16 @@ export class RetiradasComponent {
         });
     }
   }
-
+  obterQuantidadeRetiradas(): void {
+    this.retiradasService.obterQuantidadeRetiradas().subscribe({
+      next: (total: number) => {
+        this.totalRetiradas = total;
+      },
+      error: (err: any) => {
+        console.log('Erro ao obter quantidade de retiradas:', err);
+      },
+    });
+  }
   limparFiltros(): void {
     this.assistidoIdFilter = null;
     this.dataFilter = null;
@@ -206,28 +223,34 @@ export class RetiradasComponent {
     this.retiradaEditada = { ...retirada };
     this.mostrarModal = true;
   }
+  closeModal() {
+    this.mostrarModal = false;
+  }
   openModalRegistrar(retirada: any) {
     this.retiradaEditada = { ...retirada };
     this.mostrarModalRegistrar = true;
-  }
-  obterQuantidadeRetiradas(): void {
-    this.retiradasService.obterQuantidadeRetiradas().subscribe({
-      next: (total: number) => {
-        this.totalRetiradas = total;
-      },
-      error: (err: any) => {
-        console.log('Erro ao obter quantidade de retiradas:', err);
-      },
-    });
-  }
-
-  closeModal() {
-    this.mostrarModal = false;
   }
   closeModalRegistrar() {
     this.novaRetirada.assistido_id = 0;
     this.mostrarModalRegistrar = false;
   }
+  openModalDetalhesAssistido() {
+    if (this.assistidoIdFilter !== null) {
+      this.assistidosService.obterAssistidoById(this.assistidoIdFilter).subscribe({
+        next: (response: Assistido) => {
+          this.assistidoDetalhes = response
+        },
+        error(err: any) {
+          console.log(err)
+        },
+      })
+    } 
+    this.mostrarModalDetalhesAssistido = true;
+  }
+  closeModalDetalhesAssistido() {
+    this.mostrarModalDetalhesAssistido = false;
+  }
+
   changePage(page: number): void {
     if (page > 0 && page <= this.totalPages) {
       this.currentPage = page;
