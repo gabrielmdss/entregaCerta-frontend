@@ -166,15 +166,7 @@ export class RetiradasComponent {
         });
     }
   }
-  filtrarRetiradasPorData(): void {
-    if (this.dataFilter) {
-      this.retiradasService
-        .selectByData(this.dataFilter)
-        .subscribe((retiradas) => {
-          this.retiradas = retiradas;
-        });
-    }
-  }
+
   filtrarRetiradasPorIntervalo(): void {
     if (this.dataInicialFilter && this.dataFinalFilter) {
       this.retiradasService

@@ -1,20 +1,25 @@
 .footer-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--main-footer-background-color);
-    padding: 10px 20px;
-    color: white;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000;
-    min-height: 87px;
-    
-    strong {
-        text-align: center;
-        font-family: 'Inter';
-        font-weight: 400;
-        font-size: 16px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--main-footer-background-color);
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  min-height: 45px;
+
+  strong {
+    text-align: center;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 770px) {
+  .footer-container {
+    display: none;
+  }
 }
