@@ -34,6 +34,7 @@ export class AssistidosComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarAssistidos();
+    
   }
 
   listarAssistidos(): void {
@@ -78,6 +79,7 @@ export class AssistidosComponent implements OnInit {
       },
       complete: () => {
         this.listarAssistidos();
+        this.limparInputs()
         this.closeModal();
       },
     });
@@ -109,6 +111,7 @@ export class AssistidosComponent implements OnInit {
         },
         complete: () => {
           this.listarAssistidos();
+          this.limparInputs()
           this.closeModalEditar();
         },
       });
@@ -215,5 +218,22 @@ export class AssistidosComponent implements OnInit {
 
   closeModalEditar() {
     this.mostrarModalEditar = false;
+  }
+  limparInputs(){
+    this.atualizarAssistido = {
+      id: 0,
+      nome: '',
+      data_nascimento: '',
+      documento: '',
+      imagem: ''
+    };
+
+    this.novoAssistido = {
+      id: 0,
+      nome: '',
+      data_nascimento: '',
+      documento: '',
+      imagem: ''
+    }
   }
 }

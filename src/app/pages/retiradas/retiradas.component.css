@@ -92,6 +92,7 @@ h2 {
 /* filtros */
 .filters-container {
   margin-bottom: 30px;
+  background-color: #EBE9E9;
 }
 
 /* mesma largura e padding para ambos os containers */
@@ -137,10 +138,17 @@ h2 {
 
   .input-group {
     width: 100%;
+
+
+    
   }
 
   button {
     padding: 9px;
+    background-color: #336699;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5%;
   }
 
 }
@@ -166,8 +174,21 @@ h2 {
 
   button {
     padding: 9px;
+    background-color: #336699;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5%;
   }
 }
+
+button {
+  padding: 9px;
+  background-color: #336699;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 5%;
+}
+
 
 .form-group {
   display: flex;
@@ -203,47 +224,6 @@ h2 {
   align-items: center;
 }
 
-/* modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  background: white;
-  border-radius: 8px;
-  border: none !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
-}
-
-.title-modal {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-}
-
-.title-modal h5 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: var(--main-modal-title-color);
-}
-
 .close-button {
   background: none;
   border: none;
@@ -270,11 +250,11 @@ h2 {
 
 /* botão limpar filtro */
 .button-clear {
-  background-color: #ffc107;
+  background-color: #336699;
   border: none;
   padding: 10px;
   border-radius: 5px;
-  color: #000;
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -283,7 +263,7 @@ h2 {
   margin-right: 5px;
 }
 .button-clear:hover {
-  background-color: #e0a800;
+  background-color: #336699;
 }
 
 /* responsividade */
@@ -297,13 +277,6 @@ h2 {
   .btn {
     width: 100%;
   }
-}
-
-.body-modal-detalhes {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 }
 
 .foto-info {
@@ -385,23 +358,6 @@ h2 {
   background-color: #5a6268;
 }
 
-/* Modal geral com aparência de documento */
-.modal {
-  background: #ffffff;
-  border: 2px solid #aaa;
-  border-radius: 12px;
-  padding: 20px;
-  max-width: 550px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 1rem;
-}
-
-.title-modal h5 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #222;
-}
-
 .close-button {
   background: transparent;
   border: none;
@@ -414,6 +370,125 @@ h2 {
 }
 
 /* Item de Loading */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 0.8s linear infinite;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Modal Overlay === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos gerais do modal */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  border-radius: 8px;
+  border: none !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+/* Cabeçalho do modal */
+.title-modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.title-modal h5 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--main-modal-title-color);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #1a1c27;
+}
+
+.close-button:hover {
+  color: red;
+}
+
+/* Campos de entrada dentro do modal */
+.modal input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Rodapé do modal */
+.footer-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.footer-buttons-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Responsividade do modal */
+@media (max-width: 480px) {
+  .modal {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .title-modal h5 {
+    font-size: 1rem;
+  }
+
+  .footer-modal {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button,
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Item de Loading (spinner) */
 .spinner {
   border: 4px solid #f3f3f3;
   border-top: 4px solid #3498db;

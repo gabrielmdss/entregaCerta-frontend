@@ -78,7 +78,7 @@
     <div>
       <input type="file" (change)="onFileChangeCadastrar($event)" />
       <div *ngIf="isUploading" class="spinner"></div>
-      <img *ngIf="isUploading && novoAssistido.imagem" [src]="novoAssistido.imagem" width="200" height="200" />
+      <img *ngIf="!isUploading && novoAssistido.imagem" [src]="novoAssistido.imagem" width="200" height="200" />
     </div>
 
     <div class="footer-modal">
@@ -126,7 +126,7 @@
     <div>
       <input type="file" (change)="onFileChangeEditar($event)" />
       <div *ngIf="isUploading" class="spinner"></div>
-      <img *ngIf="isUploading && atualizarAssistido.imagem" [src]="atualizarAssistido.imagem" width="200" height="200" />
+      <img *ngIf="!isUploading && atualizarAssistido.imagem" [src]="atualizarAssistido.imagem" width="200" height="200" />
     </div>
 
     <!-- Footer com botões alinhados à direita -->

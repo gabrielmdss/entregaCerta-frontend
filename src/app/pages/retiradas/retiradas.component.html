@@ -43,7 +43,7 @@
           </div>
           <button
             (click)="filtrarRetiradasPorIntervalo()"
-            class="button button-search"
+            class="button"
           >
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
@@ -187,7 +187,7 @@
         <div class="foto-info">
           <img 
           *ngIf="!isLoading"
-            [src]="assistidoDetalhes.imagem ?? 'https://randomuser.me/api/portraits/men/45.jpg'"
+            [src]="assistidoDetalhes.imagem ?? 'https://res.cloudinary.com/dhpteq1gq/image/upload/v1744070495/assistidos/pbhvegkmq5ia0wima4jd.jpg'"
             alt="Foto do assistido"
             class="foto-assistido"
           />
