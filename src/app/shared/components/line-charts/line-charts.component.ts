@@ -1,11 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
-import { NgChartsModule,BaseChartDirective  } from 'ng2-charts';
+import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-line-charts',
+  standalone: true,
   imports: [NgChartsModule, CommonModule],
   templateUrl: './line-charts.component.html',
   styleUrl: './line-charts.component.css',
@@ -16,7 +17,7 @@ export class LineChartsComponent implements OnChanges {
 
   isBrowser: boolean;
 
-  private readonly mesesFixos = [
+  private readonly mesesFixos: string[] = [
     'janeiro',
     'fevereiro',
     'marco',
@@ -31,12 +32,33 @@ export class LineChartsComponent implements OnChanges {
     'dezembro',
   ];
 
+  private readonly mesesInglesParaPortugues: Record<string, string> = {
+    january: 'janeiro',
+    february: 'fevereiro',
+    march: 'marco',
+    april: 'abril',
+    may: 'maio',
+    june: 'junho',
+    july: 'julho',
+    august: 'agosto',
+    september: 'setembro',
+    october: 'outubro',
+    november: 'novembro',
+    december: 'dezembro',
+  };
+
   private normalizarMes(mesCompleto: string): string {
-    const nomeMes = mesCompleto.split(' ')[0];
-    return nomeMes
+    let nomeMes = mesCompleto.split(' ')[0];
+    nomeMes = nomeMes
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
+
+    if (this.mesesInglesParaPortugues[nomeMes]) {
+      nomeMes = this.mesesInglesParaPortugues[nomeMes];
+    }
+
+    return nomeMes;
   }
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
@@ -91,7 +113,6 @@ export class LineChartsComponent implements OnChanges {
 
       const newData = this.mesesFixos.map((mes) => dadosPorMes[mes] ?? 0);
 
-      // Só atualiza se os dados realmente mudaram
       const currentData = this.lineChartData.datasets[0]?.data ?? [];
       const isDifferent =
         JSON.stringify(newData) !== JSON.stringify(currentData);
