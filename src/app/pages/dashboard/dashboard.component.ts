@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.retiradasPorMes(this.anoAtual.toString()).subscribe({
       next: (response: any) => {
         this.retiradasPorMes = response;
+        console.log("retiradasPorMes", this.retiradasPorMes)
       },
       error: (error: any) => {
         console.log(error);
@@ -64,6 +65,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.ultimasCincoRetiradas().subscribe({
       next: (response: any) => {
         this.ultimasRetiradas = response;
+        console.log("ultimasCincoRetiradas",response)
       },
       error: (error: any) => {
         console.log(error);
