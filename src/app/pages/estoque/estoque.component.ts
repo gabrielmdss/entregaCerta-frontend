@@ -94,7 +94,7 @@ export class EstoqueComponent implements OnInit {
       html: `
         <p><strong>Item:</strong> ${item.descricao}</p>
         <p><strong>Quantidade atual:</strong> ${item.quantidade}</p>
-        <input id="quantidade" type="number" class="swal2-input" placeholder="Informe o valor a ajustar (use '-' para subtrair)">
+        <input id="quantidade" type="text" class="swal2-input" placeholder="Informe o valor a ajustar (use '-' para subtrair)">
       `,
       showCancelButton: true,
       confirmButtonText: 'Ajustar',
