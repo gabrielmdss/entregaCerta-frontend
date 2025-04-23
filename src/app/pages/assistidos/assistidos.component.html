@@ -50,7 +50,7 @@
     </li>
   </ul>
 
-  <div *ngIf="mostrarModal" class="modal-overlay"></div>
+  <div *ngIf="mostrarModal || mostrarModalEditar" class="modal-overlay"></div>
 
   <dialog *ngIf="mostrarModal" class="modal">
     <!-- Header do Modal com X para fechar -->
