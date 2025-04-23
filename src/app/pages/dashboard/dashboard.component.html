@@ -31,7 +31,7 @@
                 }}</span>
                 <div class="recent-details-value">
                   <span>{{ retirada.documento | documentTranslate }}</span>
-                  <span>{{ retirada.data_retirada | date }}</span>
+                  <span>{{ retirada.data_retirada | date : "MMM d, yyyy" : "UTC" }}</span>
                 </div>
               </div>
             </div>

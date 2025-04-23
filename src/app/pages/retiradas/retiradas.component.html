@@ -205,7 +205,7 @@
           <h6>Últimas Retiradas</h6>
           <ul>
             <li *ngFor="let retirada of retiradas.slice(0, 4)">
-              {{ retirada.data_retirada | date: 'dd/MM/yyyy' }}
+              {{ retirada.data_retirada | date : "MMM d, yyyy" : "UTC" }}
             </li>
           </ul>
         </div>
