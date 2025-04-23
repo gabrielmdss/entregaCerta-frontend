@@ -38,6 +38,7 @@ export class RetiradasComponent {
   totalPages: number = 0;
   itemsPerPageOptions: number[] = [5, 10, 20, 50];
   selectedPageSize: number = 10;
+  imagemExpandida = false;
 
   novaRetirada: Retirada = {
     id: 0,
@@ -266,5 +267,13 @@ export class RetiradasComponent {
     this.selectedPageSize = size;
     this.pageSize = size;
     this.obterRetiradas(this.currentPage, this.selectedPageSize);
+  }
+
+  expandirImagem() {
+    this.imagemExpandida = true; 
+  }
+
+  fecharImagem() {
+    this.imagemExpandida = false;
   }
 }

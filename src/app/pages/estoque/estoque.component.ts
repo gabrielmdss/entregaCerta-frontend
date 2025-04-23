@@ -89,43 +89,59 @@ export class EstoqueComponent implements OnInit {
   ajustarQuantidade(id: number): void {
     const item = this.estoque.find((i) => i.id === id);
     if (!item) return;
+
     Swal.fire({
       title: 'Ajustar Estoque',
       html: `
         <p><strong>Item:</strong> ${item.descricao}</p>
         <p><strong>Quantidade atual:</strong> ${item.quantidade}</p>
-        <input id="quantidade" type="text" class="swal2-input" placeholder="Informe o valor a ajustar (use '-' para subtrair)">
+        <input id="quantidade" type="number" min="1" class="swal2-input" placeholder="Informe a quantidade">
+        <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+          <button id="btn-adicionar" class="swal2-confirm swal2-styled" style="background-color: #28a745;">Adicionar</button>
+          <button id="btn-subtrair" class="swal2-cancel swal2-styled" style="background-color: #dc3545;">Subtrair</button>
+        </div>
       `,
-      showCancelButton: true,
-      confirmButtonText: 'Ajustar',
-      cancelButtonText: 'Cancelar',
-      preConfirm: () => {
-        const quantidade = parseInt(
-          (document.getElementById('quantidade') as HTMLInputElement).value,
-          10
-        );
+      showConfirmButton: false,
+      showCancelButton: false,
+      didOpen: () => {
+        const input = document.getElementById('quantidade') as HTMLInputElement;
 
-        if (isNaN(quantidade) || quantidade === 0) {
-          Swal.showValidationMessage('Digite um valor válido diferente de 0.');
-          return false;
-        }
+        const ajustarEstoque = (quantidade: number) => {
+          this.estoqueService.adjustStock(id, quantidade).subscribe({
+            next: (response: any) => {
+              Swal.fire('Sucesso!', 'Estoque ajustado com sucesso.', 'success');
+              console.log(response);
+              this.carregarEstoque();
+            },
+            error: (err: any) => {
+              Swal.fire('Erro!', err.error.message, 'error');
+              console.error(err);
+            },
+          });
+        };
 
-        return { quantidade };
+        document
+          .getElementById('btn-adicionar')
+          ?.addEventListener('click', () => {
+            const qtd = parseInt(input.value, 10);
+            if (isNaN(qtd) || qtd <= 0) {
+              Swal.showValidationMessage('Digite um valor válido maior que 0.');
+              return;
+            }
+            ajustarEstoque(qtd);
+          });
+
+        document
+          .getElementById('btn-subtrair')
+          ?.addEventListener('click', () => {
+            const qtd = parseInt(input.value, 10);
+            if (isNaN(qtd) || qtd <= 0) {
+              Swal.showValidationMessage('Digite um valor válido maior que 0.');
+              return;
+            }
+            ajustarEstoque(-qtd);
+          });
       },
-    }).then((result) => {
-      if (result.isConfirmed && result.value) {
-        this.estoqueService.adjustStock(id, result.value.quantidade).subscribe({
-          next: (response: any) => {
-            Swal.fire('Sucesso!', 'Estoque ajustado com sucesso.', 'success');
-            console.log(response);
-            this.carregarEstoque();
-          },
-          error: (err: any) => {
-            Swal.fire('Erro!', err.error.message, 'error');
-            console.error(err);
-          },
-        });
-      }
     });
   }
 

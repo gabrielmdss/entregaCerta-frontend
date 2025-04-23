@@ -27,7 +27,6 @@ h1 {
   font-size: 2rem;
   padding-top: 5%;
   margin: 15px 0;
-
 }
 
 /* Título da lista de assistidos */
@@ -72,7 +71,7 @@ h2 {
   transition: background-color 0.3s;
 }
 
-.btn-cancel{
+.btn-cancel {
   padding: 10px 20px;
   background-color: #616161;
   color: white;
@@ -133,8 +132,6 @@ h2 {
   transition: background-color 0.3s;
 }
 
-
-
 .btn-delete:hover {
   background-color: #c0392b;
 }
@@ -160,6 +157,12 @@ h2 {
   .btn {
     width: 100%;
   }
+}
+@media (max-width: 640px) {
+  .btn-label {
+    display: none;
+  }
+
 }
 /* Campo de Pesquisa */
 .search-container {
@@ -278,7 +281,7 @@ h2 {
   max-width: 500px;
   background: white;
   border-radius: 8px;
-  border: none !important; 
+  border: none !important;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   display: flex;
@@ -367,10 +370,6 @@ input {
 }
 
 
-.actions-buttons i {
-display: none;
-}
-
 /* Responsividade */
 @media (max-width: 480px) {
   .modal {
@@ -392,6 +391,10 @@ display: none;
     width: 100%;
     text-align: center;
   }
+
+  .actions-buttons-span {
+    display: none;
+  }
 }
 
 /* Item de Loading */
@@ -406,6 +409,10 @@ display: none;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -185,23 +185,19 @@
 
       <div class="body-modal-detalhes">
         <div class="foto-info">
+          <!-- Tornar a imagem clicável -->
           <img 
-          *ngIf="!isLoading"
+            *ngIf="!isLoading"
             [src]="assistidoDetalhes.imagem ?? 'https://res.cloudinary.com/dhpteq1gq/image/upload/v1744070495/assistidos/pbhvegkmq5ia0wima4jd.jpg'"
             alt="Foto do assistido"
             class="foto-assistido"
+            (click)="expandirImagem()"
           />
       
           <div class="info-basica">
             <p><strong>Nome:</strong> {{ assistidoDetalhes.nome }}</p>
-            <p>
-              <strong>Documento:</strong>
-              {{ assistidoDetalhes.documento | documentTranslate }}
-            </p>
-            <p>
-              <strong>Data de nascimento:</strong>
-              {{ assistidoDetalhes.data_nascimento | date: 'dd/MM/yyyy' }}
-            </p>
+            <p><strong>Documento:</strong> {{ assistidoDetalhes.documento | documentTranslate }}</p>
+            <p><strong>Data de nascimento:</strong> {{ assistidoDetalhes.data_nascimento | date: 'dd/MM/yyyy' }}</p>
           </div>
         </div>
       
@@ -213,7 +209,17 @@
             </li>
           </ul>
         </div>
+      
+        <!-- Modal para exibir a imagem expandida -->
+        <div *ngIf="imagemExpandida" class="modal-imagem" (click)="fecharImagem()">
+          <img 
+            [src]="assistidoDetalhes.imagem ?? 'https://res.cloudinary.com/dhpteq1gq/image/upload/v1744070495/assistidos/pbhvegkmq5ia0wima4jd.jpg'"
+            alt="Imagem Expandida"
+            class="foto-expandida"
+          />
+        </div>
       </div>
+      
       
 
       <div class="footer-modal">

@@ -11,8 +11,11 @@
       />
       <i class="fa fa-search search-icon"></i>
     </div>
-    <button (click)="openModal()" class="btn">
-      <i class="fa fa-plus"></i> Cadastrar novo
+    <button (click)="openModal()" class="btn novo-assistido">
+      <i class="fa fa-plus"></i> 
+      <span class="btn-label">
+        Cadastrar novo
+      </span>
     </button>
   </div>
 
@@ -32,10 +35,16 @@
       </div>
       <div class="actions-buttons">
         <button (click)="openModalEditar(assistido.id)" class="btn-edit">
-          <i class="fa-solid fa-pencil"></i> Editar
+          <i class="fa-solid fa-pencil"></i> 
+          <span class="actions-buttons-span">
+            Editar
+          </span>
         </button>
         <button (click)="excluirAssistido(assistido.id)" class="btn-delete">
-          <i class="fa-solid fa-trash"></i> Excluir
+          <i class="fa-solid fa-trash"></i>
+          <span class="actions-buttons-span">
+            Excluir
+          </span>
         </button>
       </div>
     </li>
