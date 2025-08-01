@@ -12,13 +12,12 @@ body {
 }
 
 .container {
-  width: 100%;
-  max-width: 1200px; /* limite máximo para melhor leitura em desktop */
+  max-width: 1200px;
   margin: 0 auto;
   background: white;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px; /* adiciona espaçamento interno */
 }
 
 /* Título principal */
@@ -32,7 +31,7 @@ h1 {
 
 /* Título da lista de assistidos */
 h2 {
-  font-size: 2rem; /* 32px */
+  font-size: 32px;
   color: var(--main-titulo-color);
   font-weight: 400;
   margin-top: 30px;
@@ -45,7 +44,6 @@ h2 {
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 20px;
-  flex-wrap: wrap; /* permite quebrar em telas pequenas */
 }
 
 .input-field {
@@ -55,7 +53,6 @@ h2 {
   border-radius: 5px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
-  transition: border-color 0.3s ease;
 }
 
 .input-field:focus {
@@ -63,430 +60,359 @@ h2 {
   outline: none;
 }
 
-/* Botões principais */
-.btn,
-.btn-cancel {
+.btn {
   padding: 10px 20px;
-  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
   border: none;
   border-radius: 5px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  min-width: 120px;
-  text-align: center;
-  white-space: nowrap;
+  transition: background-color 0.3s;
 }
 
 .btn-cancel {
   padding: 10px 20px;
-  .btn {
-    background-color: #007bff;
-    color: white;
-    flex-grow: 1;
-    max-width: 200px;
-  }
+  background-color: #616161;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .btn-cancel {
-    background-color: #616161;
-    color: white;
-    flex-grow: 1;
-    max-width: 200px;
-  }
+.btn:hover {
+  background-color: #0056b3;
+}
 
-  .btn:hover {
-    background-color: #0056b3;
-  }
+/* Lista de Assistidos */
+.assistidos-list {
+  list-style-type: none;
+  padding: 0;
+}
 
-  .btn-cancel:hover {
-    background-color: #494949;
-  }
+.assistido-item {
+  background-color: #f9f9f9;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
 
-  /* Lista de Assistidos */
-  .assistidos-list {
-    list-style-type: none;
-    padding: 0;
-  }
+.assistido-item:hover {
+  background-color: #f1f1f1;
+}
 
-  .assistido-item {
-    background-color: #f9f9f9;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    color: #333;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: background-color 0.2s ease;
-  }
+/* Botão de exclusão */
+.btn-delete {
+  padding: 10px 20px;
+  background-color: #c32525;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .assistido-item:hover {
-    background-color: #f1f1f1;
-  }
+.btn-edit {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .assistido-info {
-    display: flex;
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+.actions-buttons {
+  padding: 5px;
+  display: flex;
+  gap: 5px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .form-container {
     flex-direction: column;
-    flex: 1; /* permite o texto ocupar espaço disponível */
-    overflow-wrap: break-word; /* evita overflow de texto longo */
-  }
-
-  .nome {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .documento {
-    font-size: 14px;
-    color: #555;
-  }
-
-  /* Botões de ação */
-  .actions-buttons {
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .btn-delete,
-  .btn-edit {
-    padding: 8px 16px;
-    font-size: 0.95rem;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .btn-delete {
-    background-color: #c32525;
-    color: white;
-  }
-
-  .btn-edit {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn-delete:hover {
-    background-color: #c0392b;
-  }
-
-  .btn-edit {
-    background-color: #007bff;
-    color: white;
-  }
-
-  .btn-edit:hover {
-    background-color: #0056b3;
-  }
-
-  .btn-delete i {
-    margin-right: 4px;
-  }
-
-  /* Campo de Pesquisa */
-  .search-container {
-    text-align: center;
-    background-color: #c1dff0;
-    max-height: 115px;
-    padding: 37px 27px 36px 27px;
-    display: flex;
-    flex-wrap: wrap; /* permite quebra em telas pequenas */
-    justify-content: center;
-    gap: 20px;
-  }
-
-  .input-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 546px;
-    display: flex;
-    align-items: center;
-  }
-
-  .input-field.search {
-    padding-left: 40px;
-    padding-right: 15px;
-    height: 42px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #908d8d;
-  }
-
-  /* Botão verde da pesquisa */
-  .btn.search-btn {
-    background-color: #20b258;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    min-width: 160px;
-    height: 42px;
-    justify-content: center;
-    white-space: nowrap;
-  }
-
-  .btn.search-btn i {
-    margin-right: 25px;
-  }
-
-  .btn.search-btn:hover {
-    background-color: #45a049;
-  }
-
-  /* Assistido item layout */
-  .assistido-item {
-    flex-direction: row;
     align-items: flex-start;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
   }
 
-  /* Modal overlay */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+  .input-field {
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-  }
-
-  /* Modal */
-  .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 500px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    z-index: 1010;
-    max-height: 90vh; /* Evita ultrapassar tela verticalmente */
-    overflow-y: auto; /* Scroll interno se necessário */
-  }
-
-  /* Cabeçalho do modal */
-  .title-modal {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-  }
-
-  .title-modal h5 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: var(--main-modal-title-color);
-  }
-
-  .close-button {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #1a1c27;
-    transition: color 0.3s ease;
-  }
-
-  .close-button:hover {
-    color: red;
-  }
-
-  /* Campos de entrada */
-  input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    box-sizing: border-box;
-  }
-
-  /* Rodapé do modal */
-  .footer-modal,
-  .footer-buttons-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
-
-  /* Botões */
-  .button,
-  .btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    min-width: 120px;
-    text-align: center;
-  }
-
-  .button {
-    background: #ccc;
-    color: black;
-    transition: background-color 0.3s ease;
-  }
-
-  .button:hover {
-    background: #bbb;
+    margin-bottom: 10px;
   }
 
   .btn {
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    justify-content: center;
-    transition: background-color 0.3s ease;
+    width: 100%;
   }
-
-  .btn:hover {
-    background: #333;
-  }
-
-  /* Esconde ícones de ações em listas (se for o caso) */
-  .actions-buttons i {
+}
+@media (max-width: 640px) {
+  .btn-label {
     display: none;
   }
 
-  /* Loading Spinner */
-  .spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    animation: spin 0.8s linear infinite;
-    margin: 10px auto;
+}
+/* Campo de Pesquisa */
+.search-container {
+  text-align: center;
+  background-color: #c1dff0;
+  max-height: 115px;
+  padding-left: 27px;
+  padding-right: 27px;
+  padding-top: 37px;
+  padding-bottom: 36px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 546px;
+  display: flex;
+  align-items: center;
+}
+
+.input-field {
+  padding-left: 40px;
+  padding-right: 15px;
+  height: 42px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #908d8d;
+}
+
+.btn {
+  background-color: #20b258;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  min-width: 160px;
+  height: 42px;
+  justify-content: center;
+}
+
+.btn i {
+  margin-right: 25px;
+}
+.btn-delete i {
+  margin-right: 10px;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+.input-field:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.assistido-item {
+  display: flex;
+  flex-direction: row; /* Coloca o nome sobre o documento */
+  align-items: flex-start; /* Alinha os itens à esquerda */
+  margin-bottom: 15px; /* Adiciona espaçamento entre os itens */
+  padding: 10px;
+  border-bottom: 1px solid #ccc; /* Linha de separação */
+}
+
+.assistido-info {
+  display: flex;
+  flex-direction: column; /* Alinha o nome e o documento em coluna */
+}
+
+.nome {
+  font-weight: bold;
+  margin-bottom: 5px; /* Espaçamento entre nome e documento */
+}
+
+.documento {
+  font-size: 14px;
+  color: #555; /* Cor do texto do documento */
+}
+
+/*Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos gerais do modal */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  border-radius: 8px;
+  border: none !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+/* Cabeçalho do modal */
+.title-modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.title-modal h5 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--main-modal-title-color);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #1a1c27;
+}
+
+.close-button:hover {
+  color: red;
+}
+
+/* Campos de entrada */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Rodapé do modal */
+.footer-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.footer-buttons-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+/* Botões */
+.button,
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button {
+  background: #ccc;
+  color: black;
+}
+
+.button:hover {
+  background: #bbb;
+}
+
+.btn {
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn:hover {
+  background: #333;
+}
+
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .modal {
+    width: 95%;
+    padding: 15px;
   }
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  .title-modal h5 {
+    font-size: 1rem;
   }
 
-  /* Responsividade */
-
-  /* Telas médias e pequenas */
-  @media (max-width: 768px) {
-    .form-container {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .input-field {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    .btn,
-    .btn-cancel {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .search-container {
-      flex-direction: column;
-      padding: 20px;
-    }
-
-    .input-wrapper {
-      max-width: 100%;
-    }
-  }
-
-  /* Telas pequenas e celulares */
-  @media (max-width: 480px) {
-    .modal {
-      width: 95%;
-      padding: 15px;
-    }
-
-    .title-modal h5 {
-      font-size: 1rem;
-    }
-
-    .footer-modal,
-    .footer-buttons-actions {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .button,
-    .btn {
-      width: 100%;
-      min-width: auto;
-      text-align: center;
-    }
-
-    .actions-buttons-span {
-      display: none;
-    }
-  }
-
-  .actions-buttons {
+  .footer-modal {
     flex-direction: column;
-    gap: 8px;
+    align-items: stretch;
   }
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-      .assistido-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
+  .button,
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .actions-buttons-span {
+    display: none;
+  }
+}
+
+/* Item de Loading */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 0.8s linear infinite;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
