@@ -1,0 +1,14 @@
+.page-content {
+  padding-top: 100px;     /* altura do header + margem extra */
+  padding-bottom: 60px;   /* altura do footer + margem extra */
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    padding-top: 20px;     /* já que o header desktop some */
+    padding-bottom: 80px;  /* espaço para a mobile-tab-nav */
+  }
+}

@@ -7,9 +7,8 @@
         [(ngModel)]="searchTerm"
         (input)="filtrarAssistidos()"
         placeholder="Pesquisar por Nome ou Documento"
-        class="input-field"
+        class="input-field search"
       />
-      <i class="fa fa-search search-icon"></i>
     </div>
     <button (click)="openModal()" class="btn novo-assistido">
       <i class="fa fa-plus"></i> 
@@ -87,7 +86,12 @@
     <div>
       <input type="file" (change)="onFileChangeCadastrar($event)" />
       <div *ngIf="isUploading" class="spinner"></div>
-      <img *ngIf="!isUploading && novoAssistido.imagem" [src]="novoAssistido.imagem" width="200" height="200" />
+      <img
+        *ngIf="!isUploading && novoAssistido.imagem"
+        [src]="novoAssistido.imagem"
+        width="200"
+        height="200"
+      />
     </div>
 
     <div class="footer-modal">
@@ -97,6 +101,8 @@
       </button>
     </div>
   </dialog>
+
+  <div *ngIf="mostrarModalEditar" class="modal-overlay"></div>
 
   <dialog *ngIf="mostrarModalEditar" class="modal">
     <!-- Header do Modal com X para fechar -->
@@ -135,7 +141,12 @@
     <div>
       <input type="file" (change)="onFileChangeEditar($event)" />
       <div *ngIf="isUploading" class="spinner"></div>
-      <img *ngIf="!isUploading && atualizarAssistido.imagem" [src]="atualizarAssistido.imagem" width="200" height="200" />
+      <img
+        *ngIf="!isUploading && atualizarAssistido.imagem"
+        [src]="atualizarAssistido.imagem"
+        width="200"
+        height="200"
+      />
     </div>
 
     <!-- Footer com botões alinhados à direita -->

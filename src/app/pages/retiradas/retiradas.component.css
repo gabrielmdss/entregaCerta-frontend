@@ -5,92 +5,90 @@
   background-color: #f8f9fa;
 }
 
-/* container principal */
+/* Container principal */
 .container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   background: white;
-  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* títulos */
-h1 {
-  text-align: center;
-  color: var(--main-titulo-color);
-  font-size: 2rem;
-  padding-top: 5%;
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--main-titulo-color, #1a1c27);
   margin: 15px 0;
 }
 
-/* Título da lista de assistidos */
+h1 {
+  font-size: 2.2rem;
+  text-align: center;
+  padding-top: 3%;
+  font-weight: 700;
+}
+
 h2 {
-  font-size: 32px;
-  color: var(--main-titulo-color);
-  font-weight: 400;
-  margin-top: 30px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-top: 35px;
   margin-bottom: 15px;
 }
-/* botão + filtros */
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* Form container */
 .form-container {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin: 20px 0;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* para melhor responsividade */
+  gap: 15px; /* espaçamento entre itens */
 }
 
-/* inputs */
-.input-field {
-  width: 45%;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-}
-.input-field:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-/* botão principal */
+/* Botão principal */
 .btn {
   background-color: #20b258;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 22px;
   font-size: 1rem;
-  border-radius: 5px;
-  display: flex;
+  border-radius: 6px;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
   min-width: 160px;
   height: 42px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  white-space: nowrap; /* evita quebra do texto */
 }
-.btn:hover {
-  background-color: #45a049;
-}
+
 .btn i {
   margin-right: 10px;
 }
 
-/* botão deletar */
-.btn-delete {
-  background-color: #c32525;
-}
-.btn-delete:hover {
-  background-color: #c0392b;
-}
-.btn-delete i {
-  margin-right: 10px;
+.btn:hover {
+  background-color: #1a8a42;
 }
 
-/* filtros */
+/* Filtros container */
 .filters-container {
+  background-color: #ebe9e9;
+  padding: 15px 15px 20px 15px;
+  border-radius: 8px;
   margin-bottom: 30px;
   background-color: #ebe9e9;
 }
@@ -104,13 +102,14 @@ h2 {
   box-sizing: border-box;
 }
 
+/* Wrapper dos filtros */
 .filter-items-container {
   display: flex;
-  gap: 20px;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  gap: 12px; /* diminui gap para aproximar os filtros */
+  justify-content: flex-start; /* alinhamento padrão para esquerda */
+  flex-wrap: wrap;
+  padding: 0 24px;
+  position: relative; /* para posicionamento do botão limpar */
 }
 
 .filter-btn-clean-filter {
@@ -148,12 +147,16 @@ h2 {
     border-radius: 5%;
   }
 }
+/* Itens dos filtros */
+.filter-item,
 .filter-item-intervalo {
-  justify-content: center;
-  padding: 10px;
-  border-radius: 5px;
-  flex: 1 1 calc(33.333% - 15px);
-  width: auto;
+  background: white;
+  border-radius: 6px;
+  padding: 15px;
+  flex: 1 1 280px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 
   h4 {
@@ -184,37 +187,229 @@ button {
   border-radius: 5%;
 }
 
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+/* Título dos filtros */
+.filter-item h4,
+.filter-item-intervalo h4 {
+  width: 100%;
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Input grup dentro dos filtros */
 .form-group {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
 }
 
-/* lista de retiradas */
+.input-group {
+  flex-grow: 1;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Inputs dos filtros */
+.input-field {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fafafa;
+  transition: border-color 0.3s ease;
+  min-width: 120px;
+  flex: 1 1 auto;
+}
+
+.input-field:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Botões dos filtros */
+button.button,
+button.button-clear {
+  background-color: #336699;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* Ajuste para o botão limpar filtros, posicionando à direita sem sobrepor */
+button.button-clear {
+  gap: 6px;
+  margin-left: auto; /* empurra para a direita */
+  flex-shrink: 0; /* evita que encolha */
+  max-height: 42px;
+}
+
+/* Hover para os botões */
+button.button:hover,
+button.button-clear:hover {
+  background-color: #264d73;
+}
+
+/* Lista de retiradas */
 .retiradas-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
+
 .retirada-item {
   background-color: #f9f9f9;
-  padding: 12px;
+  padding: 15px 20px;
   margin: 10px 0;
-  border-radius: 5px;
+  border-radius: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: #333;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+  transition: background-color 0.3s ease;
+  flex-wrap: wrap; /* para melhor responsividade */
+  gap: 10px;
 }
 
-/* paginação */
+.retirada-item:hover {
+  background-color: #e6f2ea;
+}
+
+/* Botão registrar retirada dentro do item - mais destaque e responsivo */
+.retirada-item button {
+  background-color: #20b258;
+  color: white;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  min-width: 160px;
+  height: 42px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.retirada-item button:hover {
+  background-color: #1a8a42;
+}
+
+/* Paginação */
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 20px;
+  margin-top: 30px;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  background-color: #336699;
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.pagination button:disabled {
+  background-color: #a0a9b8;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #264d73;
+}
+
+/* Seletor de quantidade por página */
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-left: 24px;
+  flex-wrap: wrap;
+}
+
+.page-size-selector label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.page-size-selector select {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Modal */
+.modal {
+  background: white;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Modal header */
+.title-modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.title-modal h5 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--main-modal-title-color, #1a1c27);
 }
 
 .close-button {
@@ -223,61 +418,88 @@ button {
   font-size: 1.5rem;
   cursor: pointer;
   color: #1a1c27;
+  transition: color 0.3s ease;
 }
 
 .close-button:hover {
-  color: red;
+  color: #d9534f;
 }
 
-/* botão cancelar */
+/* Modal body inputs */
+.modal input,
+.modal app-select {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 8px 0 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Footer modal */
+.footer-modal {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Botões modal */
 .button-cancelar {
   background-color: #6c757d;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 120px;
 }
+
 .button-cancelar:hover {
   background-color: #5a6268;
 }
 
-/* botão limpar filtro */
-.button-clear {
-  background-color: #336699;
+.btn-fechar {
+  background-color: #6c757d;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
   cursor: pointer;
-}
-.button-clear i {
-  margin-right: 5px;
-}
-.button-clear:hover {
-  background-color: #336699;
+  transition: background-color 0.3s ease;
+  min-width: 120px;
 }
 
-/* responsividade */
-@media (max-width: 768px) {
-  .form-container,
-  .filter-items-container {
-    flex-direction: column;
-    gap: 15px;
-  }
-  .input-field,
-  .btn {
-    width: 100%;
-  }
+.btn-fechar:hover {
+  background-color: #5a6268;
 }
 
+/* Loading spinner */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Foto e informações do assistido */
 .foto-info {
   display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
   flex-wrap: wrap;
+  gap: 1.5rem;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .foto-assistido {
@@ -286,6 +508,7 @@ button {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ccc;
+  flex-shrink: 0;
 }
 
 .modal-imagem {
@@ -316,17 +539,28 @@ button {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  min-width: 200px;
+  min-width: 180px;
+  font-size: 1rem;
+}
+
+.info-basica p {
+  margin: 0;
+  word-wrap: break-word;
 }
 
 .ultimas-retiradas {
   background-color: #f8f8f8;
   padding: 1rem;
   border-radius: 8px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .ultimas-retiradas h6 {
   margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .ultimas-retiradas ul {
@@ -336,23 +570,39 @@ button {
 }
 
 .ultimas-retiradas li {
-  padding: 0.3rem 0;
-  border-bottom: 1px solid #e0e0e0;
-  width: 100%;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #ddd;
   text-align: center;
+  font-size: 1rem;
 }
 
-/* ✅ Responsivo para mobile */
-@media (max-width: 768px) {
+/* Responsividade geral */
+@media (max-width: 992px) {
+  .filter-items-container {
+    justify-content: center;
+  }
+  .filter-item,
+  .filter-item-intervalo {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+  .form-container {
+    justify-content: center;
+  }
+  .btn {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
   .foto-info {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-
-  .info-basica p {
-    font-size: 0.95rem;
-    word-wrap: break-word;
+  .info-basica {
+    min-width: auto;
   }
 
   .ultimas-retiradas {
@@ -502,8 +752,20 @@ button {
 
   .button,
   .btn {
+  .btn,
+  .button-cancelar,
+  .btn-fechar,
+  .button-clear,
+  .button {
     width: 100%;
-    text-align: center;
+    min-width: auto;
+  }
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pagination span {
+    margin-bottom: 8px;
   }
 }
 

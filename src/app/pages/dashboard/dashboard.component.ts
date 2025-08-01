@@ -3,11 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { DocumentPipe } from '../../utils/pipes/document.pipe';
 import { LineChartsComponent } from '../../shared/components/line-charts/line-charts.component';
+import { HeaderComponent } from "../../shared/components/header/header.component";
+import { FooterComponent } from "../../shared/components/footer/footer.component";
 
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule,DocumentPipe,LineChartsComponent],
+  imports: [CommonModule, DocumentPipe, LineChartsComponent, HeaderComponent, FooterComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
