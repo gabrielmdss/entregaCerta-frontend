@@ -6,12 +6,14 @@
     </button>
   </header>
 
-  <section class="ec-card ret-filtros" aria-labelledby="titulo-filtros">
-    <h2 id="titulo-filtros" class="ret-section-title">Filtros</h2>
-    <div class="ret-filtros-grid">
-      <div class="ret-filtro">
-        <label class="ec-label" for="filtro-assistido">Assistido</label>
-        <div class="ret-filtro-linha">
+  <section class="ec-card ec-panel ret-filtros ec-enter" aria-labelledby="titulo-filtros">
+    <div class="ec-panel-header">
+      <h2 id="titulo-filtros" class="ec-panel-title">Filtros</h2>
+    </div>
+    <div class="ec-panel-body">
+      <div class="ret-filtros-grid">
+        <div class="ret-filtro">
+          <label class="ec-label" for="filtro-assistido">Assistido</label>
           <app-select
             class="ret-filtro-campo"
             [items]="assistidos"
@@ -22,41 +24,39 @@
             (selectChange)="onAssistidoSelecionado($event)"
           ></app-select>
         </div>
-      </div>
 
-      <fieldset class="ret-filtro">
-        <legend class="ec-label">Intervalo de datas</legend>
-        <div class="ret-filtro-linha">
+        <fieldset class="ret-filtro">
+          <legend class="ec-label">Intervalo de datas</legend>
           <div class="ret-datas">
-            <label class="ret-sr-only" for="filtro-data-inicial">Data inicial</label>
+            <label class="visually-hidden" for="filtro-data-inicial">Data inicial</label>
             <input id="filtro-data-inicial" type="date" class="ec-input" [(ngModel)]="dataInicialFilter" />
             <span class="ret-ate" aria-hidden="true">até</span>
-            <label class="ret-sr-only" for="filtro-data-final">Data final</label>
+            <label class="visually-hidden" for="filtro-data-final">Data final</label>
             <input id="filtro-data-final" type="date" class="ec-input" [(ngModel)]="dataFinalFilter" />
           </div>
-        </div>
-      </fieldset>
-    </div>
+        </fieldset>
 
-    <div class="ret-filtros-rodape">
+        <div class="ret-filtros-acoes">
+          <button type="button" class="ec-btn ec-btn--secondary" (click)="limparFiltros()">
+            <i class="fa-solid fa-broom" aria-hidden="true"></i> Limpar filtros
+          </button>
+          <button type="button" class="ec-btn" (click)="aplicarFiltros()">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Filtrar
+          </button>
+        </div>
+      </div>
       <p *ngIf="mensagemFiltro" class="ec-error-text ret-mensagem" role="alert">{{ mensagemFiltro }}</p>
-      <button type="button" class="ec-btn ec-btn--secondary" (click)="limparFiltros()">
-        <i class="fa-solid fa-broom" aria-hidden="true"></i> Limpar filtros
-      </button>
-      <button type="button" class="ec-btn" (click)="aplicarFiltros()">
-        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Filtrar
-      </button>
     </div>
   </section>
 
-  <section class="ec-card ret-lista-card" aria-labelledby="titulo-lista">
-    <div class="ret-lista-header">
-      <h2 id="titulo-lista" class="ret-section-title">
+  <section class="ec-card ec-panel ret-lista-card ec-enter" aria-labelledby="titulo-lista">
+    <div class="ec-panel-header">
+      <h2 id="titulo-lista" class="ec-panel-title">
         Retiradas registradas
-        <span *ngIf="!isLoading && !erroLista" class="ret-total">({{ totalItens | number }})</span>
+        <span *ngIf="!isLoading && !erroLista" class="ec-panel-count">({{ totalItens | number }})</span>
       </h2>
-      <div *ngIf="!isLoading && !erroLista && totalItens > 0" class="ret-page-size">
-        <label class="ec-label" for="pageSize">Exibir</label>
+      <div *ngIf="!isLoading && !erroLista && totalItens > 0" class="ec-panel-actions ret-page-size">
+        <label class="ret-page-size-rotulo" for="pageSize">Exibir</label>
         <select
           id="pageSize"
           class="ec-input"
@@ -68,70 +68,79 @@
       </div>
     </div>
 
-    <p *ngIf="filtroAtivo && !isLoading" class="ec-hint ret-filtro-ativo">
-      {{ descricaoFiltro }}
-      Use "Limpar filtros" para ver todas.
-    </p>
+    <div class="ec-panel-body ec-panel-body--flush">
+      <p *ngIf="filtroAtivo && !isLoading" class="ec-hint ret-filtro-ativo">
+        <span class="ec-badge"><i class="fa-solid fa-filter" aria-hidden="true"></i> Filtro ativo</span>
+        {{ descricaoFiltro }}
+        Use "Limpar filtros" para ver todas.
+      </p>
 
-    <div *ngIf="isLoading" class="ec-state" role="status" aria-live="polite">
-      <span class="ec-spinner" aria-hidden="true"></span>
-      <span>Carregando retiradas...</span>
-    </div>
+      <div *ngIf="isLoading" class="ec-skeleton-list" role="status" aria-live="polite">
+        <span class="visually-hidden">Carregando retiradas...</span>
+        <span *ngFor="let n of [1, 2, 3, 4, 5]" class="ec-skeleton" aria-hidden="true"></span>
+      </div>
 
-    <div *ngIf="!isLoading && erroLista" class="ec-state ec-state--error" role="alert">
-      <span>Não foi possível carregar as retiradas.</span>
-      <button type="button" class="ec-btn" (click)="obterRetiradas(currentPage, selectedPageSize)">
-        Tentar novamente
-      </button>
-    </div>
+      <div *ngIf="!isLoading && erroLista" class="ec-state ec-state--error" role="alert">
+        <span class="ec-state-icon" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <span>Não foi possível carregar as retiradas.</span>
+        <button type="button" class="ec-btn" (click)="obterRetiradas(currentPage, selectedPageSize)">
+          Tentar novamente
+        </button>
+      </div>
 
-    <p *ngIf="!isLoading && !erroLista && retiradas.length === 0" class="ec-state ret-vazio">
-      Nenhuma retirada encontrada
-    </p>
+      <div *ngIf="!isLoading && !erroLista && retiradas.length === 0" class="ec-state ret-vazio">
+        <span class="ec-state-icon" aria-hidden="true"><i class="fa-solid fa-box-archive"></i></span>
+        <p>Nenhuma retirada encontrada</p>
+      </div>
 
-    <ul *ngIf="!isLoading && !erroLista && retiradas.length > 0" class="ec-list">
-      <li *ngFor="let retirada of retiradas" class="ec-list-item ret-item">
-        <div class="ret-item-info">
-          <span class="ret-item-nome">{{ retirada.nome }}</span>
-          <span class="ret-item-meta">
-            <span>{{ retirada.documento | documentTranslate }}</span>
-            <time [attr.datetime]="retirada.data_retirada">{{ retirada.data_retirada | date : "dd/MM/yyyy" : "UTC" }}</time>
-          </span>
-        </div>
+      <ul *ngIf="!isLoading && !erroLista && retiradas.length > 0" class="ec-list">
+        <li
+          *ngFor="let retirada of retiradas; let i = index"
+          class="ec-list-item ret-item ec-list-in"
+          [style.--i]="i < 15 ? i : 15"
+        >
+          <div class="ret-item-info">
+            <span class="ret-item-nome">{{ retirada.nome }}</span>
+            <span class="ret-item-meta">
+              <span>{{ retirada.documento | documentTranslate }}</span>
+              <time [attr.datetime]="retirada.data_retirada"><i class="fa-solid fa-calendar" aria-hidden="true"></i> {{ retirada.data_retirada | date : "dd/MM/yyyy" : "UTC" }}</time>
+            </span>
+          </div>
+          <button
+            type="button"
+            class="ec-btn ec-btn--secondary"
+            [attr.aria-label]="'Alterar retirada de ' + retirada.nome"
+            (click)="openModal(retirada)"
+          >
+            <i class="fa-solid fa-pencil" aria-hidden="true"></i> Alterar
+          </button>
+        </li>
+      </ul>
+
+      <nav
+        *ngIf="!isLoading && !erroLista && totalPages > 0"
+        class="ec-pagination"
+        aria-label="Paginação das retiradas"
+      >
         <button
           type="button"
           class="ec-btn ec-btn--secondary"
-          [attr.aria-label]="'Alterar retirada de ' + retirada.nome"
-          (click)="openModal(retirada)"
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage <= 1"
         >
-          <i class="fa-solid fa-pencil" aria-hidden="true"></i> Alterar
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i><span class="ret-pag-texto">Anterior</span>
         </button>
-      </li>
-    </ul>
-
-    <nav
-      *ngIf="!isLoading && !erroLista && totalPages > 0"
-      class="ec-pagination"
-      aria-label="Paginação das retiradas"
-    >
-      <button
-        type="button"
-        class="ec-btn ec-btn--secondary"
-        (click)="changePage(currentPage - 1)"
-        [disabled]="currentPage <= 1"
-      >
-        Anterior
-      </button>
-      <span aria-live="polite">Página {{ currentPage }} de {{ totalPages }}</span>
-      <button
-        type="button"
-        class="ec-btn ec-btn--secondary"
-        (click)="changePage(currentPage + 1)"
-        [disabled]="currentPage >= totalPages"
-      >
-        Próxima
-      </button>
-    </nav>
+        <span aria-live="polite">Página {{ currentPage }} de {{ totalPages }}</span>
+        <button
+          type="button"
+          class="ec-btn ec-btn--secondary"
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage >= totalPages"
+        >
+          <span class="ret-pag-texto">Próxima</span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </nav>
+    </div>
   </section>
 
   <!-- Modal Registrar -->
