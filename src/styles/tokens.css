@@ -1,0 +1,77 @@
+/*
+ * Tokens de design — Entrega Certa (plano §4, §5, §14).
+ * Breakpoints (media queries não aceitam var(); usar os valores literais):
+ *   --bp-sm: 480px  | --bp-md: 768px  | --bp-lg: 1024px
+ */
+:root {
+  /* Paleta */
+  --color-primary: #336699;
+  --color-primary-hover: #264d73;
+  --color-primary-soft: #eaf2f9;
+  --color-success: #15803d;
+  --color-success-hover: #116632;
+  --color-danger: #b42318;
+  --color-danger-hover: #912018;
+  --color-neutral: #4b5563;
+  --color-neutral-hover: #374151;
+  --color-text: #1f2937;
+  --color-text-muted: #5b6472;
+  --color-border: #d8dee6;
+  --color-bg: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-focus: #336699;
+
+  /* Tipografia */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-logo: "Jaro", var(--font-sans);
+  --fs-12: 12px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-24: 24px;
+  --fs-30: 30px;
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --lh-base: 1.6;
+  --lh-tight: 1.25;
+
+  /* Espaçamento (base 4px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Raios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(31, 41, 55, 0.08), 0 1px 3px rgba(31, 41, 55, 0.06);
+  --shadow-md: 0 8px 24px rgba(31, 41, 55, 0.14);
+
+  /* Camadas */
+  --z-header: 100;
+  --z-dropdown: 1000;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-toast: 1080;
+
+  /* Controles interativos: alvo mínimo de toque (WCAG 2.5.5 / QA-F7-02) */
+  --control-height: 44px;
+
+  /* Shell */
+  --header-height: 64px;
+  --tabbar-height: 64px;
+
+  /* Breakpoints (documentação/uso em JS) */
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+}

@@ -1,69 +1,18 @@
-/* Importação das fontes do @fontsource */
+/*
+ * Estilos globais — Entrega Certa.
+ * Ordem: fontes -> tokens -> base -> componentes -> vendors.
+ * Font Awesome (npm) e o default theme do ng-select são carregados via angular.json
+ * antes deste arquivo, para que os ajustes de styles/vendors prevaleçam.
+ */
+
+/* Inter (@fontsource) — pesos usados na interface (400/600/700; 800 no dashboard) */
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/600.css";
 @import "@fontsource/inter/700.css";
+@import "@fontsource/inter/800.css";
 
-:root {
-  --main-titulo-color: #336699;
-  --main-background-color: #F4F4F4;
-  --main-header-background-color: #F4F4F4;
-  --main-footer-background-color: #88CCF1;
-  --main-header-title-color: #336699;
-  --main-modal-title-color: #333333;
-  --second-color-background: #C1DFF0;
-  --third-color-background: #EBE9E9;
-}
-
-/* Definindo fontes personalizadas */
-@font-face {
-  font-family: "Jaro";
-  src: url("../src/assets/fonts/Jaro/static/Jaro-Regular.ttf")
-    format("truetype");
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("../src/assets/fonts/Inter/static/Inter_24pt-Regular.ttf")
-    format("truetype");
-}
-
-/* Estilos Globais */
-body {
-  padding: 0;
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  color: #333;
-  background-color: #f4f4f4;
-  line-height: 1.6;
-}
-
-/* Estilo para elementos gerais */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Inter", sans-serif;
-  color: #2c3e50;
-}
-
-a {
-  color: #336699;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Tornando o layout mais responsivo */
-* {
-  box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-}
+@import "./styles/tokens.css";
+@import "./styles/base.css";
+@import "./styles/components.css";
+@import "./styles/vendors/sweetalert.css";
+@import "./styles/vendors/ng-select.css";

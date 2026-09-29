@@ -1,0 +1,47 @@
+/*
+ * Tema global do SweetAlert2 com os tokens do projeto.
+ * O CSS do Swal é injetado em runtime com seletores :where() (especificidade baixa);
+ * os seletores abaixo usam classes para prevalecer sem !important.
+ * Cores definidas inline (confirmButtonColor/cancelButtonColor ou style="") continuam
+ * prevalecendo — por isso os botões personalizados de "Ajustar Estoque" não mudam.
+ */
+.swal2-container .swal2-popup {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+}
+.swal2-container .swal2-title {
+  color: var(--color-text);
+  font-size: var(--fs-24);
+}
+.swal2-container .swal2-html-container {
+  color: var(--color-text-muted);
+  font-size: var(--fs-16);
+}
+.swal2-container .swal2-styled {
+  border-radius: var(--radius-sm);
+  font-weight: var(--fw-semibold);
+}
+.swal2-container .swal2-styled.swal2-confirm {
+  background-color: var(--color-primary);
+}
+.swal2-container .swal2-styled.swal2-cancel {
+  background-color: var(--color-neutral);
+}
+.swal2-container .swal2-styled.swal2-deny {
+  background-color: var(--color-danger);
+}
+.swal2-container .swal2-styled:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.swal2-container .swal2-input {
+  border-color: var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+}
+.swal2-container .swal2-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}

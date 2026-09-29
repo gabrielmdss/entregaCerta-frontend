@@ -1,0 +1,43 @@
+/*
+ * Ajustes globais sobre o default theme do @ng-select (carregado antes do styles.css
+ * em angular.json). Altura igual à dos demais controles (--control-height, 44px); aplica cores/raio/foco dos tokens.
+ */
+.ng-select .ng-select-container {
+  min-height: var(--control-height);
+  color: var(--color-text);
+  border-color: var(--color-border);
+  border-radius: var(--radius-sm);
+}
+.ng-select.ng-select-single .ng-select-container {
+  height: var(--control-height);
+}
+.ng-select.ng-select-opened > .ng-select-container {
+  border-color: var(--color-primary);
+}
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--color-text-muted);
+}
+.ng-dropdown-panel {
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  color: var(--color-text);
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--color-primary-soft);
+  color: var(--color-text);
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+  font-weight: var(--fw-semibold);
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: var(--color-text-muted);
+}
