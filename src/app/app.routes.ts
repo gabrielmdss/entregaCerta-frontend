@@ -1,15 +1,24 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { AssistidosComponent } from './pages/assistidos/assistidos.component';
-import { RetiradasComponent } from './pages/retiradas/retiradas.component';
-import { EstoqueComponent } from './pages/estoque/estoque.component';
 
-
+// Páginas carregadas sob demanda (loadComponent): mesmos paths/redirects de antes; o bundle
+// inicial fica só com o shell, e cada tela vira um chunk próprio (prerender/SSR inalterados).
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'assistidos', component: AssistidosComponent },
-  { path: 'retiradas', component: RetiradasComponent },
-  { path: 'estoque', component: EstoqueComponent },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+  },
+  {
+    path: 'assistidos',
+    loadComponent: () => import('./pages/assistidos/assistidos.component').then((m) => m.AssistidosComponent),
+  },
+  {
+    path: 'retiradas',
+    loadComponent: () => import('./pages/retiradas/retiradas.component').then((m) => m.RetiradasComponent),
+  },
+  {
+    path: 'estoque',
+    loadComponent: () => import('./pages/estoque/estoque.component').then((m) => m.EstoqueComponent),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
