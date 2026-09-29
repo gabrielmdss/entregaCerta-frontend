@@ -2,15 +2,47 @@ import { Component, OnInit } from '@angular/core';
 import { Assistido } from '../../models/assistido.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
 import { AssistidosService } from '../../services/assistidos.service';
 import { DocumentPipe } from '../../utils/pipes/document.pipe';
 import { DocumentMaskDirective } from '../../utils/directives/document-mask.directive';
 import Swal from 'sweetalert2';
 import { UploadService } from '../../services/upload.service';
+import { DialogDirective } from '../../shared/directives/dialog.directive';
+
+/** Mensagem da API com fallback seguro (err.error pode ser nulo, string ou objeto). */
+function mensagemErro(err: any, fallback: string): string {
+  const msg = err?.error?.message;
+  return typeof msg === 'string' && msg.trim() ? msg : fallback;
+}
+
+/**
+ * A API devolve `data_nascimento` como ISO com hora em UTC (coluna @db.Date, ex.
+ * "1990-05-10T00:00:00.000Z"). O <input type="date"> só aceita yyyy-MM-dd; a parte da data
+ * é lida como texto (sem conversão de fuso) para não "voltar um dia" em UTC-3.
+ */
+function paraInputDate(valor: Date | string | null | undefined): string {
+  if (!valor) return '';
+  const m = /^(\d{4}-\d{2}-\d{2})/.exec(valor instanceof Date ? valor.toISOString() : String(valor));
+  return m ? m[1] : '';
+}
+
+/**
+ * Inverso de paraInputDate para o PUT: o repository repassa `data_nascimento` direto ao
+ * Prisma (sem `new Date`, ao contrário do POST), que exige DateTime ISO completo. Envia o
+ * mesmo formato que o GET devolveu (meia-noite UTC).
+ */
+function paraIsoUtc(valor: Date | string | null | undefined): Date | string | null | undefined {
+  return typeof valor === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(valor)
+    ? `${valor}T00:00:00.000Z`
+    : valor;
+}
+
+const vazio = (): Assistido => ({ id: 0, nome: '', data_nascimento: '', documento: '', imagem: '' });
 
 @Component({
   selector: 'app-assistidos',
-  imports: [CommonModule, FormsModule, DocumentPipe, DocumentMaskDirective],
+  imports: [CommonModule, FormsModule, DocumentPipe, DocumentMaskDirective, DialogDirective],
   templateUrl: './assistidos.component.html',
   styleUrl: './assistidos.component.css',
 })
@@ -27,10 +59,19 @@ export class AssistidosComponent implements OnInit {
   searchTerm: string = '';
 
   isLoading: boolean = false;
+  /** Falha ao carregar a lista (rede/5xx). */
+  erroLista: boolean = false;
   mostrarModal: boolean = false;
   mostrarModalEditar: boolean = false;
   assistidoId: number | null = null;
   isUploading: boolean = false;
+  /** Requisição de cadastro/edição em andamento (evita envio duplo). */
+  isSalvando: boolean = false;
+  /** Id do assistido cuja edição está sendo carregada (feedback no botão). */
+  carregandoEdicaoId: number | null = null;
+  erroUpload: string = '';
+  /** Nome do arquivo escolhido no campo de foto (exibido ao lado do botão). */
+  nomeArquivo: string = '';
 
   ngOnInit(): void {
     this.listarAssistidos();
@@ -38,80 +79,89 @@ export class AssistidosComponent implements OnInit {
 
   listarAssistidos(): void {
     this.isLoading = true;
-    this.assistidosService.listarAssistidos().subscribe({
-      next: (response: any) => {
-        this.assistidos = response;
-        this.assistidosFiltrados = response;
-        this.isLoading = false;
-      },
-      error: (error: any) => {
-        console.error(error);
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isLoading = false;
-      },
-    });
-  }
-
-  cadastrarAssistido(): void {
-    this.assistidosService.cadastrarAssistido(this.novoAssistido).subscribe({
-      next: (response: any) => {
-        Swal.fire({
-          title: 'Assistido cadastrado!',
-          text: 'O cadastro foi realizado com sucesso.',
-          icon: 'success',
-          theme: 'light',
-          position: 'center',
-        });
-      },
-      error: (err: any) => {
-        Swal.fire({
-          title: 'Erro no cadastro',
-          text:
-            err.error.message ||
-            'Ocorreu um problema ao cadastrar o Assistido. Tente novamente.',
-          icon: 'error',
-          theme: 'light',
-          position: 'center',
-        });
-      },
-      complete: () => {
-        this.listarAssistidos();
-        this.limparInputs();
-        this.closeModal();
-      },
-    });
-  }
-
-  editarAssistido(): void {
+    this.erroLista = false;
     this.assistidosService
-      .editarAssistido(this.assistidoId, this.atualizarAssistido)
+      .listarAssistidos()
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (response: any) => {
+          this.assistidos = Array.isArray(response) ? response : [];
+          this.filtrarAssistidos();
+        },
+        error: () => {
+          this.assistidos = [];
+          this.assistidosFiltrados = [];
+          this.erroLista = true;
+        },
+      });
+  }
+
+  /** Em erro o modal continua aberto com os dados digitados, para o usuário corrigir. */
+  cadastrarAssistido(): void {
+    if (this.isUploading || this.isSalvando) return;
+    this.isSalvando = true;
+    this.assistidosService
+      .cadastrarAssistido(this.novoAssistido)
+      .pipe(finalize(() => (this.isSalvando = false)))
+      .subscribe({
+        next: () => {
           Swal.fire({
-            title: 'Assistido Atualizado!',
-            text: 'Os dados do assistidos foram atualizados com sucesso.',
+            title: 'Assistido cadastrado!',
+            text: 'O cadastro foi realizado com sucesso.',
             icon: 'success',
             theme: 'light',
             position: 'center',
           });
+          this.listarAssistidos();
+          this.limparInputs();
+          this.closeModal();
         },
         error: (err: any) => {
           Swal.fire({
-            title: 'Erro ao atualizar',
-            text:
-              err.error.message ||
-              'Ocorreu um problema ao atualizar os dados o Assistido. Tente novamente.',
+            title: 'Erro no cadastro',
+            text: mensagemErro(err, 'Ocorreu um problema ao cadastrar o Assistido. Tente novamente.'),
             icon: 'error',
             theme: 'light',
             position: 'center',
           });
         },
-        complete: () => {
+      });
+  }
+
+  editarAssistido(): void {
+    if (this.isUploading || this.isSalvando) return;
+    this.isSalvando = true;
+    const payload: Assistido = {
+      ...this.atualizarAssistido,
+      data_nascimento: paraIsoUtc(this.atualizarAssistido.data_nascimento),
+    };
+    this.assistidosService
+      .editarAssistido(this.assistidoId, payload)
+      .pipe(finalize(() => (this.isSalvando = false)))
+      .subscribe({
+        next: () => {
+          Swal.fire({
+            title: 'Assistido Atualizado!',
+            text: 'Os dados do assistido foram atualizados com sucesso.',
+            icon: 'success',
+            theme: 'light',
+            position: 'center',
+          });
           this.listarAssistidos();
           this.limparInputs();
           this.closeModalEditar();
+        },
+        error: (err: any) => {
+          Swal.fire({
+            title: 'Erro ao atualizar',
+            text: mensagemErro(
+              err,
+              'Ocorreu um problema ao atualizar os dados do Assistido. Tente novamente.'
+            ),
+            icon: 'error',
+            theme: 'light',
+            position: 'center',
+          });
         },
       });
   }
@@ -122,8 +172,8 @@ export class AssistidosComponent implements OnInit {
       text: 'Essa ação não pode ser desfeita!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: 'var(--color-danger)',
+      cancelButtonColor: 'var(--color-neutral)',
       confirmButtonText: 'Sim, excluir!',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
@@ -141,9 +191,7 @@ export class AssistidosComponent implements OnInit {
           error: (err: any) => {
             Swal.fire({
               title: 'Erro ao excluir',
-              text:
-                err.error.message ||
-                'Houve um problema ao excluir os dados. Tente novamente.',
+              text: mensagemErro(err, 'Houve um problema ao excluir os dados. Tente novamente.'),
               icon: 'error',
               theme: 'light',
               position: 'center',
@@ -154,99 +202,103 @@ export class AssistidosComponent implements OnInit {
     });
   }
 
+  /**
+   * Busca por nome (sem diferenciar maiúsculas) ou documento. O documento é comparado também
+   * só pelos dígitos, para "123.456" encontrar "12345678901" (e vice-versa).
+   */
   filtrarAssistidos(): void {
-    if (this.searchTerm.trim() === '') {
+    const termo = this.searchTerm.trim();
+    if (termo === '') {
       this.assistidosFiltrados = [...this.assistidos];
-    } else {
-      this.assistidosFiltrados = this.assistidos.filter(
-        (assistido) =>
-          assistido.nome
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase()) ||
-          assistido.documento.includes(this.searchTerm)
-      );
+      return;
     }
+    const termoMin = termo.toLowerCase();
+    const termoDigitos = termo.replace(/\D/g, '');
+    this.assistidosFiltrados = this.assistidos.filter((assistido) => {
+      const doc = assistido.documento ?? '';
+      return (
+        (assistido.nome ?? '').toLowerCase().includes(termoMin) ||
+        doc.includes(termo) ||
+        (termoDigitos !== '' && doc.replace(/\D/g, '').includes(termoDigitos))
+      );
+    });
+  }
+
+  limparBusca(): void {
+    this.searchTerm = '';
+    this.filtrarAssistidos();
   }
 
   async onFileChangeCadastrar(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    this.isUploading = true;
-
-    try {
-      const url = await this.uploadService.uploadImage(file);
-      this.novoAssistido.imagem = url;
-      console.log('Imagem enviada para:', url);
-    } catch (error) {
-      console.error('Erro no upload:', error);
-    } finally {
-      this.isUploading = false;
-    }
+    const url = await this.enviarImagem(event);
+    if (url) this.novoAssistido.imagem = url;
   }
 
   async onFileChangeEditar(event: any) {
-    const file: File = event.target.files[0];
+    const url = await this.enviarImagem(event);
+    if (url) this.atualizarAssistido.imagem = url;
+  }
 
-    if (!file) return;
-
+  private async enviarImagem(event: any): Promise<string | null> {
+    const file: File | undefined = event?.target?.files?.[0];
+    if (!file) return null;
     this.isUploading = true;
-
+    this.erroUpload = '';
     try {
-      const url = await this.uploadService.uploadImage(file);
-      this.atualizarAssistido.imagem = url;
-      console.log('Imagem enviada para:', url);
-    } catch (err) {
-      console.error('Erro ao enviar imagem:', err);
+      return await this.uploadService.uploadImage(file);
+    } catch {
+      this.erroUpload = 'Não foi possível enviar a foto. Tente novamente.';
+      return null;
     } finally {
       this.isUploading = false;
     }
   }
 
   openModal() {
+    this.erroUpload = '';
+    this.nomeArquivo = '';
     this.mostrarModal = true;
   }
 
   closeModal() {
     this.mostrarModal = false;
   }
+
+  /** Abre o modal só com os dados carregados; falha no GET mostra feedback. */
   openModalEditar(id: number) {
-
     this.assistidoId = id;
-
-    this.assistidosService.obterAssistidoById(id).subscribe({
-      next: (response: Assistido) => {
-        this.atualizarAssistido = response;
-      },
-      error: (err: any) => {
-        console.error(err);
-      },
-      complete: () => {
-        this.mostrarModalEditar = true;
-      },
-    });
-
-
+    this.carregandoEdicaoId = id;
+    this.assistidosService
+      .obterAssistidoById(id)
+      .pipe(finalize(() => (this.carregandoEdicaoId = null)))
+      .subscribe({
+        next: (response: Assistido) => {
+          this.atualizarAssistido = {
+            ...response,
+            data_nascimento: paraInputDate(response?.data_nascimento),
+          };
+          this.erroUpload = '';
+          this.nomeArquivo = '';
+          this.mostrarModalEditar = true;
+        },
+        error: (err: any) => {
+          Swal.fire({
+            title: 'Erro ao carregar assistido',
+            text: mensagemErro(err, 'Não foi possível carregar os dados do Assistido. Tente novamente.'),
+            icon: 'error',
+            theme: 'light',
+            position: 'center',
+          });
+        },
+      });
   }
 
   closeModalEditar() {
     this.mostrarModalEditar = false;
   }
-  limparInputs() {
-    this.atualizarAssistido = {
-      id: 0,
-      nome: '',
-      data_nascimento: '',
-      documento: '',
-      imagem: '',
-    };
 
-    this.novoAssistido = {
-      id: 0,
-      nome: '',
-      data_nascimento: '',
-      documento: '',
-      imagem: '',
-    };
+  limparInputs() {
+    this.atualizarAssistido = vazio();
+    this.novoAssistido = vazio();
   }
 }

@@ -1,160 +1,243 @@
-<div class="container">
-  <h1>Gestão de Assistidos</h1>
+<div class="ec-page">
+  <header class="ec-page-header">
+    <h1 class="ec-page-title">Gestão de Assistidos</h1>
+    <button type="button" class="ec-btn" (click)="openModal()">
+      <i class="fa fa-plus" aria-hidden="true"></i> Cadastrar assistido
+    </button>
+  </header>
 
-  <div class="search-container">
-    <div class="input-wrapper">
+  <section class="ec-card ast-busca" aria-labelledby="titulo-busca">
+    <h2 id="titulo-busca" class="ast-sr-only">Busca</h2>
+    <label class="ec-label" for="busca-assistido">Pesquisar</label>
+    <div class="ast-busca-linha">
       <input
+        id="busca-assistido"
+        type="search"
+        class="ec-input"
         [(ngModel)]="searchTerm"
         (input)="filtrarAssistidos()"
-        placeholder="Pesquisar por Nome ou Documento"
-        class="input-field search"
+        placeholder="Nome ou documento"
+        aria-label="Pesquisar assistido por nome ou documento"
+        autocomplete="off"
       />
+      <button
+        *ngIf="searchTerm"
+        type="button"
+        class="ec-btn ec-btn--secondary"
+        (click)="limparBusca()"
+      >
+        Limpar
+      </button>
     </div>
-    <button (click)="openModal()" class="btn novo-assistido">
-      <i class="fa fa-plus"></i> 
-      <span class="btn-label">
-        Cadastrar novo
+  </section>
+
+  <section class="ec-card ast-lista-card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="ast-section-title">
+      Lista de assistidos
+      <span *ngIf="!isLoading && !erroLista" class="ast-total">
+        ({{ searchTerm.trim() ? assistidosFiltrados.length + ' de ' : '' }}{{ assistidos.length }})
       </span>
-    </button>
+    </h2>
+
+    <div *ngIf="isLoading" class="ec-state" role="status" aria-live="polite">
+      <span class="ec-spinner" aria-hidden="true"></span>
+      <span>Carregando relação de assistidos...</span>
+    </div>
+
+    <div *ngIf="!isLoading && erroLista" class="ec-state ec-state--error" role="alert">
+      <span>Não foi possível carregar os assistidos.</span>
+      <button type="button" class="ec-btn" (click)="listarAssistidos()">Tentar novamente</button>
+    </div>
+
+    <ng-container *ngIf="!isLoading && !erroLista">
+      <p *ngIf="assistidos.length === 0" class="ec-state ast-vazio">Nenhum assistido cadastrado</p>
+      <p *ngIf="assistidos.length > 0 && assistidosFiltrados.length === 0" class="ec-state ast-vazio">
+        Nenhum resultado para a busca
+      </p>
+
+      <ul *ngIf="assistidosFiltrados.length > 0" class="ec-list">
+        <li *ngFor="let assistido of assistidosFiltrados" class="ec-list-item ast-item">
+          <div class="ast-item-info">
+            <span class="ast-item-nome">{{ assistido.nome }}</span>
+            <span class="ast-item-doc">{{ assistido.documento | documentTranslate }}</span>
+          </div>
+          <div class="ast-acoes">
+            <button
+              type="button"
+              class="ec-btn ec-btn--secondary"
+              [attr.aria-label]="'Editar ' + assistido.nome"
+              [disabled]="carregandoEdicaoId === assistido.id"
+              (click)="openModalEditar(assistido.id)"
+            >
+              <i class="fa-solid fa-pencil" aria-hidden="true"></i>
+              <span class="ast-acao-texto">Editar</span>
+            </button>
+            <button
+              type="button"
+              class="ec-btn ec-btn--danger"
+              [attr.aria-label]="'Excluir ' + assistido.nome"
+              (click)="excluirAssistido(assistido.id)"
+            >
+              <i class="fa-solid fa-trash" aria-hidden="true"></i>
+              <span class="ast-acao-texto">Excluir</span>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+  </section>
+
+  <!-- Modal Cadastrar -->
+  <div *ngIf="mostrarModal" class="ec-backdrop">
+    <div
+      class="ec-modal ast-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-cadastrar"
+      ecDialog
+      (ecDialogClose)="closeModal()"
+    >
+      <div class="ast-modal-header">
+        <h2 id="titulo-cadastrar" class="ec-modal-title">Cadastrar assistido</h2>
+        <button type="button" class="ec-btn ec-btn--icon" aria-label="Fechar" (click)="closeModal()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="nome">Nome</label>
+        <input id="nome" class="ec-input" autocomplete="off" [(ngModel)]="novoAssistido.nome" />
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="numero_documento">Documento (CPF ou RG)</label>
+        <input
+          type="text"
+          id="numero_documento"
+          class="ec-input"
+          inputmode="numeric"
+          autocomplete="off"
+          [(ngModel)]="novoAssistido.documento"
+          appDocumentMask
+        />
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="data_nascimento">Data de nascimento</label>
+        <input type="date" id="data_nascimento" class="ec-input" [(ngModel)]="novoAssistido.data_nascimento" />
+      </div>
+      <div class="ec-field">
+        <span class="ec-label" id="rotulo-foto">Foto</span>
+        <div class="ast-file">
+          <input
+            #campoFoto
+            type="file"
+            id="foto"
+            class="ast-file-input"
+            accept="image/*"
+            aria-labelledby="rotulo-foto botao-foto"
+            aria-describedby="nome-foto"
+            (change)="nomeArquivo = campoFoto.files?.[0]?.name ?? ''; onFileChangeCadastrar($event)"
+          />
+          <label for="foto" id="botao-foto" class="ec-btn ec-btn--secondary ast-file-btn">
+            <i class="fa-solid fa-image" aria-hidden="true"></i> Escolher foto
+          </label>
+          <span id="nome-foto" class="ast-file-nome">{{ nomeArquivo || 'Nenhum arquivo selecionado' }}</span>
+        </div>
+        <div *ngIf="isUploading" class="ast-upload" role="status" aria-live="polite">
+          <span class="ec-spinner ast-spinner" aria-hidden="true"></span>
+          <span>Enviando foto...</span>
+        </div>
+        <p *ngIf="erroUpload" class="ec-error-text" role="alert">{{ erroUpload }}</p>
+        <img
+          *ngIf="!isUploading && novoAssistido.imagem"
+          [src]="novoAssistido.imagem"
+          [alt]="'Foto de ' + (novoAssistido.nome || 'novo assistido')"
+          class="ast-preview"
+          width="160"
+          height="160"
+        />
+      </div>
+      <div class="ec-modal-footer">
+        <button type="button" class="ec-btn ec-btn--secondary" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="ec-btn" [disabled]="isUploading || isSalvando" (click)="cadastrarAssistido()">
+          <i class="fa fa-plus" aria-hidden="true"></i> Cadastrar
+        </button>
+      </div>
+    </div>
   </div>
 
-  <h2>Lista de Assistidos</h2>
-
-  <div *ngIf="isLoading" class="loading">
-    Carregando relação de assistidos...
+  <!-- Modal Editar (backdrop único) -->
+  <div *ngIf="mostrarModalEditar" class="ec-backdrop">
+    <div
+      class="ec-modal ast-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-editar"
+      ecDialog
+      (ecDialogClose)="closeModalEditar()"
+    >
+      <div class="ast-modal-header">
+        <h2 id="titulo-editar" class="ec-modal-title">Editar dados do assistido</h2>
+        <button type="button" class="ec-btn ec-btn--icon" aria-label="Fechar" (click)="closeModalEditar()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="nome">Nome</label>
+        <input id="nome" class="ec-input" autocomplete="off" [(ngModel)]="atualizarAssistido.nome" />
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="numero_documento">Documento (CPF ou RG)</label>
+        <input
+          type="text"
+          id="numero_documento"
+          class="ec-input"
+          inputmode="numeric"
+          autocomplete="off"
+          [(ngModel)]="atualizarAssistido.documento"
+          appDocumentMask
+        />
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="data_nascimento">Data de nascimento</label>
+        <input type="date" id="data_nascimento" class="ec-input" [(ngModel)]="atualizarAssistido.data_nascimento" />
+      </div>
+      <div class="ec-field">
+        <span class="ec-label" id="rotulo-foto">Foto</span>
+        <div class="ast-file">
+          <input
+            #campoFoto
+            type="file"
+            id="foto"
+            class="ast-file-input"
+            accept="image/*"
+            aria-labelledby="rotulo-foto botao-foto"
+            aria-describedby="nome-foto"
+            (change)="nomeArquivo = campoFoto.files?.[0]?.name ?? ''; onFileChangeEditar($event)"
+          />
+          <label for="foto" id="botao-foto" class="ec-btn ec-btn--secondary ast-file-btn">
+            <i class="fa-solid fa-image" aria-hidden="true"></i> Escolher foto
+          </label>
+          <span id="nome-foto" class="ast-file-nome">{{ nomeArquivo || 'Nenhum arquivo selecionado' }}</span>
+        </div>
+        <div *ngIf="isUploading" class="ast-upload" role="status" aria-live="polite">
+          <span class="ec-spinner ast-spinner" aria-hidden="true"></span>
+          <span>Enviando foto...</span>
+        </div>
+        <p *ngIf="erroUpload" class="ec-error-text" role="alert">{{ erroUpload }}</p>
+        <img
+          *ngIf="!isUploading && atualizarAssistido.imagem"
+          [src]="atualizarAssistido.imagem"
+          [alt]="'Foto de ' + atualizarAssistido.nome"
+          class="ast-preview"
+          width="160"
+          height="160"
+        />
+      </div>
+      <div class="ec-modal-footer">
+        <button type="button" class="ec-btn ec-btn--secondary" (click)="closeModalEditar()">Cancelar</button>
+        <button type="button" class="ec-btn" [disabled]="isUploading || isSalvando" (click)="editarAssistido()">
+          <i class="fa-solid fa-check" aria-hidden="true"></i> Atualizar
+        </button>
+      </div>
+    </div>
   </div>
-
-  <ul *ngIf="!isLoading" class="assistidos-list">
-    <li *ngFor="let assistido of assistidosFiltrados" class="assistido-item">
-      <div class="assistido-info">
-        <span class="nome">{{ assistido.nome }}</span>
-        <span class="documento">{{
-          assistido.documento | documentTranslate
-        }}</span>
-      </div>
-      <div class="actions-buttons">
-        <button (click)="openModalEditar(assistido.id)" class="btn-edit">
-          <i class="fa-solid fa-pencil"></i> 
-          <span class="actions-buttons-span">
-            Editar
-          </span>
-        </button>
-        <button (click)="excluirAssistido(assistido.id)" class="btn-delete">
-          <i class="fa-solid fa-trash"></i>
-          <span class="actions-buttons-span">
-            Excluir
-          </span>
-        </button>
-      </div>
-    </li>
-  </ul>
-
-  <div *ngIf="mostrarModal || mostrarModalEditar" class="modal-overlay"></div>
-
-  <dialog *ngIf="mostrarModal" class="modal">
-    <!-- Header do Modal com X para fechar -->
-    <div class="title-modal">
-      <h5>Cadastro de Novo Assistido</h5>
-      <button class="close-button" (click)="closeModal()">&#10005;</button>
-    </div>
-
-    <!-- Conteúdo do Modal -->
-    <div>
-      <input
-        id="nome"
-        placeholder="Nome do assistido"
-        [(ngModel)]="novoAssistido.nome"
-      />
-    </div>
-    <div>
-      <input
-        type="text"
-        id="numero_documento"
-        [(ngModel)]="novoAssistido.documento"
-        placeholder="Número de documento"
-        appDocumentMask
-      />
-    </div>
-    <div>
-      <input
-        type="date"
-        id="data_nascimento"
-        [(ngModel)]="novoAssistido.data_nascimento"
-        placeholder="Data de Nascimento"
-      />
-    </div>
-    <div>
-      <input type="file" (change)="onFileChangeCadastrar($event)" />
-      <div *ngIf="isUploading" class="spinner"></div>
-      <img
-        *ngIf="!isUploading && novoAssistido.imagem"
-        [src]="novoAssistido.imagem"
-        width="200"
-        height="200"
-      />
-    </div>
-
-    <div class="footer-modal">
-      <button (click)="closeModal()" class="button">Cancelar</button>
-      <button (click)="cadastrarAssistido()" class="btn">
-        <i class="fa fa-plus"></i> Cadastrar
-      </button>
-    </div>
-  </dialog>
-
-  <div *ngIf="mostrarModalEditar" class="modal-overlay"></div>
-
-  <dialog *ngIf="mostrarModalEditar" class="modal">
-    <!-- Header do Modal com X para fechar -->
-    <div class="title-modal">
-      <h5>Editar Dados do Assistido</h5>
-      <button class="close-button" (click)="closeModalEditar()">
-        &#10005;
-      </button>
-    </div>
-
-    <!-- Conteúdo do Modal -->
-    <div>
-      <input
-        id="nome"
-        placeholder="Nome do assistido"
-        [(ngModel)]="atualizarAssistido.nome"
-      />
-    </div>
-    <div>
-      <input
-        type="text"
-        id="numero_documento"
-        [(ngModel)]="atualizarAssistido.documento"
-        placeholder="Número de documento"
-        appDocumentMask
-      />
-    </div>
-    <div>
-      <input
-        type="date"
-        id="data_nascimento"
-        [(ngModel)]="atualizarAssistido.data_nascimento"
-        placeholder="Data de Nascimento"
-      />
-    </div>
-    <div>
-      <input type="file" (change)="onFileChangeEditar($event)" />
-      <div *ngIf="isUploading" class="spinner"></div>
-      <img
-        *ngIf="!isUploading && atualizarAssistido.imagem"
-        [src]="atualizarAssistido.imagem"
-        width="200"
-        height="200"
-      />
-    </div>
-
-    <!-- Footer com botões alinhados à direita -->
-    <div class="footer-modal">
-      <div class="footer-buttons-actions">
-        <button (click)="closeModalEditar()" class="button">Cancelar</button>
-        <button (click)="editarAssistido()" class="btn">Atualizar</button>
-      </div>
-    </div>
-  </dialog>
 </div>
