@@ -36,8 +36,9 @@ h4,
 h5,
 h6 {
   font-family: var(--font-sans);
-  color: #2c3e50;
+  color: var(--color-text);
   line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
 }
 
 
@@ -55,6 +56,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+::selection {
+  background-color: var(--color-primary-soft);
+  color: var(--color-text);
 }
 
 /* Foco visível global (teclado). */
@@ -85,7 +91,10 @@ a:hover {
   *,
   *::before,
   *::after {
+    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
   }
 }

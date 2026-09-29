@@ -5,22 +5,54 @@
  * Cores definidas inline (confirmButtonColor/cancelButtonColor ou style="") continuam
  * prevalecendo — por isso os botões personalizados de "Ajustar Estoque" não mudam.
  */
+.swal2-container.swal2-backdrop-show {
+  background: rgba(17, 24, 39, 0.55);
+}
 .swal2-container .swal2-popup {
+  padding: var(--space-6) var(--space-6) var(--space-5);
   font-family: var(--font-sans);
   color: var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+/* Toast (se usado): cartão branco com borda e sombra, como o Sonner do Lovable */
+.swal2-container .swal2-popup.swal2-toast {
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-lg);
+}
+.swal2-container .swal2-popup.swal2-toast .swal2-title {
+  font-size: var(--fs-14);
 }
 .swal2-container .swal2-title {
   color: var(--color-text);
-  font-size: var(--fs-24);
+  font-size: var(--fs-20);
+  font-weight: var(--fw-semibold);
 }
 .swal2-container .swal2-html-container {
   color: var(--color-text-muted);
   font-size: var(--fs-16);
 }
+.swal2-container .swal2-actions {
+  gap: var(--space-2);
+}
 .swal2-container .swal2-styled {
+  min-height: var(--control-height);
+  margin: 0;
+  padding: var(--space-2) var(--space-5);
   border-radius: var(--radius-sm);
+  font-size: var(--fs-14);
   font-weight: var(--fw-semibold);
+  box-shadow: var(--shadow-xs);
+  transition: background-color var(--dur-fast) ease;
+}
+.swal2-container .swal2-styled.swal2-confirm:hover {
+  background-color: var(--color-primary-hover);
+  background-image: none;
+}
+.swal2-container .swal2-styled.swal2-cancel:hover {
+  background-color: var(--color-neutral-hover);
+  background-image: none;
 }
 .swal2-container .swal2-styled.swal2-confirm {
   background-color: var(--color-primary);

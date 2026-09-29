@@ -1,21 +1,57 @@
 /*
- * Classes globais simples e reutilizáveis (prefixo "ec-" para não colidir com
- * classes já existentes nas páginas). As telas migram para elas nas Fases 2–5.
+ * Classes globais simples e reutilizáveis (prefixo "ec-").
+ * Estética de referência: redesenho Lovable (qa/fase1/lovable/REFERENCIA.md),
+ * sempre com a paleta oficial (tokens.css).
  */
 
-/* Página */
+/* ------------------------------------------------------------------ Movimento */
+@keyframes ec-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes ec-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ec-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ec-zoom-in {
+  from { opacity: 0; transform: translateY(4px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes ec-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes ec-grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Entrada de bloco/lista. Escalonamento: style="--i: <índice>" no item. */
+.ec-enter { animation: ec-fade-up var(--dur-slow) var(--ease-out) both; }
+.ec-list-in {
+  animation: ec-fade-up var(--dur-base) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+
+/* ------------------------------------------------------------------ Página */
 .ec-page {
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--space-6) var(--space-4);
+}
+@media (min-width: 768px) {
+  .ec-page { padding: var(--space-8) var(--space-6); }
 }
 .ec-page-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-4);
   margin-bottom: var(--space-6);
 }
 .ec-page-title {
@@ -24,8 +60,11 @@
   font-weight: var(--fw-bold);
   color: var(--color-text);
 }
+@media (min-width: 768px) {
+  .ec-page-title { font-size: var(--fs-30); }
+}
 
-/* Botões */
+/* ------------------------------------------------------------------ Botões */
 .ec-btn {
   display: inline-flex;
   align-items: center;
@@ -39,39 +78,52 @@
   font-size: var(--fs-14);
   font-weight: var(--fw-semibold);
   line-height: 1.2;
+  white-space: nowrap;
   color: #fff;
   background-color: var(--color-primary);
+  box-shadow: var(--shadow-xs);
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease,
+    color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, transform var(--dur-fast) ease;
 }
 .ec-btn:hover { background-color: var(--color-primary-hover); text-decoration: none; }
+.ec-btn:active:not(:disabled) { transform: translateY(1px); }
+.ec-btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; box-shadow: var(--focus-ring); }
 .ec-btn:disabled,
-.ec-btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+.ec-btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
 .ec-btn--success { background-color: var(--color-success); }
 .ec-btn--success:hover { background-color: var(--color-success-hover); }
 .ec-btn--danger { background-color: var(--color-danger); }
 .ec-btn--danger:hover { background-color: var(--color-danger-hover); }
+/* "outline" do Lovable: fundo branco, borda, hover azul-claro */
 .ec-btn--secondary {
   color: var(--color-text);
   background-color: var(--color-surface);
   border-color: var(--color-border);
 }
-.ec-btn--secondary:hover { background-color: var(--color-primary-soft); }
+.ec-btn--secondary:hover { color: var(--color-primary-hover); background-color: var(--color-primary-soft); }
+.ec-btn--ghost {
+  color: var(--color-primary);
+  background-color: transparent;
+  box-shadow: none;
+}
+.ec-btn--ghost:hover { background-color: var(--color-primary-soft); }
 .ec-btn--icon {
   width: var(--control-height);
   min-width: var(--control-height);
   padding: 0;
   color: var(--color-neutral);
   background-color: transparent;
+  box-shadow: none;
 }
 .ec-btn--icon:hover { color: var(--color-primary); background-color: var(--color-primary-soft); }
 
-/* Campos */
+/* ------------------------------------------------------------------ Campos */
 .ec-field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 6px;
   margin-bottom: var(--space-4);
 }
 .ec-label {
@@ -88,17 +140,24 @@
   font-size: var(--fs-14);
   color: var(--color-text);
   background-color: var(--color-surface);
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
 }
+.ec-input:hover { border-color: #b9c3cf; }
 .ec-input:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 1px;
   border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
 }
+.ec-input[aria-invalid="true"],
+.ec-input.ng-invalid.ng-touched { border-color: var(--color-danger); }
+.ec-input:disabled { background-color: var(--color-muted); cursor: not-allowed; }
 .ec-input::placeholder { color: var(--color-text-muted); }
 .ec-hint { font-size: var(--fs-12); color: var(--color-text-muted); }
-.ec-error-text { font-size: var(--fs-12); color: var(--color-danger); }
+.ec-error-text { font-size: var(--fs-12); font-weight: var(--fw-semibold); color: var(--color-danger); }
 
-/* Card */
+/* ------------------------------------------------------------------ Card / Painel */
 .ec-card {
   padding: var(--space-5);
   background-color: var(--color-surface);
@@ -106,8 +165,64 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
 }
+/* Painel com cabeçalho (Lovable "Panel"): .ec-card.ec-panel > .ec-panel-header + .ec-panel-body */
+.ec-panel { padding: 0; }
+.ec-panel-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-1) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.ec-panel-title {
+  min-width: 0;
+  margin: 0;
+  font-size: var(--fs-18);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+}
+.ec-panel-actions { display: flex; align-items: center; gap: var(--space-1); }
+.ec-panel-body { padding: var(--space-4); }
+@media (min-width: 768px) {
+  .ec-panel-header { padding: var(--space-1) var(--space-5); }
+  .ec-panel-body { padding: var(--space-5); }
+}
 
-/* Modal */
+/* Ícone em quadrado suave (KPIs) */
+.ec-icon-tile {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-18);
+  color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+}
+
+/* ------------------------------------------------------------------ Badge */
+.ec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semibold);
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--color-primary-hover);
+  background-color: var(--color-primary-soft);
+}
+.ec-badge--success { color: var(--color-success); background-color: var(--color-success-soft); }
+.ec-badge--danger { color: var(--color-danger); background-color: var(--color-danger-soft); }
+.ec-badge--neutral { color: var(--color-neutral); background-color: var(--color-muted); }
+
+/* ------------------------------------------------------------------ Modal */
 .ec-backdrop {
   position: fixed;
   inset: 0;
@@ -116,7 +231,8 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
-  background-color: rgba(17, 24, 39, 0.5);
+  background-color: rgba(17, 24, 39, 0.55);
+  animation: ec-fade-in var(--dur-base) ease both;
 }
 .ec-modal {
   position: relative;
@@ -127,12 +243,15 @@
   overflow-y: auto;
   padding: var(--space-6);
   background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  animation: ec-zoom-in var(--dur-base) var(--ease-out) both;
 }
 .ec-modal-title {
   margin: 0 0 var(--space-4);
   font-size: var(--fs-20);
+  font-weight: var(--fw-semibold);
   color: var(--color-text);
 }
 .ec-modal-footer {
@@ -143,7 +262,7 @@
   margin-top: var(--space-6);
 }
 
-/* Tabela */
+/* ------------------------------------------------------------------ Tabela */
 .ec-table-wrapper { width: 100%; overflow-x: auto; }
 .ec-table {
   width: 100%;
@@ -156,15 +275,23 @@
 .ec-table td {
   padding: var(--space-3) var(--space-4);
   text-align: left;
+  vertical-align: middle;
   border-bottom: 1px solid var(--color-border);
 }
 .ec-table th {
+  height: 44px;
+  font-size: var(--fs-12);
   font-weight: var(--fw-semibold);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--color-text-muted);
-  background-color: var(--color-primary-soft);
+  background-color: var(--color-bg);
 }
+.ec-table tbody tr { transition: background-color var(--dur-fast) ease; }
+.ec-table tbody tr:hover { background-color: #f8fafc; }
+.ec-table tbody tr:last-child td { border-bottom: 0; }
 
-/* Lista */
+/* ------------------------------------------------------------------ Lista */
 .ec-list { margin: 0; padding: 0; list-style: none; }
 .ec-list-item {
   display: flex;
@@ -176,7 +303,7 @@
 }
 .ec-list-item:last-child { border-bottom: 0; }
 
-/* Paginação */
+/* ------------------------------------------------------------------ Paginação */
 .ec-pagination {
   display: flex;
   flex-wrap: wrap;
@@ -184,23 +311,38 @@
   justify-content: center;
   gap: var(--space-2);
   margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
   font-size: var(--fs-14);
   color: var(--color-text-muted);
 }
 
-/* Estados: loading / vazio / erro */
+/* ------------------------------------------------------------------ Estados: loading / vazio / erro */
 .ec-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   padding: var(--space-8) var(--space-4);
   text-align: center;
   font-size: var(--fs-14);
   color: var(--color-text-muted);
 }
 .ec-state--error { color: var(--color-danger); }
+/* Ícone circular do estado vazio (Lovable EmptyState) */
+.ec-state-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: var(--fs-24);
+  color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+}
+.ec-state--error .ec-state-icon { color: var(--color-danger); background-color: var(--color-danger-soft); }
+
 .ec-spinner {
   width: 32px;
   height: 32px;
@@ -209,6 +351,16 @@
   border-radius: 50%;
   animation: ec-spin 0.8s linear infinite;
 }
-@keyframes ec-spin {
-  to { transform: rotate(360deg); }
+
+/* Skeleton com shimmer (sem shimmer em prefers-reduced-motion: fica o bloco estático) */
+.ec-skeleton {
+  display: block;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-muted);
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.65) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: ec-shimmer 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-skeleton { background-image: none; }
 }

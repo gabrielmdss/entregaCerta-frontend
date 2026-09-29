@@ -20,6 +20,11 @@
   --color-bg: #f4f6f8;
   --color-surface: #ffffff;
   --color-focus: #336699;
+  /* Superfícies auxiliares (derivadas da paleta; referência Lovable: muted/accent) */
+  --color-muted: #eef1f5;          /* trilhas de barra, skeleton, hover de linha */
+  --color-danger-soft: #fdecea;    /* fundo de alerta/badge de perigo */
+  --color-success-soft: #e8f5ec;   /* fundo de badge de sucesso */
+  --focus-ring: 0 0 0 3px rgba(51, 102, 153, 0.28);
 
   /* Tipografia */
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -52,9 +57,18 @@
   --radius-sm: 6px;
   --radius-md: 10px;
 
-  /* Sombras */
-  --shadow-sm: 0 1px 2px rgba(31, 41, 55, 0.08), 0 1px 3px rgba(31, 41, 55, 0.06);
+  /* Sombras (moderadas; referência Lovable: shadow-sm / shadow / shadow-lg) */
+  --shadow-xs: 0 1px 2px rgba(31, 41, 55, 0.06);
+  --shadow-sm: 0 1px 3px rgba(31, 41, 55, 0.08), 0 1px 2px -1px rgba(31, 41, 55, 0.08);
   --shadow-md: 0 8px 24px rgba(31, 41, 55, 0.14);
+  --shadow-lg: 0 12px 32px -4px rgba(31, 41, 55, 0.18), 0 4px 8px -4px rgba(31, 41, 55, 0.1);
+  --shadow-up: 0 -4px 16px rgba(31, 41, 55, 0.1); /* tab bar inferior */
+
+  /* Movimento (zerado por prefers-reduced-motion em base.css) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 500ms;
 
   /* Camadas */
   --z-header: 100;
@@ -68,7 +82,8 @@
 
   /* Shell */
   --header-height: 64px;
-  --tabbar-height: 64px;
+  --tabbar-height: 72px;
+  --content-max: 1280px;
 
   /* Breakpoints (documentação/uso em JS) */
   --bp-sm: 480px;
