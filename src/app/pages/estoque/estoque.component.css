@@ -1,24 +1,12 @@
 /* Estoque — somente o layout específico; botões, campos, cards, tabela, modal e
    estados vêm de styles/components.css. */
 
-.est-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 /* Busca */
 .est-busca {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-5);
 }
 .est-busca-linha {
   display: flex;
@@ -31,22 +19,7 @@
 }
 
 /* Lista */
-.est-lista-card {
-  padding: var(--space-4) 0 0;
-  overflow: hidden;
-}
-.est-section-title {
-  margin: 0 0 var(--space-3);
-  padding: 0 var(--space-4);
-  font-size: var(--fs-16);
-  font-weight: var(--fw-semibold);
-  color: var(--color-text);
-}
-.est-total {
-  font-weight: var(--fw-regular);
-  color: var(--color-text-muted);
-}
-.est-vazio {
+.est-vazio p {
   margin: 0;
 }
 
@@ -66,7 +39,7 @@
   overflow-wrap: anywhere;
 }
 .est-table .est-col-qtd {
-  width: 120px;
+  width: 160px;
   text-align: right;
   font-weight: var(--fw-semibold);
   font-variant-numeric: tabular-nums;
@@ -80,8 +53,17 @@
   justify-content: flex-end;
   gap: var(--space-2);
 }
+.est-col-qtd--zerado {
+  color: var(--color-danger);
+}
+.est-badge {
+  margin-left: var(--space-2);
+}
 .est-rotulo {
   display: none;
+}
+.est-lista-card {
+  overflow: hidden;
 }
 
 /* Abaixo de 768px cada linha vira um cartão: descrição em destaque, ID e quantidade
