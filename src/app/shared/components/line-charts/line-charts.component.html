@@ -1,9 +1,10 @@
-<div *ngIf="isBrowser" class="chart-container">
-    <canvas baseChart
-            [type]="'line'"
-            [data]="lineChartData"
-            [options]="lineChartOptions"
-            [legend]="lineChartLegend">
-    </canvas>
-  </div>
-  
+<div class="chart-container">
+  <canvas *ngIf="isBrowser" baseChart
+          [type]="'line'"
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+          [legend]="lineChartLegend"
+          role="img"
+          aria-label="Gráfico de linha com o total de retiradas por mês">
+  </canvas>
+</div>

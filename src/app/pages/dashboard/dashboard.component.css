@@ -1,227 +1,112 @@
-/* ================= RESET E CONFIGURAÇÕES GERAIS ================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Dashboard — somente o layout específico; cards, listas e estados vêm de styles/components.css. */
+.dash-loading {
+  min-height: 320px;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  padding: 0;
-  margin: 0;
-  background-color: #f8f9fa; /* Fundo leve para destacar o container */
-}
-
-/* ================= CONTAINER PRINCIPAL ================= */
-.container {
-  width: 100%;
-  max-width: 1200px;  /* Limita a largura para leitura confortável em desktop */
-  margin: 0 auto;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px 15px; /* Espaçamento interno consistente */
-}
-
-/* ================= ESTILOS DO DASHBOARD ================= */
-
-/* Títulos */
-h1 {
-  text-align: center;
-  color: var(--main-titulo-color);
-  font-size: 2rem;
-  padding-top: 20px;
-  margin: 15px 0;
-}
-
-h2 {
-  font-size: 2rem;
-  color: var(--main-titulo-color);
-  font-weight: 400;
-  margin-top: 30px;
-  margin-bottom: 15px;
-}
-
-/* Estatísticas */
-.stats {
+.dash-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
-  width: 100%;
+  gap: var(--space-4);
 }
 
 @media (min-width: 768px) {
-  .stats {
+  .dash-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  /* Força os cards 3 e wide a ocuparem 2 colunas */
-  .stat-card:nth-child(3),
-  .stat-card-wide {
+  .dash-estoque,
+  .dash-wide {
     grid-column: 1 / -1;
   }
 }
 
-.stat-card {
-  background-color: var(--main-background-color);
-  border-radius: 8px;
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 250px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
+/* 1024+: KPIs lado a lado; estoque ocupa a linha inteira (lista cresce sem rolagem interna). */
+@media (min-width: 1024px) {
+  .dash-grid {
+    gap: var(--space-6);
+  }
 }
 
-.stat-card:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+.dash-card-title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
 }
 
-.stat-card-wide {
-  min-height: 300px;
-}
-
-.stat-card app-line-charts {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.stats-detail {
-  font-weight: 800;
-  color: var(--main-titulo-color);
-  text-align: center;
-  padding: 10px 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
-  user-select: none; /* evita seleção de texto acidental */
-}
-
-.stats-detail-value {
-  font-size: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ebe9e9;
-  height: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  margin-top: auto;
-  user-select: text;
-}
-
-.stat-card-wide ul.recent-retiradas {
-  text-align: left;
-  max-height: 200px;
-  overflow-y: auto;
-  padding: 10px 0;
+.dash-kpi-value {
   margin: 0;
-  list-style: none;
+  font-size: var(--fs-30);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--color-text);
+}
+.dash-kpi-value--erro {
+  color: var(--color-text-muted);
 }
 
-.recent-item {
-  background: #e9ecef;
-  padding: 15px 20px;
-  margin: 10px 0;
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
-  transition: background-color 0.2s ease;
-}
-
-.recent-item:hover {
-  background-color: #d8dee0;
-}
-
-.recent-details {
+.dash-card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   flex-wrap: wrap;
-  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-3);
+}
+.dash-card-header .dash-card-title {
+  margin: 0;
+}
+.dash-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semibold);
 }
 
-.recent-details-title {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  width: 100%;
+/* Estoque completo: 1 coluna no mobile; colunas automáticas a partir de 768px. */
+.dash-estoque-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: var(--space-8);
+}
+@media (min-width: 768px) {
+  .dash-estoque-lista {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  /* Cada item tem borda inferior; em grade não há "último" único, então mantém em todos. */
+  .dash-estoque-lista .ec-list-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
 }
 
-.recent-details-description {
-  font-weight: 800;
-  color: var(--main-titulo-color);
-  font-size: 1rem;
+.dash-estoque .ec-list-item,
+.dash-retirada {
+  padding-left: 0;
+  padding-right: 0;
 }
 
-.recent-details-value {
-  display: flex;
-  flex-direction: column;
-  margin-top: 5px;
-  gap: 4px;
-  color: #555;
-}
-
-.recent-details-value span {
-  font-size: 0.95rem;
+.dash-estoque .ec-state,
+.dash-wide .ec-state {
+  padding: var(--space-6) var(--space-2);
   margin: 0;
 }
 
-.stat-title {
-  font-weight: bold;
+.dash-item-nome {
+  display: block;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
 }
-
-.stat-value {
-  font-size: 1.2rem;
-  color: #007bff;
-  user-select: text;
+.dash-item-doc,
+.dash-item-data {
+  font-size: var(--fs-14);
+  color: var(--color-text-muted);
 }
-
-/* ================= RESPONSIVIDADE ================= */
-@media (max-width: 768px) {
-  .stats {
-    grid-template-columns: 1fr;
-  }
-
-  h1 {
-    padding-top: 5%;
-  }
-
-  h1, h2 {
-    font-size: 1.5rem;
-  }
-
-  .stat-item, .recent-item {
-    font-size: 1rem;
-    padding: 8px;
-  }
-
-  .recent-retiradas {
-    padding-bottom: 70px;
-  }
+.dash-item-data {
+  white-space: nowrap;
 }
-
-@media (max-width: 480px) {
-  .stats p {
-    font-size: 1rem;
-    padding: 10px;
-  }
-
-  .container {
-    padding: 10px;
-  }
-
-  h1 {
-    padding-top: 5%;
-  }
-
-  h1, h2 {
-    font-size: 1.3rem;
-  }
-
-  .stat-value {
-    font-size: 1rem;
-  }
+.dash-estoque-qtd {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
 }

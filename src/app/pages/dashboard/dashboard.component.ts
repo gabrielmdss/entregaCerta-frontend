@@ -1,97 +1,109 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Observable, catchError, finalize, forkJoin, map, of } from 'rxjs';
 import { DashboardService } from '../../services/dashboard.service';
 import { DocumentPipe } from '../../utils/pipes/document.pipe';
 import { LineChartsComponent } from '../../shared/components/line-charts/line-charts.component';
-import { HeaderComponent } from "../../shared/components/header/header.component";
-import { FooterComponent } from "../../shared/components/footer/footer.component";
+import { Estoque } from '../../models/estoque.interface';
+import { Retirada } from '../../models/retirada.interface';
 
+/** Resultado de cada bloco: dado recebido ou falha (404 do backend = "sem dados", não falha). */
+interface Bloco<T> {
+  dados: T;
+  erro: boolean;
+}
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, DocumentPipe, LineChartsComponent, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, DocumentPipe, LineChartsComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
   anoAtual = new Date().getFullYear();
   totalAssistidos: number = 0;
-  retiradasPorMes = [{ mes: '', total: null }];
-  ultimasRetiradas = [
-    {
-      id: null,
-      assistido_id: null,
-      nome: '',
-      documento: '',
-      data_retirada: '',
-    },
-  ];
+  retiradasPorMes: { mes: string; total: number | null }[] = [];
+  ultimasRetiradas: Retirada[] = [];
   totalRetiradasMes: number = 0;
-  estoqueAtual: any = [
-    {
-      id: null,
-      quantidade: null,
-      descricao: '',
-      data_atualizacao: '',
-    },
-  ];
+  estoqueAtual: Estoque[] = [];
 
+  /** Verdadeiro até TODAS as respostas (sucesso, vazio ou erro) chegarem. */
   isLoading: boolean = false;
+  erros = {
+    totalAssistidos: false,
+    retiradasPorMes: false,
+    totalRetiradasMes: false,
+    ultimasRetiradas: false,
+    estoqueAtual: false,
+  };
 
   constructor(private dashboardService: DashboardService) {}
 
-  ngOnInit(): void {
-    const { dataInicio, dataFim } = this.getPeriodoMesAtual();
-
-    this.isLoading = true
-    this.obterTotalDeAssistidos()
-    this.dashboardService.retiradasPorMes(this.anoAtual.toString()).subscribe({
-      next: (response: any) => {
-        this.retiradasPorMes = response;
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
-    this.dashboardService
-      .totalRetiradasMesAtual(dataInicio, dataFim)
-      .subscribe({
-        next: (response: any) => {
-          this.totalRetiradasMes = response.length;
-        },
-        error: (error: any) => {
-          console.log(error);
-        },
-      });
-    this.dashboardService.ultimasCincoRetiradas().subscribe({
-      next: (response: any) => {
-        this.ultimasRetiradas = response;
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
-    this.dashboardService.estoqueAtual().subscribe({
-      next: (response: any) => {
-        this.estoqueAtual = response;
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-    });
-    this.isLoading = false
+  get todosComErro(): boolean {
+    return Object.values(this.erros).every(Boolean);
   }
 
-  obterTotalDeAssistidos(): void {
-    this.dashboardService.totalAssistidosCadastrados().subscribe({
-      next: (response: any) => {
-        this.totalAssistidos = response.total;
+  ngOnInit(): void {
+    this.carregar();
+  }
 
-      },
-      error: (error: any) => {
-        console.log(error);
-      }
-    });
+  carregar(): void {
+    const { dataInicio, dataFim } = this.getPeriodoMesAtual();
+
+    this.isLoading = true;
+    forkJoin({
+      totalAssistidos: this.bloco(
+        this.dashboardService.totalAssistidosCadastrados().pipe(map((r: any) => Number(r?.total) || 0)),
+        0,
+      ),
+      retiradasPorMes: this.bloco(
+        this.dashboardService.retiradasPorMes(this.anoAtual.toString()).pipe(map((r: any) => (Array.isArray(r) ? r : []))),
+        [] as { mes: string; total: number | null }[],
+      ),
+      totalRetiradasMes: this.bloco(
+        this.dashboardService.totalRetiradasMesAtual(dataInicio, dataFim).pipe(map((r: any) => (Array.isArray(r) ? r.length : 0))),
+        0,
+      ),
+      ultimasRetiradas: this.bloco(
+        this.dashboardService.ultimasCincoRetiradas().pipe(map((r: any) => (Array.isArray(r) ? (r as Retirada[]) : []))),
+        [] as Retirada[],
+      ),
+      estoqueAtual: this.bloco(
+        this.dashboardService.estoqueAtual().pipe(map((r: any) => (Array.isArray(r) ? (r as Estoque[]) : []))),
+        [] as Estoque[],
+      ),
+    })
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe((res) => {
+        this.totalAssistidos = res.totalAssistidos.dados;
+        this.retiradasPorMes = res.retiradasPorMes.dados;
+        this.totalRetiradasMes = res.totalRetiradasMes.dados;
+        this.ultimasRetiradas = res.ultimasRetiradas.dados;
+        this.estoqueAtual = res.estoqueAtual.dados;
+        this.erros = {
+          totalAssistidos: res.totalAssistidos.erro,
+          retiradasPorMes: res.retiradasPorMes.erro,
+          totalRetiradasMes: res.totalRetiradasMes.erro,
+          ultimasRetiradas: res.ultimasRetiradas.erro,
+          estoqueAtual: res.estoqueAtual.erro,
+        };
+      });
+  }
+
+  /**
+   * Converte a resposta em Bloco. O backend responde 404 quando não há registros
+   * (/assistido/total, /retirada/ultimas, /retirada/periodo, /retirada/meses): tratado como vazio.
+   * Demais falhas (rede, 5xx) marcam o bloco com erro sem derrubar os outros.
+   */
+  private bloco<T>(fonte: Observable<T>, vazio: T): Observable<Bloco<T>> {
+    return fonte.pipe(
+      map((dados) => ({ dados, erro: false })),
+      catchError((err: HttpErrorResponse) =>
+        of({ dados: vazio, erro: err?.status !== 404 }),
+      ),
+    );
   }
 
   private getPeriodoMesAtual(): { dataInicio: string; dataFim: string } {

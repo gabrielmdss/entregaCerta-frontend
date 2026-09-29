@@ -1,45 +1,68 @@
-<app-header></app-header>
-<div class="container">
-  <h1>Dashboard</h1>
+<div class="ec-page">
+  <header class="ec-page-header">
+    <h1 class="ec-page-title">Dashboard</h1>
+  </header>
 
-  <div *ngIf="isLoading" class="loading">Carregando dados...</div>
+  <div *ngIf="isLoading" class="ec-state dash-loading" role="status" aria-live="polite">
+    <span class="ec-spinner" aria-hidden="true"></span>
+    <span>Carregando dados...</span>
+  </div>
 
-  <div *ngIf="!isLoading">
-    <div class="stats">
-      <div class="stat-card">
-        <strong class="stats-detail">Total de Assistidos</strong>
-        <strong class="stats-detail-value">{{ totalAssistidos }}</strong>
+  <div *ngIf="!isLoading && todosComErro" class="ec-state ec-state--error ec-card" role="alert">
+    <span>Não foi possível carregar os dados do dashboard.</span>
+    <button type="button" class="ec-btn" (click)="carregar()">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="!isLoading && !todosComErro" class="dash-grid">
+    <section class="ec-card dash-kpi" aria-labelledby="kpi-assistidos">
+      <h2 id="kpi-assistidos" class="dash-card-title">Total de assistidos</h2>
+      <p *ngIf="!erros.totalAssistidos" class="dash-kpi-value">{{ totalAssistidos | number }}</p>
+      <p *ngIf="erros.totalAssistidos" class="dash-kpi-value dash-kpi-value--erro">—</p>
+      <p *ngIf="erros.totalAssistidos" class="ec-error-text">Falha ao carregar.</p>
+    </section>
+
+    <section class="ec-card dash-kpi" aria-labelledby="kpi-retiradas-mes">
+      <h2 id="kpi-retiradas-mes" class="dash-card-title">Retiradas no mês</h2>
+      <p *ngIf="!erros.totalRetiradasMes" class="dash-kpi-value">{{ totalRetiradasMes | number }}</p>
+      <p *ngIf="erros.totalRetiradasMes" class="dash-kpi-value dash-kpi-value--erro">—</p>
+      <p *ngIf="erros.totalRetiradasMes" class="ec-error-text">Falha ao carregar.</p>
+    </section>
+
+    <section class="ec-card dash-estoque" aria-labelledby="titulo-estoque">
+      <div class="dash-card-header">
+        <h2 id="titulo-estoque" class="dash-card-title">Estoque atual</h2>
+        <a routerLink="/estoque" class="dash-link">Gerenciar estoque</a>
       </div>
+      <p *ngIf="erros.estoqueAtual" class="ec-state ec-state--error">Não foi possível carregar o estoque.</p>
+      <p *ngIf="!erros.estoqueAtual && estoqueAtual.length === 0" class="ec-state">Nenhum item em estoque.</p>
+      <ul *ngIf="!erros.estoqueAtual && estoqueAtual.length > 0" class="ec-list dash-estoque-lista">
+        <li *ngFor="let item of estoqueAtual" class="ec-list-item dash-estoque-item">
+          <span class="dash-item-nome">{{ item.descricao }}</span>
+          <span class="dash-estoque-qtd">{{ item.quantidade | number }}</span>
+        </li>
+      </ul>
+    </section>
 
-      <div class="stat-card">
-        <strong class="stats-detail">Total de Retiradas no Mês</strong>
-        <strong class="stats-detail-value">{{ totalRetiradasMes }}</strong>
-      </div>
+    <section class="ec-card dash-wide" aria-labelledby="titulo-grafico">
+      <h2 id="titulo-grafico" class="dash-card-title">Retiradas por mês em {{ anoAtual }}</h2>
+      <p *ngIf="erros.retiradasPorMes" class="ec-state ec-state--error">Não foi possível carregar o gráfico.</p>
+      <p *ngIf="!erros.retiradasPorMes && retiradasPorMes.length === 0" class="ec-state">Nenhuma retirada registrada neste ano.</p>
+      <app-line-charts *ngIf="!erros.retiradasPorMes && retiradasPorMes.length > 0" [dados]="retiradasPorMes"></app-line-charts>
+    </section>
 
-      <div class="stat-card">
-        <strong class="stats-detail">Gráfico de Retiradas</strong>
-        <app-line-charts [dados]="retiradasPorMes"></app-line-charts>
-      </div>
-
-      <div class="stat-card stat-card-wide">
-        <strong class="stats-detail">Retiradas por Mês</strong>
-        <ul class="recent-retiradas">
-          <li *ngFor="let retirada of ultimasRetiradas" class="recent-item">
-            <div class="recent-details">
-              <div class="recent-details-title">
-                <span class="recent-details-description">{{
-                  retirada.nome
-                }}</span>
-                <div class="recent-details-value">
-                  <span>{{ retirada.documento | documentTranslate }}</span>
-                  <span>{{ retirada.data_retirada | date : "MMM d, yyyy" : "UTC" }}</span>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <section class="ec-card dash-wide" aria-labelledby="titulo-ultimas">
+      <h2 id="titulo-ultimas" class="dash-card-title">Últimas retiradas</h2>
+      <p *ngIf="erros.ultimasRetiradas" class="ec-state ec-state--error">Não foi possível carregar as últimas retiradas.</p>
+      <p *ngIf="!erros.ultimasRetiradas && ultimasRetiradas.length === 0" class="ec-state">Nenhuma retirada registrada.</p>
+      <ul *ngIf="!erros.ultimasRetiradas && ultimasRetiradas.length > 0" class="ec-list">
+        <li *ngFor="let retirada of ultimasRetiradas" class="ec-list-item dash-retirada">
+          <div>
+            <span class="dash-item-nome">{{ retirada.nome }}</span>
+            <span class="dash-item-doc">{{ retirada.documento | documentTranslate }}</span>
+          </div>
+          <time class="dash-item-data" [attr.datetime]="retirada.data_retirada">{{ retirada.data_retirada | date : "dd/MM/yyyy" : "UTC" }}</time>
+        </li>
+      </ul>
+    </section>
   </div>
 </div>
-<app-footer></app-footer>
