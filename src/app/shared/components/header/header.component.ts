@@ -1,41 +1,25 @@
-import { Component, HostListener, OnInit, Inject, PLATFORM_ID, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+interface ItemNav {
+  rota: string;
+  rotulo: string;
+  icone: string;
+}
 
 @Component({
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  imports: [RouterLink],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [NgFor, RouterLink, RouterLinkActive],
 })
-export class HeaderComponent implements OnInit {
-  menuActive: boolean = false;
-  isMobile: boolean = false;
-
-  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: any) {}
-
-  ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScreenSize();
-    }
-  }
-
-  @HostListener('window:resize', [])
-  onResize() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScreenSize();
-    }
-  }
-
-  checkScreenSize() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isMobile = window.innerWidth <= 768;
-    }
-  }
-
-  toggleMenu() {
-    this.menuActive = !this.menuActive;
-  }
+export class HeaderComponent {
+  readonly itens: ItemNav[] = [
+    { rota: '/dashboard', rotulo: 'Dashboard', icone: 'fa-table-columns' },
+    { rota: '/assistidos', rotulo: 'Assistidos', icone: 'fa-handshake' },
+    { rota: '/retiradas', rotulo: 'Retiradas', icone: 'fa-box-archive' },
+    { rota: '/estoque', rotulo: 'Estoque', icone: 'fa-boxes-stacked' },
+  ];
 }

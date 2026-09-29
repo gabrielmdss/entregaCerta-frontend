@@ -1,24 +1,18 @@
 .footer-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--main-footer-background-color);
-  color: white;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-  min-height: 45px;
-
-  strong {
-    text-align: center;
-    font-family: "Inter";
-    font-weight: 400;
-    font-size: 16px;
-  }
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
 }
 
-@media (max-width: 770px) {
+.footer-container p {
+  margin: 0;
+  font-size: var(--fs-14);
+  color: var(--color-text-muted);
+}
+
+/* Mesmo breakpoint da tab bar: no mobile a navegação inferior ocupa esse espaço. */
+@media (max-width: 768px) {
   .footer-container {
     display: none;
   }

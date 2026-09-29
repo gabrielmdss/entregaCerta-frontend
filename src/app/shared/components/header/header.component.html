@@ -1,75 +1,24 @@
 <header class="desktop-header">
-  <div class="logo">
-    <a routerLink="/dashboard">Entrega Certa</a>
-  </div>
-  <nav [class.active]="menuActive">
-    <ul>
-      <li>
-        <a routerLink="/dashboard" routerLinkActive="active">
-          <iconify-icon
-            class="m-1"
-            icon="material-symbols-light:space-dashboard-outline"
-            style="font-size: 24px; vertical-align: middle;"></iconify-icon>Dashboard
-        </a>
-      </li>
-      <li>
-        <a routerLink="/assistidos" routerLinkActive="active">
-          <iconify-icon
-            class="m-1"
-            icon="material-symbols-light:volunteer-activism-outline-rounded"
-            style="font-size: 24px; vertical-align: middle;"></iconify-icon> Assistidos
-        </a>
-      </li>
-      <li>
-        <a routerLink="/retiradas" routerLinkActive="active">
-          <iconify-icon
-            class="m-1"
-            icon="material-symbols-light:unarchive-outline-rounded"
-            style="font-size: 24px; vertical-align: middle;"></iconify-icon>Retiradas
-        </a>
-      </li>
-      <li>
-        <a routerLink="/estoque" routerLinkActive="active">
-          <iconify-icon
-            class="m-1"
-            icon="material-symbols-light:package-2-outline-sharp"
-            style="font-size: 24px; vertical-align: middle;"></iconify-icon> Estoque
+  <a class="logo" routerLink="/dashboard" aria-label="Entrega Certa — ir para o Dashboard">Entrega Certa</a>
+  <nav aria-label="Navegação principal">
+    <ul class="nav-list">
+      <li *ngFor="let item of itens">
+        <a class="nav-link" [routerLink]="item.rota" routerLinkActive="active" ariaCurrentWhenActive="page">
+          <i class="fa-solid {{ item.icone }}" aria-hidden="true"></i>
+          <span>{{ item.rotulo }}</span>
         </a>
       </li>
     </ul>
   </nav>
-  <div class="menu-icon" (click)="toggleMenu()">
-    <span class="bar"></span>
-    <span class="bar"></span>
-    <span class="bar"></span>
-  </div>
 </header>
 
 <!-- Tab Navigation para Mobile -->
-<nav class="mobile-tab-nav">
+<nav class="mobile-tab-nav" aria-label="Navegação principal (móvel)">
   <ul>
-    <li>
-      <a routerLink="/dashboard" routerLinkActive="active">
-        <i class="fa-solid fa-table-columns"></i>
-        <span>Dashboard</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/assistidos" routerLinkActive="active">
-        <i class="fa-solid fa-handshake"></i>
-        <span>Assistidos</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/retiradas" routerLinkActive="active">
-        <i class="fas fa-archive"></i>
-        <span>Retiradas</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/estoque" routerLinkActive="active">
-        <i class="fa-solid fa-boxes-stacked"></i>
-        <span>Estoque</span>
+    <li *ngFor="let item of itens">
+      <a [routerLink]="item.rota" routerLinkActive="active" ariaCurrentWhenActive="page">
+        <i class="fa-solid {{ item.icone }}" aria-hidden="true"></i>
+        <span>{{ item.rotulo }}</span>
       </a>
     </li>
   </ul>
