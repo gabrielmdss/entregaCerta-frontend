@@ -66,15 +66,19 @@
   border: 2px dashed var(--color-primary);
   border-radius: var(--radius-md);
   background-color: var(--color-primary-soft);
-  opacity: 0.8;
 }
+/* Pré-visualização totalmente opaca: fundo de superfície + sombra; nada do conteúdo de
+   baixo aparece através dela (o bloco "Indicadores" não tem card próprio, daí o padding). */
 .cdk-drag-preview.dash-bloco {
   border-radius: var(--radius-md);
+  background-color: var(--color-surface);
   box-shadow: var(--shadow-lg);
-  opacity: 0.96;
+  opacity: 1;
   transform-origin: center;
   animation: none;
 }
+.cdk-drag-preview.dash-bloco:has(> .dash-indicadores) { padding: 0 var(--space-3) var(--space-3); background-color: var(--color-bg); outline: 1px solid var(--color-border); }
+.cdk-drag-preview .ec-list-in { animation: none; }
 .cdk-drag-preview .dash-alca { cursor: grabbing; color: var(--color-primary); background-color: var(--color-primary-soft); }
 .dash-grid.cdk-drop-list-dragging .dash-bloco:not(.cdk-drag-placeholder) {
   transition: transform 250ms var(--ease-out);
@@ -145,6 +149,19 @@
   white-space: nowrap;
 }
 .dash-link i { font-size: var(--fs-12); transition: transform var(--dur-fast) ease; }
+.dash-estoque .ec-panel-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* 360–479px: o link vira "Gerenciar →" para o título caber ao lado da alça; o nome
+   acessível continua "Gerenciar estoque". */
+@media (max-width: 479px) {
+  .dash-link-extra {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
 .dash-link:hover i { transform: translateX(2px); }
 
 /* Estoque completo sem rolagem interna: 1 coluna no mobile; 2 em 768; 4 em 1024. */
