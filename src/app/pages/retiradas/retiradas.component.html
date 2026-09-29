@@ -1,232 +1,263 @@
-<div class="container">
-  <h1>Controle de Retiradas</h1>
-  <div class="form-container">
-    <button (click)="openModalRegistrar(novaRetirada)" class="btn">
-      <i class="fa fa-plus"></i> Registrar Retirada
+<div class="ec-page">
+  <header class="ec-page-header">
+    <h1 class="ec-page-title">Controle de Retiradas</h1>
+    <button type="button" class="ec-btn" (click)="openModalRegistrar(novaRetirada)">
+      <i class="fa fa-plus" aria-hidden="true"></i> Registrar retirada
     </button>
-  </div>
+  </header>
 
-  <h3>Filtros</h3>
-  <div class="filters-container">
-    <div class="filter-items-container">
-      <div class="filter-item">
-        <h4>Assistido</h4>
-        <div class="form-group">
-          <div class="input-group">
-            <app-select
-              [items]="assistidos"
-              bindLabel="nome"
-              bindValue="id"
-              (selectChange)="onAssistidoSelecionado($event)"
-              class="select"
-            ></app-select>
-          </div>
-          <button (click)="filtrarRetiradasPorAssistido()" class="button">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-      </div>
-      <div class="filter-item-intervalo">
-        <h4>Intervalo de Data</h4>
-        <div class="form-group">
-          <div class="input-group">
-            <input
-              type="date"
-              [(ngModel)]="dataInicialFilter"
-              class="input-field"
-            />
-            <input
-              type="date"
-              [(ngModel)]="dataFinalFilter"
-              class="input-field"
-            />
-          </div>
-          <button
-            (click)="filtrarRetiradasPorIntervalo()"
-            class="button"
-          >
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="filter-btn-clean-filter">
-      <button (click)="limparFiltros()" class="button-clear">
-        <i class="fa-solid fa-broom"></i>
-        Limpar Filtros
-      </button>
-    </div>
-  </div>
-
-  <h2>Retiradas Registradas</h2>
-
-  <div *ngIf="isLoading" class="loading">Carregando retiradas...</div>
-
-  <div *ngIf="!isLoading" class="page-size-selector">
-    <label for="pageSize">Exibir:</label>
-    <select
-      id="pageSize"
-      [(ngModel)]="selectedPageSize"
-      (change)="changePageSize(selectedPageSize)"
-    >
-      <option *ngFor="let size of itemsPerPageOptions" [value]="size">
-        {{ size }} itens
-      </option>
-    </select>
-  </div>
-
-  <ul *ngIf="!isLoading" class="retiradas-list">
-    <li *ngFor="let retirada of retiradas" class="retirada-item">
-      {{ retirada.nome }} -
-      {{ retirada.data_retirada | date : "MMM d, yyyy" : "UTC" }}
-      <button (click)="openModal(retirada)" class="button">
-        <i class="fa-solid fa-pencil"></i> Alterar
-      </button>
-    </li>
-  </ul>
-
-  <div *ngIf="!isLoading" class="pagination">
-    <button
-      (click)="changePage(currentPage - 1)"
-      [disabled]="currentPage === 1"
-    >
-      Anterior
-    </button>
-    <span>Página {{ currentPage }} de {{ totalPages }}</span>
-    <button
-      (click)="changePage(currentPage + 1)"
-      [disabled]="currentPage === totalPages"
-    >
-      Próxima
-    </button>
-  </div>
-
-  <div *ngIf="mostrarModalRegistrar" class="modal-overlay">
-    <dialog *ngIf="mostrarModalRegistrar" class="modal">
-      <div class="title-modal">
-        <h5>Registrar Retirada</h5>
-        <button class="close-button" (click)="closeModalRegistrar()">
-          &#10005;
-        </button>
-      </div>
-      <div class="body-modal">
-        <div class="input-group">
+  <section class="ec-card ret-filtros" aria-labelledby="titulo-filtros">
+    <h2 id="titulo-filtros" class="ret-section-title">Filtros</h2>
+    <div class="ret-filtros-grid">
+      <div class="ret-filtro">
+        <label class="ec-label" for="filtro-assistido">Assistido</label>
+        <div class="ret-filtro-linha">
           <app-select
+            class="ret-filtro-campo"
             [items]="assistidos"
             bindLabel="nome"
             bindValue="id"
-            (selectChange)="onAssistidoSelecionadoRegistrarRetirada($event)"
-            style="width: 100%"
+            labelForId="filtro-assistido"
+            [value]="assistidoIdFilter"
+            (selectChange)="onAssistidoSelecionado($event)"
           ></app-select>
         </div>
-        <div>
-          <label for="data_retirada">Data de Retirada</label>
-          <input
-            type="date"
-            id="data_retirada"
-            [(ngModel)]="novaRetirada.data_retirada"
-          />
-        </div>
       </div>
 
-      <div class="footer-modal">
-        <button (click)="closeModalRegistrar()" class="button-cancelar">
-          Cancelar
-        </button>
-        <button (click)="registrarRetirada()" class="btn">
-          <i class="fa fa-plus"></i> Registrar
-        </button>
-      </div>
-    </dialog>
-  </div>
-
-  <div *ngIf="mostrarModal" class="modal-overlay">
-    <dialog *ngIf="mostrarModal" class="modal">
-      <div class="title-modal">
-        <h5>Alterar Retirada</h5>
-        <button class="close-button" (click)="closeModal()">&#10005;</button>
-      </div>
-      <div class="body-modal">
-        <div>
-          <label for="nome">Nome</label>
-          <input
-            id="nome"
-            [(ngModel)]="retiradaEditada.nome"
-            placeholder="Nome do assistido"
-          />
-        </div>
-        <div>
-          <label for="data_retirada">Data de Retirada</label>
-          <input
-            type="date"
-            id="data_retirada"
-            [(ngModel)]="retiradaEditada.data_retirada"
-          />
-        </div>
-      </div>
-
-      <div class="footer-modal">
-        <button (click)="closeModal()" class="button-cancelar">Cancelar</button>
-        <button (click)="confirmarAlteracao()" class="btn">
-          <i class="fa fa-plus"></i> Cadastrar
-        </button>
-      </div>
-    </dialog>
-  </div>
-
-  <div *ngIf="mostrarModalDetalhesAssistido" class="modal-overlay">
-    <dialog class="modal">
-      <div class="title-modal">
-        <h5>Detalhes do Assistido</h5>
-        <button class="close-button" (click)="closeModalDetalhesAssistido()">
-          &#10005;
-        </button>
-      </div>
-
-      <div class="body-modal-detalhes">
-        <div class="foto-info">
-          <!-- Tornar a imagem clicável -->
-          <img 
-            *ngIf="!isLoading"
-            [src]="assistidoDetalhes.imagem ?? 'https://res.cloudinary.com/dhpteq1gq/image/upload/v1744070495/assistidos/pbhvegkmq5ia0wima4jd.jpg'"
-            alt="Foto do assistido"
-            class="foto-assistido"
-            (click)="expandirImagem()"
-          />
-      
-          <div class="info-basica">
-            <p><strong>Nome:</strong> {{ assistidoDetalhes.nome }}</p>
-            <p><strong>Documento:</strong> {{ assistidoDetalhes.documento | documentTranslate }}</p>
-            <p><strong>Data de nascimento:</strong> {{ assistidoDetalhes.data_nascimento | date: 'dd/MM/yyyy' }}</p>
+      <fieldset class="ret-filtro">
+        <legend class="ec-label">Intervalo de datas</legend>
+        <div class="ret-filtro-linha">
+          <div class="ret-datas">
+            <label class="ret-sr-only" for="filtro-data-inicial">Data inicial</label>
+            <input id="filtro-data-inicial" type="date" class="ec-input" [(ngModel)]="dataInicialFilter" />
+            <span class="ret-ate" aria-hidden="true">até</span>
+            <label class="ret-sr-only" for="filtro-data-final">Data final</label>
+            <input id="filtro-data-final" type="date" class="ec-input" [(ngModel)]="dataFinalFilter" />
           </div>
         </div>
-      
-        <div class="ultimas-retiradas">
-          <h6>Últimas Retiradas</h6>
-          <ul>
-            <li *ngFor="let retirada of retiradas.slice(0, 4)">
-              {{ retirada.data_retirada | date : "MMM d, yyyy" : "UTC" }}
-            </li>
-          </ul>
-        </div>
-      
-        <!-- Modal para exibir a imagem expandida -->
-        <div *ngIf="imagemExpandida" class="modal-imagem" (click)="fecharImagem()">
-          <img 
-            [src]="assistidoDetalhes.imagem ?? 'https://res.cloudinary.com/dhpteq1gq/image/upload/v1744070495/assistidos/pbhvegkmq5ia0wima4jd.jpg'"
-            alt="Imagem Expandida"
-            class="foto-expandida"
-          />
-        </div>
-      </div>
-      
-      
+      </fieldset>
+    </div>
 
-      <div class="footer-modal">
-        <button class="btn btn-fechar" (click)="closeModalDetalhesAssistido()">
-          Fechar
+    <div class="ret-filtros-rodape">
+      <p *ngIf="mensagemFiltro" class="ec-error-text ret-mensagem" role="alert">{{ mensagemFiltro }}</p>
+      <button type="button" class="ec-btn ec-btn--secondary" (click)="limparFiltros()">
+        <i class="fa-solid fa-broom" aria-hidden="true"></i> Limpar filtros
+      </button>
+      <button type="button" class="ec-btn" (click)="aplicarFiltros()">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Filtrar
+      </button>
+    </div>
+  </section>
+
+  <section class="ec-card ret-lista-card" aria-labelledby="titulo-lista">
+    <div class="ret-lista-header">
+      <h2 id="titulo-lista" class="ret-section-title">
+        Retiradas registradas
+        <span *ngIf="!isLoading && !erroLista" class="ret-total">({{ totalItens | number }})</span>
+      </h2>
+      <div *ngIf="!isLoading && !erroLista && totalItens > 0" class="ret-page-size">
+        <label class="ec-label" for="pageSize">Exibir</label>
+        <select
+          id="pageSize"
+          class="ec-input"
+          [(ngModel)]="selectedPageSize"
+          (ngModelChange)="changePageSize($event)"
+        >
+          <option *ngFor="let size of itemsPerPageOptions" [ngValue]="size">{{ size }} itens</option>
+        </select>
+      </div>
+    </div>
+
+    <p *ngIf="filtroAtivo && !isLoading" class="ec-hint ret-filtro-ativo">
+      {{ descricaoFiltro }}
+      Use "Limpar filtros" para ver todas.
+    </p>
+
+    <div *ngIf="isLoading" class="ec-state" role="status" aria-live="polite">
+      <span class="ec-spinner" aria-hidden="true"></span>
+      <span>Carregando retiradas...</span>
+    </div>
+
+    <div *ngIf="!isLoading && erroLista" class="ec-state ec-state--error" role="alert">
+      <span>Não foi possível carregar as retiradas.</span>
+      <button type="button" class="ec-btn" (click)="obterRetiradas(currentPage, selectedPageSize)">
+        Tentar novamente
+      </button>
+    </div>
+
+    <p *ngIf="!isLoading && !erroLista && retiradas.length === 0" class="ec-state ret-vazio">
+      Nenhuma retirada encontrada
+    </p>
+
+    <ul *ngIf="!isLoading && !erroLista && retiradas.length > 0" class="ec-list">
+      <li *ngFor="let retirada of retiradas" class="ec-list-item ret-item">
+        <div class="ret-item-info">
+          <span class="ret-item-nome">{{ retirada.nome }}</span>
+          <span class="ret-item-meta">
+            <span>{{ retirada.documento | documentTranslate }}</span>
+            <time [attr.datetime]="retirada.data_retirada">{{ retirada.data_retirada | date : "dd/MM/yyyy" : "UTC" }}</time>
+          </span>
+        </div>
+        <button
+          type="button"
+          class="ec-btn ec-btn--secondary"
+          [attr.aria-label]="'Alterar retirada de ' + retirada.nome"
+          (click)="openModal(retirada)"
+        >
+          <i class="fa-solid fa-pencil" aria-hidden="true"></i> Alterar
+        </button>
+      </li>
+    </ul>
+
+    <nav
+      *ngIf="!isLoading && !erroLista && totalPages > 0"
+      class="ec-pagination"
+      aria-label="Paginação das retiradas"
+    >
+      <button
+        type="button"
+        class="ec-btn ec-btn--secondary"
+        (click)="changePage(currentPage - 1)"
+        [disabled]="currentPage <= 1"
+      >
+        Anterior
+      </button>
+      <span aria-live="polite">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button
+        type="button"
+        class="ec-btn ec-btn--secondary"
+        (click)="changePage(currentPage + 1)"
+        [disabled]="currentPage >= totalPages"
+      >
+        Próxima
+      </button>
+    </nav>
+  </section>
+
+  <!-- Modal Registrar -->
+  <div *ngIf="mostrarModalRegistrar" class="ec-backdrop">
+    <div class="ec-modal ret-modal" role="dialog" aria-modal="true" aria-labelledby="titulo-registrar" ecDialog (ecDialogClose)="closeModalRegistrar()">
+      <div class="ret-modal-header">
+        <h2 id="titulo-registrar" class="ec-modal-title">Registrar retirada</h2>
+        <button type="button" class="ec-btn ec-btn--icon" aria-label="Fechar" (click)="closeModalRegistrar()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
       </div>
-    </dialog>
+      <div class="ec-field">
+        <label class="ec-label" for="registrar-assistido">Assistido</label>
+        <app-select
+          [items]="assistidos"
+          bindLabel="nome"
+          bindValue="id"
+          labelForId="registrar-assistido"
+          appendTo="body"
+          [value]="novaRetirada.assistido_id || null"
+          (selectChange)="onAssistidoSelecionadoRegistrarRetirada($event)"
+        ></app-select>
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="data_retirada">Data de retirada</label>
+        <input type="date" id="data_retirada" class="ec-input" [(ngModel)]="novaRetirada.data_retirada" />
+      </div>
+      <div class="ec-modal-footer">
+        <button type="button" class="ec-btn ec-btn--secondary" (click)="closeModalRegistrar()">Cancelar</button>
+        <button type="button" class="ec-btn" (click)="registrarRetirada()">
+          <i class="fa fa-plus" aria-hidden="true"></i> Registrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Alterar -->
+  <div *ngIf="mostrarModal" class="ec-backdrop">
+    <div class="ec-modal ret-modal" role="dialog" aria-modal="true" aria-labelledby="titulo-alterar" ecDialog (ecDialogClose)="closeModal()">
+      <div class="ret-modal-header">
+        <h2 id="titulo-alterar" class="ec-modal-title">Alterar retirada</h2>
+        <button type="button" class="ec-btn ec-btn--icon" aria-label="Fechar" (click)="closeModal()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <p class="ec-hint ret-atual">
+        Registrada para <strong>{{ retiradaEditada.nome }}</strong>
+        <span *ngIf="retiradaEditada.documento"> — {{ retiradaEditada.documento | documentTranslate }}</span>
+      </p>
+      <div class="ec-field">
+        <label class="ec-label" for="alterar-assistido">Assistido</label>
+        <app-select
+          [items]="assistidos"
+          bindLabel="nome"
+          bindValue="id"
+          labelForId="alterar-assistido"
+          appendTo="body"
+          [value]="retiradaEditada.assistido_id"
+          (selectChange)="onAssistidoSelecionadoAlterarRetirada($event)"
+        ></app-select>
+        <span class="ec-hint">Para corrigir o nome do assistido, use a tela Assistidos.</span>
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="alterar-data">Data de retirada</label>
+        <input type="date" id="alterar-data" class="ec-input" [(ngModel)]="retiradaEditada.data_retirada" />
+      </div>
+      <div class="ec-modal-footer">
+        <button type="button" class="ec-btn ec-btn--secondary" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="ec-btn" (click)="confirmarAlteracao()">
+          <i class="fa-solid fa-check" aria-hidden="true"></i> Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalhes do assistido -->
+  <div *ngIf="mostrarModalDetalhesAssistido" class="ec-backdrop">
+    <div class="ec-modal ret-modal" role="dialog" aria-modal="true" aria-labelledby="titulo-detalhes" ecDialog (ecDialogClose)="closeModalDetalhesAssistido()">
+      <div class="ret-modal-header">
+        <h2 id="titulo-detalhes" class="ec-modal-title">Detalhes do assistido</h2>
+        <button type="button" class="ec-btn ec-btn--icon" aria-label="Fechar" (click)="closeModalDetalhesAssistido()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="ret-detalhes">
+        <button type="button" class="ret-foto-btn" aria-label="Ampliar foto do assistido" (click)="expandirImagem()">
+          <img [src]="assistidoDetalhes.imagem || imagemPadrao" alt="Foto de {{ assistidoDetalhes.nome }}" class="ret-foto" />
+        </button>
+        <dl class="ret-info">
+          <dt>Nome</dt>
+          <dd>{{ assistidoDetalhes.nome }}</dd>
+          <dt>Documento</dt>
+          <dd>{{ assistidoDetalhes.documento | documentTranslate }}</dd>
+          <dt>Data de nascimento</dt>
+          <dd>{{ (assistidoDetalhes.data_nascimento | date : "dd/MM/yyyy" : "UTC") || "—" }}</dd>
+        </dl>
+      </div>
+
+      <h3 class="ret-section-title ret-ultimas-titulo">Últimas retiradas</h3>
+      <p *ngIf="ultimasRetiradasAssistido.length === 0" class="ec-hint">Nenhuma retirada registrada.</p>
+      <ul *ngIf="ultimasRetiradasAssistido.length > 0" class="ec-list ret-ultimas">
+        <li *ngFor="let retirada of ultimasRetiradasAssistido" class="ec-list-item">
+          <time [attr.datetime]="retirada.data_retirada">{{ retirada.data_retirada | date : "dd/MM/yyyy" : "UTC" }}</time>
+        </li>
+      </ul>
+
+      <div class="ec-modal-footer">
+        <button type="button" class="ec-btn" (click)="closeModalDetalhesAssistido()">Fechar</button>
+      </div>
+    </div>
+
+    <div
+      *ngIf="imagemExpandida"
+      class="ret-imagem-expandida"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Foto ampliada do assistido"
+      ecDialog
+      (ecDialogClose)="fecharImagem()"
+      (click)="fecharImagem()"
+    >
+      <button type="button" class="ec-btn ret-imagem-fechar" aria-label="Fechar foto ampliada" (click)="fecharImagem()">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <img [src]="assistidoDetalhes.imagem || imagemPadrao" alt="Foto ampliada de {{ assistidoDetalhes.nome }}" class="ret-foto-expandida" />
+    </div>
   </div>
 </div>
