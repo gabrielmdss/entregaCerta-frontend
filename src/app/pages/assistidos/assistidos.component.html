@@ -6,8 +6,8 @@
     </button>
   </header>
 
-  <section class="ec-card ast-busca" aria-labelledby="titulo-busca">
-    <h2 id="titulo-busca" class="ast-sr-only">Busca</h2>
+  <section class="ec-card ast-busca ec-enter" aria-labelledby="titulo-busca">
+    <h2 id="titulo-busca" class="visually-hidden">Busca</h2>
     <label class="ec-label" for="busca-assistido">Pesquisar</label>
     <div class="ast-busca-linha">
       <input
@@ -31,60 +31,77 @@
     </div>
   </section>
 
-  <section class="ec-card ast-lista-card" aria-labelledby="titulo-lista">
-    <h2 id="titulo-lista" class="ast-section-title">
-      Lista de assistidos
-      <span *ngIf="!isLoading && !erroLista" class="ast-total">
-        ({{ searchTerm.trim() ? assistidosFiltrados.length + ' de ' : '' }}{{ assistidos.length }})
-      </span>
-    </h2>
-
-    <div *ngIf="isLoading" class="ec-state" role="status" aria-live="polite">
-      <span class="ec-spinner" aria-hidden="true"></span>
-      <span>Carregando relação de assistidos...</span>
+  <section class="ec-card ec-panel ec-enter" aria-labelledby="titulo-lista">
+    <div class="ec-panel-header">
+      <h2 id="titulo-lista" class="ec-panel-title">
+        Lista de assistidos
+        <span *ngIf="!isLoading && !erroLista" class="ec-panel-count">
+          ({{ searchTerm.trim() ? assistidosFiltrados.length + ' de ' : '' }}{{ assistidos.length }})
+        </span>
+      </h2>
     </div>
 
-    <div *ngIf="!isLoading && erroLista" class="ec-state ec-state--error" role="alert">
-      <span>Não foi possível carregar os assistidos.</span>
-      <button type="button" class="ec-btn" (click)="listarAssistidos()">Tentar novamente</button>
+    <div class="ec-panel-body ec-panel-body--flush">
+      <div *ngIf="isLoading" class="ec-skeleton-list" role="status" aria-live="polite">
+        <span class="visually-hidden">Carregando relação de assistidos...</span>
+        <span *ngFor="let n of [1, 2, 3, 4]" class="ec-skeleton" aria-hidden="true"></span>
+      </div>
+
+      <div *ngIf="!isLoading && erroLista" class="ec-state ec-state--error" role="alert">
+        <span class="ec-state-icon" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <span>Não foi possível carregar os assistidos.</span>
+        <button type="button" class="ec-btn" (click)="listarAssistidos()">Tentar novamente</button>
+      </div>
+
+      <ng-container *ngIf="!isLoading && !erroLista">
+        <div *ngIf="assistidos.length === 0" class="ec-state ast-vazio">
+          <span class="ec-state-icon" aria-hidden="true"><i class="fa-solid fa-users"></i></span>
+          <p>Nenhum assistido cadastrado</p>
+        </div>
+        <div *ngIf="assistidos.length > 0 && assistidosFiltrados.length === 0" class="ec-state ast-vazio">
+          <span class="ec-state-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <p>Nenhum resultado para a busca</p>
+        </div>
+
+        <ul *ngIf="assistidosFiltrados.length > 0" class="ec-list">
+          <li
+            *ngFor="let assistido of assistidosFiltrados; let i = index"
+            class="ec-list-item ast-item ec-list-in"
+            [style.--i]="i < 15 ? i : 15"
+          >
+            <span class="ec-avatar" aria-hidden="true">
+              <img *ngIf="assistido.imagem; else iniciaisAvatar" [src]="assistido.imagem" alt="" width="44" height="44" loading="lazy" />
+              <ng-template #iniciaisAvatar>{{ iniciais(assistido.nome) }}</ng-template>
+            </span>
+            <div class="ast-item-info">
+              <span class="ast-item-nome">{{ assistido.nome }}</span>
+              <span class="ast-item-doc">{{ assistido.documento | documentTranslate }}</span>
+            </div>
+            <div class="ast-acoes">
+              <button
+                type="button"
+                class="ec-btn ec-btn--secondary"
+                [attr.aria-label]="'Editar ' + assistido.nome"
+                [disabled]="carregandoEdicaoId === assistido.id"
+                (click)="openModalEditar(assistido.id)"
+              >
+                <i class="fa-solid fa-pencil" aria-hidden="true"></i>
+                <span class="ast-acao-texto">Editar</span>
+              </button>
+              <button
+                type="button"
+                class="ec-btn ec-btn--danger"
+                [attr.aria-label]="'Excluir ' + assistido.nome"
+                (click)="excluirAssistido(assistido.id)"
+              >
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                <span class="ast-acao-texto">Excluir</span>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </ng-container>
     </div>
-
-    <ng-container *ngIf="!isLoading && !erroLista">
-      <p *ngIf="assistidos.length === 0" class="ec-state ast-vazio">Nenhum assistido cadastrado</p>
-      <p *ngIf="assistidos.length > 0 && assistidosFiltrados.length === 0" class="ec-state ast-vazio">
-        Nenhum resultado para a busca
-      </p>
-
-      <ul *ngIf="assistidosFiltrados.length > 0" class="ec-list">
-        <li *ngFor="let assistido of assistidosFiltrados" class="ec-list-item ast-item">
-          <div class="ast-item-info">
-            <span class="ast-item-nome">{{ assistido.nome }}</span>
-            <span class="ast-item-doc">{{ assistido.documento | documentTranslate }}</span>
-          </div>
-          <div class="ast-acoes">
-            <button
-              type="button"
-              class="ec-btn ec-btn--secondary"
-              [attr.aria-label]="'Editar ' + assistido.nome"
-              [disabled]="carregandoEdicaoId === assistido.id"
-              (click)="openModalEditar(assistido.id)"
-            >
-              <i class="fa-solid fa-pencil" aria-hidden="true"></i>
-              <span class="ast-acao-texto">Editar</span>
-            </button>
-            <button
-              type="button"
-              class="ec-btn ec-btn--danger"
-              [attr.aria-label]="'Excluir ' + assistido.nome"
-              (click)="excluirAssistido(assistido.id)"
-            >
-              <i class="fa-solid fa-trash" aria-hidden="true"></i>
-              <span class="ast-acao-texto">Excluir</span>
-            </button>
-          </div>
-        </li>
-      </ul>
-    </ng-container>
   </section>
 
   <!-- Modal Cadastrar -->

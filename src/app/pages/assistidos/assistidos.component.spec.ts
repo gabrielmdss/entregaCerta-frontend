@@ -69,6 +69,20 @@ describe('AssistidosComponent', () => {
     expect(el.querySelector('label[for="busca-assistido"]')).not.toBeNull();
   });
 
+  it('avatar decorativo: iniciais quando sem foto, foto quando houver', () => {
+    carregar([
+      { id: 1, nome: 'Maria da Silva', documento: '12345678901', imagem: null },
+      { id: 2, nome: 'Joao', documento: '123456789', imagem: 'data:image/png;base64,AAAA' },
+    ]);
+    const [a1, a2] = Array.from(itens()).map((i) => i.querySelector('.ec-avatar')!);
+    expect(a1.getAttribute('aria-hidden')).toBe('true');
+    expect(a1.querySelector('img')).toBeNull();
+    expect(a1.textContent?.trim()).toBe('MS');
+    const img = a2.querySelector('img')!;
+    expect(img.getAttribute('src')).toBe('data:image/png;base64,AAAA');
+    expect(img.getAttribute('alt')).toBe('');
+  });
+
   it('lista vazia: "Nenhum assistido cadastrado"', () => {
     carregar([]);
     expect(text()).toContain('Nenhum assistido cadastrado');

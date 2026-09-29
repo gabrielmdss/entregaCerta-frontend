@@ -77,6 +77,15 @@ export class AssistidosComponent implements OnInit {
     this.listarAssistidos();
   }
 
+  /** Iniciais para o avatar sem foto (primeiro e último nome). Somente apresentação. */
+  iniciais(nome: string | null | undefined): string {
+    const partes = (nome ?? '').trim().split(/\s+/).filter(Boolean);
+    if (partes.length === 0) return '?';
+    const primeira = partes[0][0];
+    const ultima = partes.length > 1 ? partes[partes.length - 1][0] : '';
+    return (primeira + ultima).toUpperCase();
+  }
+
   listarAssistidos(): void {
     this.isLoading = true;
     this.erroLista = false;
