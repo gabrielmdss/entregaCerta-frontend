@@ -1,100 +1,223 @@
-/* Dashboard — somente o layout específico; cards, listas e estados vêm de styles/components.css. */
+/* Dashboard — layout específico; cards, painéis, listas, badges e estados vêm de styles/components.css. */
+
+/* ------------------------------------------------------------ Loading (skeleton) */
 .dash-loading {
-  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.dash-skel-card,
+.dash-skel-painel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.dash-skel-linha { width: 40%; max-width: 180px; height: 14px; }
+.dash-skel-numero { width: 96px; height: 32px; }
+.dash-skel-bloco { height: 72px; }
+.dash-skel-grafico { height: 220px; }
+
+/* ------------------------------------------------------------ Grade de blocos (lista vertical reordenável) */
+.dash-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+@media (min-width: 1024px) {
+  .dash-grid,
+  .dash-loading { gap: var(--space-5); }
 }
 
-.dash-grid {
+.dash-bloco {
+  position: relative;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Alça de arrastar: sempre no canto superior direito do bloco (alvo de 44px). */
+.dash-alca {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-16);
+  color: var(--color-text-muted);
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+  transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+.dash-alca:hover { color: var(--color-primary); background-color: var(--color-primary-soft); }
+.dash-alca:active { cursor: grabbing; }
+.dash-alca:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 0; box-shadow: var(--focus-ring); }
+
+/* Painéis: espaço à direita do cabeçalho para a alça. */
+.dash-bloco .ec-panel-header { padding-right: 56px; }
+
+/* Arrastando: pré-visualização elevada, lugar de destino tracejado, demais blocos deslizam. */
+.dash-placeholder {
+  min-height: 96px;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-soft);
+  opacity: 0.8;
+}
+.cdk-drag-preview.dash-bloco {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  opacity: 0.96;
+  transform-origin: center;
+  animation: none;
+}
+.cdk-drag-preview .dash-alca { cursor: grabbing; color: var(--color-primary); background-color: var(--color-primary-soft); }
+.dash-grid.cdk-drop-list-dragging .dash-bloco:not(.cdk-drag-placeholder) {
+  transition: transform 250ms var(--ease-out);
+}
+.cdk-drag-animating { transition: transform 250ms var(--ease-out); }
+@media (prefers-reduced-motion: reduce) {
+  .dash-grid.cdk-drop-list-dragging .dash-bloco,
+  .cdk-drag-animating { transition: none; }
+}
+
+/* ------------------------------------------------------------ Indicadores */
+.dash-bloco-rotulo {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  margin: 0;
+  padding-right: 56px;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.dash-kpis {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-4);
 }
-
-@media (min-width: 768px) {
-  .dash-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .dash-estoque,
-  .dash-wide {
-    grid-column: 1 / -1;
-  }
+@media (min-width: 480px) {
+  .dash-kpis { grid-template-columns: repeat(2, 1fr); }
 }
-
-/* 1024+: KPIs lado a lado; estoque ocupa a linha inteira (lista cresce sem rolagem interna). */
 @media (min-width: 1024px) {
-  .dash-grid {
-    gap: var(--space-6);
-  }
+  .dash-kpis { gap: var(--space-5); }
 }
+
+.dash-kpi {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.dash-kpi-texto { min-width: 0; }
 
 .dash-card-title {
-  margin: 0 0 var(--space-3);
+  margin: 0;
   font-size: var(--fs-14);
   font-weight: var(--fw-semibold);
   color: var(--color-text-muted);
 }
-
 .dash-kpi-value {
-  margin: 0;
+  margin: var(--space-2) 0 0;
   font-size: var(--fs-30);
   font-weight: var(--fw-bold);
   line-height: var(--lh-tight);
+  font-variant-numeric: tabular-nums;
   color: var(--color-text);
 }
-.dash-kpi-value--erro {
-  color: var(--color-text-muted);
-}
+.dash-kpi-value--erro { color: var(--color-text-muted); }
 
-.dash-card-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2) var(--space-4);
-  margin-bottom: var(--space-3);
-}
-.dash-card-header .dash-card-title {
-  margin: 0;
-}
+/* ------------------------------------------------------------ Estoque */
 .dash-link {
   display: inline-flex;
   align-items: center;
+  gap: var(--space-1);
   min-height: var(--control-height);
   font-size: var(--fs-14);
   font-weight: var(--fw-semibold);
+  white-space: nowrap;
 }
+.dash-link i { font-size: var(--fs-12); transition: transform var(--dur-fast) ease; }
+.dash-link:hover i { transform: translateX(2px); }
 
-/* Estoque completo: 1 coluna no mobile; colunas automáticas a partir de 768px. */
+/* Estoque completo sem rolagem interna: 1 coluna no mobile; 2 em 768; 4 em 1024. */
 .dash-estoque-lista {
   display: grid;
   grid-template-columns: 1fr;
-  column-gap: var(--space-8);
+  gap: var(--space-4) var(--space-8);
 }
 @media (min-width: 768px) {
-  .dash-estoque-lista {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  }
-  /* Cada item tem borda inferior; em grade não há "último" único, então mantém em todos. */
-  .dash-estoque-lista .ec-list-item:last-child {
-    border-bottom: 1px solid var(--color-border);
-  }
+  .dash-estoque-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .dash-estoque-lista { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
-.dash-estoque .ec-list-item,
+.dash-estoque-item { min-width: 0; }
+.dash-estoque-linha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.dash-estoque-linha .dash-item-nome {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: var(--fw-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dash-estoque-qtd {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+.dash-nivel {
+  height: 6px;
+  margin-top: var(--space-2);
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: var(--color-muted);
+}
+.dash-nivel-barra {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background-color: var(--color-primary);
+  transform-origin: left center;
+  animation: ec-grow-x var(--dur-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 40ms + 120ms);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+.dash-estoque-item--zerado .dash-estoque-qtd { color: var(--color-danger); }
+.dash-estoque-item--zerado .dash-nivel { background-color: var(--color-danger-soft); }
+
+/* ------------------------------------------------------------ Estados e listas */
+.dash-bloco .ec-panel-body .ec-state {
+  margin: 0;
+  padding: var(--space-6) var(--space-2);
+}
+
 .dash-retirada {
   padding-left: 0;
   padding-right: 0;
 }
-
-.dash-estoque .ec-state,
-.dash-wide .ec-state {
-  padding: var(--space-6) var(--space-2);
-  margin: 0;
-}
-
+.dash-retirada-info { min-width: 0; }
 .dash-item-nome {
   display: block;
+  overflow: hidden;
   font-size: var(--fs-14);
   font-weight: var(--fw-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--color-text);
 }
 .dash-item-doc,
@@ -102,11 +225,4 @@
   font-size: var(--fs-14);
   color: var(--color-text-muted);
 }
-.dash-item-data {
-  white-space: nowrap;
-}
-.dash-estoque-qtd {
-  font-size: var(--fs-16);
-  font-weight: var(--fw-bold);
-  color: var(--color-primary);
-}
+.dash-item-data { white-space: nowrap; }

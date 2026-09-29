@@ -1,68 +1,165 @@
 <div class="ec-page">
   <header class="ec-page-header">
     <h1 class="ec-page-title">Dashboard</h1>
+    <button
+      *ngIf="!isLoading && !todosComErro && !ordemEhPadrao"
+      type="button"
+      class="ec-btn ec-btn--ghost dash-restaurar"
+      (click)="restaurarOrdemPadrao()"
+    >
+      <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+      Restaurar ordem padrão
+    </button>
   </header>
 
-  <div *ngIf="isLoading" class="ec-state dash-loading" role="status" aria-live="polite">
-    <span class="ec-spinner" aria-hidden="true"></span>
-    <span>Carregando dados...</span>
+  <!-- Loading: esqueleto com a mesma composição do painel (sem salto de layout). -->
+  <div *ngIf="isLoading" class="dash-loading" role="status" aria-live="polite">
+    <span class="visually-hidden">Carregando dados...</span>
+    <div class="dash-kpis" aria-hidden="true">
+      <div class="ec-card dash-skel-card"><span class="ec-skeleton dash-skel-linha"></span><span class="ec-skeleton dash-skel-numero"></span></div>
+      <div class="ec-card dash-skel-card"><span class="ec-skeleton dash-skel-linha"></span><span class="ec-skeleton dash-skel-numero"></span></div>
+    </div>
+    <div class="ec-card dash-skel-painel" aria-hidden="true">
+      <span class="ec-skeleton dash-skel-linha"></span>
+      <span class="ec-skeleton dash-skel-bloco"></span>
+    </div>
+    <div class="ec-card dash-skel-painel" aria-hidden="true">
+      <span class="ec-skeleton dash-skel-linha"></span>
+      <span class="ec-skeleton dash-skel-grafico"></span>
+    </div>
   </div>
 
   <div *ngIf="!isLoading && todosComErro" class="ec-state ec-state--error ec-card" role="alert">
+    <span class="ec-state-icon" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
     <span>Não foi possível carregar os dados do dashboard.</span>
-    <button type="button" class="ec-btn" (click)="carregar()">Tentar novamente</button>
+    <button type="button" class="ec-btn ec-btn--secondary" (click)="carregar()">Tentar novamente</button>
   </div>
 
-  <div *ngIf="!isLoading && !todosComErro" class="dash-grid">
-    <section class="ec-card dash-kpi" aria-labelledby="kpi-assistidos">
-      <h2 id="kpi-assistidos" class="dash-card-title">Total de assistidos</h2>
-      <p *ngIf="!erros.totalAssistidos" class="dash-kpi-value">{{ totalAssistidos | number }}</p>
-      <p *ngIf="erros.totalAssistidos" class="dash-kpi-value dash-kpi-value--erro">—</p>
-      <p *ngIf="erros.totalAssistidos" class="ec-error-text">Falha ao carregar.</p>
-    </section>
+  <ng-container *ngIf="!isLoading && !todosComErro">
+    <p id="dash-dnd-ajuda" class="visually-hidden">
+      Arraste pela alça para reorganizar os blocos. Pelo teclado, foque a alça e use as setas para cima e para baixo;
+      Home e End levam ao início e ao fim.
+    </p>
+    <p class="visually-hidden" aria-live="polite">{{ anuncio }}</p>
 
-    <section class="ec-card dash-kpi" aria-labelledby="kpi-retiradas-mes">
-      <h2 id="kpi-retiradas-mes" class="dash-card-title">Retiradas no mês</h2>
-      <p *ngIf="!erros.totalRetiradasMes" class="dash-kpi-value">{{ totalRetiradasMes | number }}</p>
-      <p *ngIf="erros.totalRetiradasMes" class="dash-kpi-value dash-kpi-value--erro">—</p>
-      <p *ngIf="erros.totalRetiradasMes" class="ec-error-text">Falha ao carregar.</p>
-    </section>
+    <div class="dash-grid" cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="soltar($event)">
+      <div
+        *ngFor="let bloco of ordem; let i = index; trackBy: rastrearBloco"
+        class="dash-bloco ec-enter"
+        [attr.data-bloco]="bloco"
+        [style.--i]="i"
+        cdkDrag
+        cdkDragLockAxis="y"
+        cdkDragBoundary=".dash-grid"
+      >
+        <div class="dash-placeholder" *cdkDragPlaceholder></div>
 
-    <section class="ec-card dash-estoque" aria-labelledby="titulo-estoque">
-      <div class="dash-card-header">
-        <h2 id="titulo-estoque" class="dash-card-title">Estoque atual</h2>
-        <a routerLink="/estoque" class="dash-link">Gerenciar estoque</a>
+        <button
+          type="button"
+          class="dash-alca"
+          cdkDragHandle
+          [attr.data-alca]="bloco"
+          [attr.aria-label]="'Reordenar ' + nomeBloco(bloco) + ', posição ' + (i + 1) + ' de ' + ordem.length"
+          aria-describedby="dash-dnd-ajuda"
+          title="Arraste ou use as setas para reordenar"
+          (keydown)="aoTeclarAlca($event, bloco)"
+        >
+          <i class="fa-solid fa-grip-vertical" aria-hidden="true"></i>
+        </button>
+
+        <ng-container [ngSwitch]="bloco">
+          <!-- Indicadores (KPIs) -->
+          <section *ngSwitchCase="'indicadores'" class="dash-indicadores" aria-label="Indicadores">
+            <p class="dash-bloco-rotulo" aria-hidden="true">Indicadores</p>
+            <div class="dash-kpis">
+              <section class="ec-card dash-kpi" aria-labelledby="kpi-assistidos">
+                <div class="dash-kpi-texto">
+                  <h2 id="kpi-assistidos" class="dash-card-title">Total de assistidos</h2>
+                  <p *ngIf="!erros.totalAssistidos" class="dash-kpi-value">{{ kpiExibido.totalAssistidos | number }}</p>
+                  <p *ngIf="erros.totalAssistidos" class="dash-kpi-value dash-kpi-value--erro">—</p>
+                  <p *ngIf="erros.totalAssistidos" class="ec-error-text">Falha ao carregar.</p>
+                </div>
+                <span class="ec-icon-tile" aria-hidden="true"><i class="fa-solid fa-users"></i></span>
+              </section>
+
+              <section class="ec-card dash-kpi" aria-labelledby="kpi-retiradas-mes">
+                <div class="dash-kpi-texto">
+                  <h2 id="kpi-retiradas-mes" class="dash-card-title">Retiradas no mês</h2>
+                  <p *ngIf="!erros.totalRetiradasMes" class="dash-kpi-value">{{ kpiExibido.totalRetiradasMes | number }}</p>
+                  <p *ngIf="erros.totalRetiradasMes" class="dash-kpi-value dash-kpi-value--erro">—</p>
+                  <p *ngIf="erros.totalRetiradasMes" class="ec-error-text">Falha ao carregar.</p>
+                </div>
+                <span class="ec-icon-tile" aria-hidden="true"><i class="fa-solid fa-box-archive"></i></span>
+              </section>
+            </div>
+          </section>
+
+          <!-- Estoque atual -->
+          <section *ngSwitchCase="'estoque'" class="ec-card ec-panel dash-estoque" aria-labelledby="titulo-estoque">
+            <div class="ec-panel-header">
+              <h2 id="titulo-estoque" class="ec-panel-title">Estoque atual</h2>
+              <div class="ec-panel-actions">
+                <a routerLink="/estoque" class="dash-link">Gerenciar estoque <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+              </div>
+            </div>
+            <div class="ec-panel-body">
+              <p *ngIf="erros.estoqueAtual" class="ec-state ec-state--error">Não foi possível carregar o estoque.</p>
+              <p *ngIf="!erros.estoqueAtual && estoqueAtual.length === 0" class="ec-state">Nenhum item em estoque.</p>
+              <ul *ngIf="!erros.estoqueAtual && estoqueAtual.length > 0" class="ec-list dash-estoque-lista">
+                <li
+                  *ngFor="let item of estoqueAtual; let j = index"
+                  class="dash-estoque-item ec-list-in"
+                  [class.dash-estoque-item--zerado]="!item.quantidade"
+                  [style.--i]="j"
+                >
+                  <div class="dash-estoque-linha">
+                    <span class="dash-item-nome">{{ item.descricao }}</span>
+                    <strong class="dash-estoque-qtd">{{ item.quantidade | number }}</strong>
+                  </div>
+                  <div class="dash-nivel" aria-hidden="true">
+                    <span class="dash-nivel-barra" [style.width.%]="larguraNivel(item.quantidade)"></span>
+                  </div>
+                  <span *ngIf="!item.quantidade" class="visually-hidden">
+                    (sem estoque)
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Gráfico -->
+          <section *ngSwitchCase="'grafico'" class="ec-card ec-panel" aria-labelledby="titulo-grafico">
+            <div class="ec-panel-header">
+              <h2 id="titulo-grafico" class="ec-panel-title">Retiradas por mês em {{ anoAtual }}</h2>
+            </div>
+            <div class="ec-panel-body">
+              <p *ngIf="erros.retiradasPorMes" class="ec-state ec-state--error">Não foi possível carregar o gráfico.</p>
+              <p *ngIf="!erros.retiradasPorMes && retiradasPorMes.length === 0" class="ec-state">Nenhuma retirada registrada neste ano.</p>
+              <app-line-charts *ngIf="!erros.retiradasPorMes && retiradasPorMes.length > 0" [dados]="retiradasPorMes"></app-line-charts>
+            </div>
+          </section>
+
+          <!-- Últimas retiradas -->
+          <section *ngSwitchCase="'ultimas'" class="ec-card ec-panel" aria-labelledby="titulo-ultimas">
+            <div class="ec-panel-header">
+              <h2 id="titulo-ultimas" class="ec-panel-title">Últimas retiradas</h2>
+            </div>
+            <div class="ec-panel-body">
+              <p *ngIf="erros.ultimasRetiradas" class="ec-state ec-state--error">Não foi possível carregar as últimas retiradas.</p>
+              <p *ngIf="!erros.ultimasRetiradas && ultimasRetiradas.length === 0" class="ec-state">Nenhuma retirada registrada.</p>
+              <ul *ngIf="!erros.ultimasRetiradas && ultimasRetiradas.length > 0" class="ec-list">
+                <li *ngFor="let retirada of ultimasRetiradas; let j = index" class="ec-list-item dash-retirada ec-list-in" [style.--i]="j">
+                  <div class="dash-retirada-info">
+                    <span class="dash-item-nome">{{ retirada.nome }}</span>
+                    <span class="dash-item-doc">{{ retirada.documento | documentTranslate }}</span>
+                  </div>
+                  <time class="dash-item-data" [attr.datetime]="retirada.data_retirada">{{ retirada.data_retirada | date : "dd/MM/yyyy" : "UTC" }}</time>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </ng-container>
       </div>
-      <p *ngIf="erros.estoqueAtual" class="ec-state ec-state--error">Não foi possível carregar o estoque.</p>
-      <p *ngIf="!erros.estoqueAtual && estoqueAtual.length === 0" class="ec-state">Nenhum item em estoque.</p>
-      <ul *ngIf="!erros.estoqueAtual && estoqueAtual.length > 0" class="ec-list dash-estoque-lista">
-        <li *ngFor="let item of estoqueAtual" class="ec-list-item dash-estoque-item">
-          <span class="dash-item-nome">{{ item.descricao }}</span>
-          <span class="dash-estoque-qtd">{{ item.quantidade | number }}</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="ec-card dash-wide" aria-labelledby="titulo-grafico">
-      <h2 id="titulo-grafico" class="dash-card-title">Retiradas por mês em {{ anoAtual }}</h2>
-      <p *ngIf="erros.retiradasPorMes" class="ec-state ec-state--error">Não foi possível carregar o gráfico.</p>
-      <p *ngIf="!erros.retiradasPorMes && retiradasPorMes.length === 0" class="ec-state">Nenhuma retirada registrada neste ano.</p>
-      <app-line-charts *ngIf="!erros.retiradasPorMes && retiradasPorMes.length > 0" [dados]="retiradasPorMes"></app-line-charts>
-    </section>
-
-    <section class="ec-card dash-wide" aria-labelledby="titulo-ultimas">
-      <h2 id="titulo-ultimas" class="dash-card-title">Últimas retiradas</h2>
-      <p *ngIf="erros.ultimasRetiradas" class="ec-state ec-state--error">Não foi possível carregar as últimas retiradas.</p>
-      <p *ngIf="!erros.ultimasRetiradas && ultimasRetiradas.length === 0" class="ec-state">Nenhuma retirada registrada.</p>
-      <ul *ngIf="!erros.ultimasRetiradas && ultimasRetiradas.length > 0" class="ec-list">
-        <li *ngFor="let retirada of ultimasRetiradas" class="ec-list-item dash-retirada">
-          <div>
-            <span class="dash-item-nome">{{ retirada.nome }}</span>
-            <span class="dash-item-doc">{{ retirada.documento | documentTranslate }}</span>
-          </div>
-          <time class="dash-item-data" [attr.datetime]="retirada.data_retirada">{{ retirada.data_retirada | date : "dd/MM/yyyy" : "UTC" }}</time>
-        </li>
-      </ul>
-    </section>
-  </div>
+    </div>
+  </ng-container>
 </div>
