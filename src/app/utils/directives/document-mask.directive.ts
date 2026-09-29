@@ -1,28 +1,17 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
+import { formatDocumento } from '../pipes/document.pipe';
 
+/** Máscara visual de CPF/RG (7 a 11 dígitos); fora dessa faixa exibe só os dígitos. */
 @Directive({
   selector: '[appDocumentMask]',
   standalone: true
-
 })
 export class DocumentMaskDirective {
-
-  
-  private maskCpfRg(value: string): string {
-    if (value.length === 11) {
-      return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    } 
-    else if (value.length === 10) {
-      return value.replace(/(\d{2})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3.-$4');
-    }
-    return value;
-  }
   constructor(private el: ElementRef) {}
 
   @HostListener('input', ['$event'])
   onInput(event: any) {
-    let inputValue = event.target.value.replace(/\D/g, ''); 
-    inputValue = this.maskCpfRg(inputValue); 
-    this.el.nativeElement.value = inputValue;
+    const digitos = event.target.value.replace(/\D/g, '');
+    this.el.nativeElement.value = formatDocumento(digitos) ?? digitos;
   }
 }
