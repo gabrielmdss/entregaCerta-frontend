@@ -1,51 +1,188 @@
-<div class="container">
-  <h1>Controle de Estoque</h1>
-  <div class="estoque-container">
-    <div class="header">
-      <div class="input-wrapper">
-        <input
-          [(ngModel)]="searchTerm"
-          (input)="filtrarEstoque()"
-          placeholder="Pesquisar por Descrição"
-          class="input-field"
-        />
-        <i class="fa fa-search search-icon"></i>
-      </div>
-      <button (click)="adicionarItem()">
-        <i class="fa fa-plus"></i>Adicionar Item
+<div class="ec-page">
+  <header class="ec-page-header">
+    <h1 class="ec-page-title">Controle de Estoque</h1>
+    <button type="button" class="ec-btn" (click)="adicionarItem()">
+      <i class="fa fa-plus" aria-hidden="true"></i> Adicionar item
+    </button>
+  </header>
+
+  <section class="ec-card est-busca" aria-label="Busca">
+    <label class="ec-label" for="busca-estoque">Pesquisar</label>
+    <div class="est-busca-linha">
+      <input
+        id="busca-estoque"
+        type="search"
+        class="ec-input"
+        [(ngModel)]="searchTerm"
+        (input)="filtrarEstoque()"
+        placeholder="Descrição do item"
+        autocomplete="off"
+      />
+      <button *ngIf="searchTerm" type="button" class="ec-btn ec-btn--secondary" (click)="limparBusca()">
+        Limpar
       </button>
     </div>
+  </section>
 
-    <div *ngIf="isLoading" class="loading">Carregando estoque...</div>
+  <section class="ec-card est-lista-card" aria-labelledby="titulo-lista-estoque">
+    <h2 id="titulo-lista-estoque" class="est-section-title">
+      Itens em estoque
+      <span *ngIf="!isLoading && !erroLista" class="est-total">
+        ({{ searchTerm.trim() ? estoqueFiltrados.length + ' de ' : '' }}{{ estoque.length }})
+      </span>
+    </h2>
 
-    <div class="table-wrapper" *ngIf="!isLoading">
-      <table>
+    <div *ngIf="isLoading" class="ec-state" role="status" aria-live="polite">
+      <span class="ec-spinner" aria-hidden="true"></span>
+      <span>Carregando estoque...</span>
+    </div>
+
+    <div *ngIf="!isLoading && erroLista" class="ec-state ec-state--error" role="alert">
+      <span>Não foi possível carregar o estoque.</span>
+      <button type="button" class="ec-btn" (click)="carregarEstoque()">Tentar novamente</button>
+    </div>
+
+    <ng-container *ngIf="!isLoading && !erroLista">
+      <p *ngIf="estoque.length === 0" class="ec-state est-vazio">Nenhum item em estoque</p>
+      <p *ngIf="estoque.length > 0 && estoqueFiltrados.length === 0" class="ec-state est-vazio">
+        Nenhum resultado para a busca
+      </p>
+
+      <table *ngIf="estoqueFiltrados.length > 0" class="ec-table est-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Descrição</th>
-            <th>Quantidade</th>
-            <th>Ações</th>
+            <th scope="col" class="est-col-id">ID</th>
+            <th scope="col">Descrição</th>
+            <th scope="col" class="est-col-qtd">Quantidade</th>
+            <th scope="col" class="est-col-acoes"><span class="est-sr-only">Ações</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of estoqueFiltrados">
-            <td>{{ item.id }}</td>
-            <td>{{ item.descricao }}</td>
-            <td>{{ item.quantidade }}</td>
-            <td>
-              <div class="td-actions">
-                <button class="edit-btn" (click)="ajustarQuantidade(item.id)">
-                  <i class="fa-solid fa-pencil"></i><strong>Editar</strong>
+          <tr *ngFor="let item of estoqueFiltrados" class="est-linha">
+            <td class="est-col-id">
+              <span class="est-rotulo">ID </span>{{ item.id }}
+            </td>
+            <td class="est-col-desc">{{ item.descricao }}</td>
+            <td class="est-col-qtd">
+              <span class="est-rotulo">Quantidade: </span>{{ item.quantidade | number }}
+            </td>
+            <td class="est-col-acoes">
+              <div class="est-acoes">
+                <button
+                  type="button"
+                  class="ec-btn ec-btn--secondary"
+                  [attr.aria-label]="'Ajustar quantidade de ' + item.descricao"
+                  (click)="ajustarQuantidade(item.id)"
+                >
+                  <i class="fa-solid fa-pencil" aria-hidden="true"></i>
+                  <span>Ajustar</span>
                 </button>
-                <button class="delete-btn" (click)="removerItem(item.id)">
-                  <i class="fa-solid fa-trash"></i><strong>Excluir</strong>
+                <button
+                  type="button"
+                  class="ec-btn ec-btn--danger"
+                  [attr.aria-label]="'Excluir ' + item.descricao"
+                  (click)="removerItem(item.id)"
+                >
+                  <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                  <span>Excluir</span>
                 </button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
+    </ng-container>
+  </section>
+
+  <!-- Modal Adicionar item -->
+  <div *ngIf="mostrarModalAdicionar" class="ec-backdrop">
+    <div
+      class="ec-modal est-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-adicionar"
+      ecDialog
+      (ecDialogClose)="fecharModalAdicionar()"
+    >
+      <div class="est-modal-header">
+        <h2 id="titulo-adicionar" class="ec-modal-title">Adicionar item</h2>
+        <button type="button" class="ec-btn ec-btn--icon" aria-label="Fechar" (click)="fecharModalAdicionar()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="add-descricao">Descrição</label>
+        <input id="add-descricao" class="ec-input" autocomplete="off" [(ngModel)]="novoItem.descricao" />
+      </div>
+      <div class="ec-field">
+        <label class="ec-label" for="add-quantidade">Quantidade inicial</label>
+        <input
+          id="add-quantidade"
+          type="number"
+          inputmode="numeric"
+          class="ec-input"
+          [(ngModel)]="novoItem.quantidade"
+        />
+      </div>
+      <p *ngIf="erroAdicionar" class="ec-error-text est-erro" role="alert">{{ erroAdicionar }}</p>
+      <div class="ec-modal-footer">
+        <button type="button" class="ec-btn ec-btn--secondary" (click)="fecharModalAdicionar()">Cancelar</button>
+        <button type="button" class="ec-btn" [disabled]="isSalvando" (click)="confirmarAdicionar()">
+          <i class="fa fa-plus" aria-hidden="true"></i> Adicionar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ajustar quantidade -->
+  <div *ngIf="itemAjuste" class="ec-backdrop">
+    <div
+      class="ec-modal est-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-ajuste"
+      ecDialog
+      (ecDialogClose)="fecharModalAjuste()"
+    >
+      <div class="est-modal-header">
+        <h2 id="titulo-ajuste" class="ec-modal-title">Ajustar estoque</h2>
+        <button type="button" class="ec-btn ec-btn--icon" aria-label="Fechar" (click)="fecharModalAjuste()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <dl class="est-resumo">
+        <div>
+          <dt>Item</dt>
+          <dd class="est-resumo-desc">{{ itemAjuste.descricao }}</dd>
+        </div>
+        <div>
+          <dt>Quantidade atual</dt>
+          <dd>{{ itemAjuste.quantidade | number }}</dd>
+        </div>
+      </dl>
+      <div class="ec-field">
+        <label class="ec-label" for="ajuste-quantidade">Quantidade a ajustar</label>
+        <input
+          id="ajuste-quantidade"
+          type="number"
+          min="1"
+          inputmode="numeric"
+          class="ec-input"
+          [(ngModel)]="quantidadeAjuste"
+          aria-describedby="ajuste-dica"
+        />
+        <span id="ajuste-dica" class="ec-hint">Escolha abaixo se a quantidade será adicionada ou subtraída.</span>
+      </div>
+      <p *ngIf="erroAjuste" class="ec-error-text est-erro" role="alert">{{ erroAjuste }}</p>
+      <div class="ec-modal-footer">
+        <button type="button" class="ec-btn ec-btn--secondary" (click)="fecharModalAjuste()">Cancelar</button>
+        <button type="button" class="ec-btn ec-btn--danger" [disabled]="isSalvando" (click)="confirmarAjuste(-1)">
+          <i class="fa-solid fa-minus" aria-hidden="true"></i> Subtrair
+        </button>
+        <button type="button" class="ec-btn ec-btn--success" [disabled]="isSalvando" (click)="confirmarAjuste(1)">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i> Adicionar
+        </button>
+      </div>
     </div>
   </div>
 </div>

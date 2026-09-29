@@ -1,13 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Estoque } from '../../models/estoque.interface';
 import { EstoqueService } from '../../services/estoque.service';
-import Swal from 'sweetalert2';
+import { DialogDirective } from '../../shared/directives/dialog.directive';
+
+/** Mensagem da API com fallback seguro (err.error pode ser nulo, string ou objeto). */
+function mensagemErro(err: any, fallback: string): string {
+  const msg = err?.error?.message;
+  return typeof msg === 'string' && msg.trim() ? msg : fallback;
+}
 
 @Component({
   selector: 'app-estoque',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DialogDirective],
   templateUrl: './estoque.component.html',
   styleUrl: './estoque.component.css',
 })
@@ -15,7 +23,23 @@ export class EstoqueComponent implements OnInit {
   estoque: Estoque[] = [];
   estoqueFiltrados: Estoque[] = [];
   isLoading: boolean = false;
+  /** Falha ao carregar a lista (rede/5xx). */
+  erroLista: boolean = false;
   searchTerm: string = '';
+
+  /** Modal "Adicionar item". */
+  mostrarModalAdicionar: boolean = false;
+  novoItem: { descricao: string; quantidade: number | null } = { descricao: '', quantidade: null };
+  erroAdicionar: string = '';
+
+  /** Modal "Ajustar quantidade". */
+  itemAjuste: Estoque | null = null;
+  quantidadeAjuste: number | null = null;
+  erroAjuste: string = '';
+
+  /** Requisição de inclusão/ajuste em andamento (evita envio duplo). */
+  isSalvando: boolean = false;
+
   constructor(private estoqueService: EstoqueService) {}
 
   ngOnInit(): void {
@@ -24,126 +48,103 @@ export class EstoqueComponent implements OnInit {
 
   carregarEstoque(): void {
     this.isLoading = true;
-    this.estoqueService.selectAll().subscribe({
-      next: (dados) => {
-        this.estoque = dados;
-        this.estoqueFiltrados = dados;
-        this.isLoading = false;
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-      complete: () => {
-        this.isLoading = false;
-      },
-    });
+    this.erroLista = false;
+    this.estoqueService
+      .selectAll()
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (dados: any) => {
+          this.estoque = Array.isArray(dados) ? dados : [];
+          this.filtrarEstoque();
+        },
+        error: () => {
+          this.estoque = [];
+          this.estoqueFiltrados = [];
+          this.erroLista = true;
+        },
+      });
   }
+
+  // ---- Adicionar ----
 
   adicionarItem(): void {
-    Swal.fire({
-      title: 'Adicionar item',
-      html: `
-        <input id="descricao" class="swal2-input" placeholder="Descrição do item">
-        <input id="quantidade" type="number" class="swal2-input" placeholder="Quantidade inicial">
-      `,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: 'Adicionar',
-      cancelButtonText: 'Cancelar',
-      preConfirm: () => {
-        const descricao = (
-          document.getElementById('descricao') as HTMLInputElement
-        ).value;
-        const quantidade = (
-          document.getElementById('quantidade') as HTMLInputElement
-        ).value;
-
-        if (!descricao || !quantidade) {
-          Swal.showValidationMessage('Preencha todos os campos!');
-          return false;
-        }
-        return { descricao, quantidade: +quantidade };
-      },
-    }).then((result) => {
-      if (result.isConfirmed && result.value) {
-        this.estoqueService
-          .insert(result.value.descricao, result.value.quantidade)
-          .subscribe({
-            next: (response: Estoque) => {
-              Swal.fire(
-                'Sucesso!',
-                `Insumo ${response.descricao} adicionado com sucesso!`,
-                'success'
-              );
-              this.carregarEstoque();
-            },
-            error: (err: any) => {
-              Swal.fire('Erro!', err.message, 'error');
-              console.error(err);
-            },
-          });
-      }
-    });
+    this.novoItem = { descricao: '', quantidade: null };
+    this.erroAdicionar = '';
+    this.mostrarModalAdicionar = true;
   }
+
+  fecharModalAdicionar(): void {
+    this.mostrarModalAdicionar = false;
+  }
+
+  /** Mesma validação de antes (campos obrigatórios) e mesmo payload: insert(descricao, +quantidade). */
+  confirmarAdicionar(): void {
+    if (this.isSalvando) return;
+    const descricao = this.novoItem.descricao;
+    const quantidade = this.novoItem.quantidade;
+    if (!descricao || quantidade === null || quantidade === undefined || String(quantidade) === '') {
+      this.erroAdicionar = 'Preencha todos os campos!';
+      return;
+    }
+    this.erroAdicionar = '';
+    this.isSalvando = true;
+    this.estoqueService
+      .insert(descricao, +quantidade)
+      .pipe(finalize(() => (this.isSalvando = false)))
+      .subscribe({
+        next: (response: Estoque) => {
+          Swal.fire('Sucesso!', `Insumo ${response?.descricao ?? descricao} adicionado com sucesso!`, 'success');
+          this.fecharModalAdicionar();
+          this.carregarEstoque();
+        },
+        // O modal continua aberto com os dados digitados, para o usuário corrigir.
+        error: (err: any) => {
+          Swal.fire('Erro!', mensagemErro(err, 'Não foi possível adicionar o item. Tente novamente.'), 'error');
+        },
+      });
+  }
+
+  // ---- Ajustar ----
 
   ajustarQuantidade(id: number): void {
     const item = this.estoque.find((i) => i.id === id);
     if (!item) return;
-
-    Swal.fire({
-      title: 'Ajustar Estoque',
-      html: `
-        <p><strong>Item:</strong> ${item.descricao}</p>
-        <p><strong>Quantidade atual:</strong> ${item.quantidade}</p>
-        <input id="quantidade" type="number" min="1" class="swal2-input" placeholder="Informe a quantidade">
-        <div style="display: flex; justify-content: space-around; margin-top: 10px;">
-          <button id="btn-adicionar" class="swal2-confirm swal2-styled" style="background-color: #28a745;">Adicionar</button>
-          <button id="btn-subtrair" class="swal2-cancel swal2-styled" style="background-color: #dc3545;">Subtrair</button>
-        </div>
-      `,
-      showConfirmButton: false,
-      showCancelButton: false,
-      didOpen: () => {
-        const input = document.getElementById('quantidade') as HTMLInputElement;
-
-        const ajustarEstoque = (quantidade: number) => {
-          this.estoqueService.adjustStock(id, quantidade).subscribe({
-            next: (response: any) => {
-              Swal.fire('Sucesso!', 'Estoque ajustado com sucesso.', 'success');
-              console.log(response);
-              this.carregarEstoque();
-            },
-            error: (err: any) => {
-              Swal.fire('Erro!', err.error.message, 'error');
-              console.error(err);
-            },
-          });
-        };
-
-        document
-          .getElementById('btn-adicionar')
-          ?.addEventListener('click', () => {
-            const qtd = parseInt(input.value, 10);
-            if (isNaN(qtd) || qtd <= 0) {
-              Swal.showValidationMessage('Digite um valor válido maior que 0.');
-              return;
-            }
-            ajustarEstoque(qtd);
-          });
-
-        document
-          .getElementById('btn-subtrair')
-          ?.addEventListener('click', () => {
-            const qtd = parseInt(input.value, 10);
-            if (isNaN(qtd) || qtd <= 0) {
-              Swal.showValidationMessage('Digite um valor válido maior que 0.');
-              return;
-            }
-            ajustarEstoque(-qtd);
-          });
-      },
-    });
+    this.itemAjuste = item;
+    this.quantidadeAjuste = null;
+    this.erroAjuste = '';
   }
+
+  fecharModalAjuste(): void {
+    this.itemAjuste = null;
+  }
+
+  /** sinal = 1 (Adicionar) ou -1 (Subtrair); payload adjustStock(id, ±qtd) como antes. */
+  confirmarAjuste(sinal: 1 | -1): void {
+    if (!this.itemAjuste || this.isSalvando) return;
+    const qtd = parseInt(String(this.quantidadeAjuste ?? ''), 10);
+    if (isNaN(qtd) || qtd <= 0) {
+      this.erroAjuste = 'Digite um valor válido maior que 0.';
+      return;
+    }
+    this.erroAjuste = '';
+    this.isSalvando = true;
+    this.estoqueService
+      .adjustStock(this.itemAjuste.id, sinal * qtd)
+      .pipe(finalize(() => (this.isSalvando = false)))
+      .subscribe({
+        next: () => {
+          Swal.fire('Sucesso!', 'Estoque ajustado com sucesso.', 'success');
+          this.fecharModalAjuste();
+          this.carregarEstoque();
+        },
+        // Ex.: "Quantidade de X(s) insuficiente" (validação do backend); o modal continua aberto.
+        error: (err: any) => {
+          Swal.fire('Erro!', mensagemErro(err, 'Não foi possível ajustar o estoque. Tente novamente.'), 'error');
+        },
+      });
+  }
+
+  // ---- Excluir ----
 
   removerItem(id: number): void {
     Swal.fire({
@@ -151,8 +152,8 @@ export class EstoqueComponent implements OnInit {
       text: 'Essa ação não pode ser desfeita!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: 'var(--color-danger)',
+      cancelButtonColor: 'var(--color-neutral)',
       confirmButtonText: 'Sim, excluir!',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
@@ -170,9 +171,7 @@ export class EstoqueComponent implements OnInit {
           error: (err: any) => {
             Swal.fire({
               title: 'Erro ao excluir',
-              text:
-                err.error.message ||
-                'Houve um problema ao excluir os dados. Tente novamente.',
+              text: mensagemErro(err, 'Houve um problema ao excluir os dados. Tente novamente.'),
               icon: 'error',
               theme: 'light',
               position: 'center',
@@ -183,16 +182,18 @@ export class EstoqueComponent implements OnInit {
     });
   }
 
+  // ---- Busca ----
+
   filtrarEstoque(): void {
-    console.log('Filtrar Estoque iniciado');
-    console.log(this.searchTerm);
-    debugger;
-    if (!this.searchTerm || this.searchTerm.trim() === '') {
-      this.estoqueFiltrados = [...this.estoque];
-    } else {
-      this.estoqueFiltrados = this.estoque.filter((item) =>
-        item.descricao.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    }
+    const termo = (this.searchTerm ?? '').trim().toLowerCase();
+    this.estoqueFiltrados =
+      termo === ''
+        ? [...this.estoque]
+        : this.estoque.filter((item) => (item.descricao ?? '').toLowerCase().includes(termo));
+  }
+
+  limparBusca(): void {
+    this.searchTerm = '';
+    this.filtrarEstoque();
   }
 }
