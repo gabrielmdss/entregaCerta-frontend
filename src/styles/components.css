@@ -185,10 +185,29 @@
 }
 .ec-panel-actions { display: flex; align-items: center; gap: var(--space-1); }
 .ec-panel-body { padding: var(--space-4); }
+/* Corpo sem respiro lateral: listas e tabelas encostam nas bordas do painel. */
+.ec-panel-body--flush { padding: 0; }
 @media (min-width: 768px) {
   .ec-panel-header { padding: var(--space-1) var(--space-5); }
-  .ec-panel-body { padding: var(--space-5); }
+  .ec-panel-body:not(.ec-panel-body--flush) { padding: var(--space-5); }
 }
+.ec-panel-count { font-weight: var(--fw-regular); color: var(--color-text-muted); }
+
+/* Avatar circular: foto quando houver, senão iniciais. */
+.ec-avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border-radius: 50%;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+}
+.ec-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Ícone em quadrado suave (KPIs) */
 .ec-icon-tile {
@@ -302,13 +321,18 @@
   border-bottom: 1px solid var(--color-border);
 }
 .ec-list-item:last-child { border-bottom: 0; }
+/* Listas no corpo "flush" do painel alinham com o cabeçalho (16px / 20px em >= 768). */
+@media (min-width: 768px) {
+  .ec-panel-body--flush .ec-list-item { padding-left: var(--space-5); padding-right: var(--space-5); }
+}
 
 /* ------------------------------------------------------------------ Paginação */
+/* Anterior | "Página x de y" | Próxima (Lovable: grid auto 1fr auto) */
 .ec-pagination {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: center;
+  text-align: center;
   gap: var(--space-2);
   margin-top: var(--space-4);
   padding-top: var(--space-4);
@@ -364,3 +388,6 @@
 @media (prefers-reduced-motion: reduce) {
   .ec-skeleton { background-image: none; }
 }
+/* Lista em esqueleto (substitui o spinner nas listas) */
+.ec-skeleton-list { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); }
+.ec-skeleton-list .ec-skeleton { height: 52px; }
